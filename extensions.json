@@ -1,0 +1,35 @@
+{
+  "//": "Extensions built into EDGEkit. tools/bundle.mjs builds each sibling one with its own script and unpacks the VSIX.",
+  "extensions": [
+    {
+      "id": "edgemodders.redcode-core",
+      "from": "sibling",
+      "repo": "../REDcode",
+      "build": "npm run core:package",
+      "vsix": "dist/redcode-core-*.vsix",
+      "status": "exists"
+    },
+    {
+      "id": "edgemodders.rednode-hud-theme",
+      "from": "sibling",
+      "repo": "../REDcode",
+      "build": "npm run theme:package",
+      "vsix": "dist/rednode-hud-theme-*.vsix",
+      "status": "exists",
+      "defaultTheme": true
+    },
+    {
+      "id": "edgemodders.redagent",
+      "from": "sibling",
+      "repo": "../REDagent",
+      "build": null,
+      "vsix": null,
+      "status": "REDagent phase C6, not built yet"
+    },
+    {
+      "id": "jac3km4.redscript-ide-vscode",
+      "from": "openvsx",
+      "status": "Marketplace only today: needs its author's permission or an Open VSX release"
+    }
+  ]
+}
