@@ -28,8 +28,16 @@
     },
     {
       "id": "jac3km4.redscript-ide-vscode",
-      "from": "openvsx",
-      "status": "Marketplace only today: needs its author's permission or an Open VSX release"
+      "from": "source",
+      "repo": "https://github.com/jac3km4/redscript-ide-vscode",
+      "license": "MIT",
+      "server": {
+        "repo": "https://github.com/jac3km4/redscript-ide",
+        "license": "MIT",
+        "asset": "redscript-ide.exe",
+        "setting": "redscript.idePath"
+      },
+      "status": "K3: build from source and bundle with its notice; the author is being told and asked about Open VSX"
     }
   ]
 }

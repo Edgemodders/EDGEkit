@@ -21,7 +21,7 @@ REDcode's design ([Decision 1: how much of VS Code to fork](https://edgemodders.
 | The Microsoft Marketplace may be used only by Microsoft's own VS Code products | EDGEkit points its extension gallery at [Open VSX](https://open-vsx.org/), as VSCodium and other forks do. The exact current terms must be read directly before release (REDcode's design notes they were reported second-hand) |
 | Some Microsoft extensions (for example C# Dev Kit, Pylance, Remote Development, Live Share) are licensed for Microsoft's products only | EDGEkit does not bundle or advertise them. Modders who need them use VS Code with the EDGE extensions instead |
 | "Visual Studio Code" and its logo are Microsoft trademarks | EDGEkit uses its own name and icon everywhere: window titles, installer, file associations, data folders. "Built on Code - OSS" is a plain description, to check with the trademark rules in K0 |
-| The Redscript IDE extension (`jac3km4.redscript-ide-vscode`) is on the Marketplace only, not on Open VSX (REDcode C0, 2026-10-11) | EDGEkit bundles it only with its author's permission, or once it is on Open VSX |
+| The Redscript IDE extension (`jac3km4.redscript-ide-vscode`) is on the Marketplace only, not on Open VSX (REDcode C0, 2026-10-11). It, its language server (`jac3km4/redscript-ide`) and the compiler are all MIT (checked 2026-10-13) | EDGEkit may bundle it, with its copyright and license notice. Its newest VSIX on GitHub (0.2.2) is older than its source (0.3.4), so EDGEkit builds it from source. The user is telling its author and asking about Open VSX |
 | Code - OSS builds need its own toolchain: the Node version in its `.nvmrc`, Python, and Visual Studio's C++ build tools for native modules, and many GB of disk | K1 proves the build on this PC first, unbranded, and records exact versions in [Dev setup](dev-setup.md) |
 | VS Code updates monthly | EDGEkit pins an upstream release tag in `upstream.json` and moves it on purpose, with a rebuild and a smoke test |
 
@@ -47,7 +47,7 @@ The list is `extensions.json`. Sources are the sibling repos, built by their own
 | REDcode core (`edgemodders.redcode-core`) | REDcode, `npm run core:package` | Exists |
 | REDnode HUD theme (`edgemodders.rednode-hud-theme`) | REDcode, `npm run theme:package` | Exists. The default theme |
 | REDagent (`edgemodders.redagent`) | REDagent, phase C6 | Not built yet |
-| Redscript IDE (`jac3km4.redscript-ide-vscode`) | Its author | Needs permission or Open VSX |
+| Redscript IDE (`jac3km4.redscript-ide-vscode`) | Built from its source (MIT) | To bundle in K3, with its notice. Its language server (`redscript-ide.exe`, MIT) ships beside it and `redscript.idePath` points at it, so it works offline. If it reaches Open VSX, that can replace the build |
 
 ## Phases
 
@@ -58,7 +58,7 @@ Phases are numbered K0 to K5, so they do not clash with the other repos' phases.
 | **K0 Decide** | The open questions below, answered with the user. The current Marketplace and trademark terms, read directly. Which upstream release to pin | The plan and `upstream.json` are agreed |
 | **K1 Build** | Code - OSS built from source on this PC, unbranded, with the drafts in `tools/` made to work. Exact tool versions in Dev setup | An unbranded build starts, opens a folder, and installs an extension from Open VSX |
 | **K2 Brand** | `product.json` branding, icons (app, installer, file types) made from `tools/brand`, the REDnode HUD theme as default, a welcome page | The installed app says EDGEkit everywhere and never VS Code; its data lives in its own folders, beside an installed VS Code without touching it |
-| **K3 Bundle** | The EDGE extensions built from their repos and shipped as built-in extensions | A fresh install has REDcode, the theme and (once C6 exists) REDagent, with no network |
+| **K3 Bundle** | The EDGE extensions built from their repos and shipped as built-in extensions, Redscript IDE with its language server, and a third-party notices file with every bundled project's license | A fresh install has REDcode, the theme, Redscript IDE and (once C6 exists) REDagent, with no network |
 | **K4 Release** | A Windows installer, built by GitHub Actions on a pinned upstream tag; updates through GitHub releases | A tagged release produces an installer anyone can download and install |
 | **K5 Track upstream** | A routine for moving to a new VS Code release: bump the tag, rebuild, smoke test, release | A new upstream release ships within a week, by checklist |
 
