@@ -42,6 +42,24 @@ The scripts in `tools/` are drafts: written from upstream's documented build, no
 
 The list is `extensions.json`. Sources are the sibling repos, built by their own scripts.
 
+**Separate repos, not a monorepo** (agreed with the user on 2026-10-13). The extensions stay in their own repos, and EDGEkit fetches them finished:
+
+| Why | |
+|---|---|
+| Licenses | REDbridge is GPL-3.0 and must stay a separate program; one repo would blur that boundary and EDGEkit's MIT license |
+| They ship without EDGEkit too | REDcode's extensions and the theme also go to Open VSX for VS Code and VSCodium users, with their own versions, releases and docs |
+| Build weight | EDGEkit's build pulls in all of Code - OSS; extension work stays quick without it |
+| Parallel work | Separate repos keep sessions working in different tools from tripping over each other |
+| REDcode is already the extensions' monorepo | New EDGE editor extensions go there, so EDGEkit depends on few repos |
+
+| Where EDGEkit gets them | How |
+|---|---|
+| On the dev PC | From the sibling folders: `tools/bundle.mjs` builds each extension with its own script and takes the newest VSIX |
+| In a release (K4) | Each extension repo attaches its VSIX to a GitHub release when it tags a version. `extensions.json` pins the version EDGEkit ships (`version`), and CI downloads exactly that file, so every EDGEkit release says which extension versions it holds and can be rebuilt |
+| Third-party (Redscript IDE) | Built from source at a pinned tag, or from Open VSX once it is there |
+
+Git submodules would also pin exact commits, but every update takes commits in two repos; pinned release versions are simpler.
+
 | Extension | From | Status |
 |---|---|---|
 | REDcode core (`edgemodders.redcode-core`) | REDcode, `npm run core:package` | Exists |
@@ -59,7 +77,7 @@ Phases are numbered K0 to K5, so they do not clash with the other repos' phases.
 | **K1 Build** | Code - OSS built from source on this PC, unbranded, with the drafts in `tools/` made to work. Exact tool versions in Dev setup | An unbranded build starts, opens a folder, and installs an extension from Open VSX |
 | **K2 Brand** | `product.json` branding, icons (app, installer, file types) made from `tools/brand`, the REDnode HUD theme as default, a welcome page | The installed app says EDGEkit everywhere and never VS Code; its data lives in its own folders, beside an installed VS Code without touching it |
 | **K3 Bundle** | The EDGE extensions built from their repos and shipped as built-in extensions, Redscript IDE with its language server, and a third-party notices file with every bundled project's license | A fresh install has REDcode, the theme, Redscript IDE and (once C6 exists) REDagent, with no network |
-| **K4 Release** | A Windows installer, built by GitHub Actions on a pinned upstream tag; updates through GitHub releases | A tagged release produces an installer anyone can download and install |
+| **K4 Release** | A Windows installer, built by GitHub Actions on a pinned upstream tag and pinned extension versions, downloaded from each extension repo's GitHub releases (each repo gains a "publish the VSIX on a tag" workflow); updates through GitHub releases | A tagged release produces an installer anyone can download and install |
 | **K5 Track upstream** | A routine for moving to a new VS Code release: bump the tag, rebuild, smoke test, release | A new upstream release ships within a week, by checklist |
 
 ## Open questions for K0
