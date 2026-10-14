@@ -30,6 +30,15 @@
       "version": null
     },
     {
+      "id": "edgemodders.edgemat",
+      "from": "sibling",
+      "repo": "../EDGEmat",
+      "build": null,
+      "vsix": null,
+      "status": "EDGEmat phase M0, not built yet",
+      "version": null
+    },
+    {
       "id": "jac3km4.redscript-ide-vscode",
       "from": "source",
       "repo": "https://github.com/jac3km4/redscript-ide-vscode",

@@ -50,7 +50,7 @@ The list is `extensions.json`. Sources are the sibling repos, built by their own
 | They ship without EDGEkit too | REDcode's extensions and the theme also go to Open VSX for VS Code and VSCodium users, with their own versions, releases and docs |
 | Build weight | EDGEkit's build pulls in all of Code - OSS; extension work stays quick without it |
 | Parallel work | Separate repos keep sessions working in different tools from tripping over each other |
-| REDcode is already the extensions' monorepo | New EDGE editor extensions go there, so EDGEkit depends on few repos |
+| Each extension has its own repo | REDcode's repo holds REDcode core and the HUD theme; REDdeck, EDGEmat and the other EDGE extensions live in their own repos. EDGEkit bundles each one from its repo's releases |
 
 | Where EDGEkit gets them | How |
 |---|---|
@@ -65,6 +65,7 @@ Git submodules would also pin exact commits, but every update takes commits in t
 | REDcode core (`edgemodders.redcode-core`) | REDcode, `npm run core:package` | Exists |
 | REDnode HUD theme (`edgemodders.rednode-hud-theme`) | REDcode, `npm run theme:package` | Exists. The default theme |
 | REDagent (`edgemodders.redagent`) | REDagent, phase C6 | Not built yet |
+| EDGEmat (`edgemodders.edgemat`) | EDGEmat | Phase M0 spec, not built yet. A material editor with an MCP server |
 | Redscript IDE (`jac3km4.redscript-ide-vscode`) | Built from its source (MIT) | To bundle in K3, with its notice. Its language server (`redscript-ide.exe`, MIT) ships beside it and `redscript.idePath` points at it, so it works offline. If it reaches Open VSX, that can replace the build |
 
 ## Phases
