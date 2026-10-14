@@ -1,6 +1,6 @@
 # EDGE<span class="y">kit</span> design
 
-EDGEkit is the EDGEmodders editor: a build of Code - OSS, the open-source core of VS Code, with EDGEmodders branding and every EDGE tool built in. A modder installs one app and gets REDcode's editors, REDnode's views, the REDnode HUD theme and REDagent, with no extension hunting.
+EDGEkit is the EDGEmodders editor: a build of Code - OSS, the open-source core of VS Code, with EDGEmodders branding and every EDGE tool built in. A modder installs one app and gets REDcode's editors, REDnode's views, the REDnode HUD theme, REDdeck's mod manager and REDagent, with no extension hunting.
 
 **Status: scaffold.** The repository, the plan and draft scripts exist; nothing has been built yet. Next: K0, the decisions below, with the user.
 
@@ -64,6 +64,7 @@ Git submodules would also pin exact commits, but every update takes commits in t
 |---|---|---|
 | REDcode core (`edgemodders.redcode-core`) | REDcode, `npm run core:package` | Exists |
 | REDnode HUD theme (`edgemodders.rednode-hud-theme`) | REDcode, `npm run theme:package` | Exists. The default theme |
+| REDdeck (`edgemodders.reddeck`) | REDdeck, `npm run package` | Exists. The mod manager. Its VSIX is built for `win32-x64` |
 | REDagent (`edgemodders.redagent`) | REDagent, phase C6 | Not built yet |
 | EDGEmat (`edgemodders.edgemat`) | EDGEmat | Phase M0 spec, not built yet. A material editor with an MCP server |
 | Redscript IDE (`jac3km4.redscript-ide-vscode`) | Built from its source (MIT) | To bundle in K3, with its notice. Its language server (`redscript-ide.exe`, MIT) ships beside it and `redscript.idePath` points at it, so it works offline. If it reaches Open VSX, that can replace the build |
@@ -77,7 +78,7 @@ Phases are numbered K0 to K5, so they do not clash with the other repos' phases.
 | **K0 Decide** | The open questions below, answered with the user. The current Marketplace and trademark terms, read directly. Which upstream release to pin | The plan and `upstream.json` are agreed |
 | **K1 Build** | Code - OSS built from source on this PC, unbranded, with the drafts in `tools/` made to work. Exact tool versions in Dev setup | An unbranded build starts, opens a folder, and installs an extension from Open VSX |
 | **K2 Brand** | `product.json` branding, icons (app, installer, file types) made from `tools/brand`, the REDnode HUD theme as default, a welcome page | The installed app says EDGEkit everywhere and never VS Code; its data lives in its own folders, beside an installed VS Code without touching it |
-| **K3 Bundle** | The EDGE extensions built from their repos and shipped as built-in extensions, Redscript IDE with its language server, and a third-party notices file with every bundled project's license | A fresh install has REDcode, the theme, Redscript IDE and (once C6 exists) REDagent, with no network |
+| **K3 Bundle** | The EDGE extensions built from their repos and shipped as built-in extensions, Redscript IDE with its language server, and a third-party notices file with every bundled project's license | A fresh install has REDcode, the theme, REDdeck, Redscript IDE and (once C6 exists) REDagent, with no network |
 | **K4 Release** | A Windows installer, built by GitHub Actions on a pinned upstream tag and pinned extension versions, downloaded from each extension repo's GitHub releases (each repo gains a "publish the VSIX on a tag" workflow); updates through GitHub releases | A tagged release produces an installer anyone can download and install |
 | **K5 Track upstream** | A routine for moving to a new VS Code release: bump the tag, rebuild, smoke test, release | A new upstream release ships within a week, by checklist |
 

@@ -14,7 +14,7 @@ The source of EDGEkit's Nexus Mods page lives here, so updates are edits in the 
 | Mod name | EDGEkit |
 | Version | Empty until the first installer (K4); then the release version |
 | Category | Utilities, or Modders Resources and Tutorials (check the list for Cyberpunk 2077 when creating the page) |
-| Brief overview | One editor for Cyberpunk 2077 modding, with every EDGE tool built in and AI included. A build of Code - OSS with REDcode, Redscript IDE, the REDnode HUD theme and REDagent inside. In development: track to hear when the first installer lands. (255 characters at most; this is about 240) |
+| Brief overview | One editor for Cyberpunk 2077 modding, with every EDGE tool built in and AI included. A build of Code - OSS with REDcode, REDdeck, Redscript IDE, the REDnode HUD theme and REDagent inside. In development: track to hear when the first installer lands. (255 characters at most; this is 250) |
 | Author | Edgemodders |
 | Language | English |
 | Primary image | `docs/assets/brand/social.png` (1280 x 640). The banner (`docs/assets/brand/banner.png`) is already at the top of the description |

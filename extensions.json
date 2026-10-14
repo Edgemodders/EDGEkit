@@ -21,6 +21,15 @@
       "version": null
     },
     {
+      "id": "edgemodders.reddeck",
+      "from": "sibling",
+      "repo": "../REDdeck",
+      "build": "npm run package",
+      "vsix": "dist/reddeck-*.vsix",
+      "status": "exists",
+      "version": null
+    },
+    {
       "id": "edgemodders.redagent",
       "from": "sibling",
       "repo": "../REDagent",
