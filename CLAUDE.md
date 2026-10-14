@@ -15,4 +15,5 @@ EDGEkit is the EDGEmodders editor: Code - OSS with EDGEmodders branding and the 
 - **Never commit upstream code** or build output: `build/` holds the Code - OSS checkout, unpacked extensions and the app.
 - **The extensions stay in their own repos.** EDGEkit builds them with their own scripts (`extensions.json`) and never copies their source. Do not change REDcode or REDbridge from here; another session works in them.
 - **Trademarks:** never use the Visual Studio Code name or logo in the product, installer or docs, except to say what EDGEkit is not.
+- **Nexus Mods page:** a private draft on Nexus until release. Its description is `nexus/description.bbcode` (Nexus BBCode, no tables) and the other form fields are in `nexus/README.md`. Keep its status box and roadmap in step with this repo; check tags with `node tools/check-bbcode.mjs`.
 - **Docs site:** `docs/` is published by GitHub Pages through `.github/workflows/pages.yml`. `docs/index.md` is the landing page (document ledger and roadmap status); add every page to `nav` in `docs/_config.yml`. Brand images come from `tools/brand/render.ps1`.
