@@ -148,7 +148,7 @@ Answered with the user on 2026-10-15.
 | Does "REDcode" stay a name? | **EDGEkit is the editor plus its extensions.** REDcode stays the name of its own extension. For VS Code users there is an EDGEkit extension pack, below |
 | Platforms | **Windows x64 only for now.** Linux can come later |
 | Code signing | **A certificate later.** Early releases are unsigned, and the download page says how to get past the SmartScreen warning |
-| AI in the editor | **Claude Code runs in EDGEkit, from Open VSX.** Checked 2026-10-15: `Anthropic/claude-code` 2.1.300 is on Open VSX with a win32-x64 build. Its license is Anthropic's own, so EDGEkit does not bundle it; modders install it from the Extensions view. REDagent stays the built-in assistant |
+| AI in the editor | **Claude Code runs in EDGEkit, from Open VSX.** Checked 2026-10-15: `Anthropic/claude-code` 2.1.300 is on Open VSX with a win32-x64 build. Its license is Anthropic's own, so EDGEkit does not bundle it; modders install it from the Extensions view. REDagent stays the built-in assistant. **No Copilot** (the user, 2026-10-15): EDGEkit ships none of it and does not point modders to it |
 | Updates | **Code - OSS's update service, pointed at EDGEkit's GitHub releases.** How it works is below |
 | Trademarks | **Read by the user on 2026-10-15.** Extension listings on the Marketplace, and docs about them, use "*Name* for Visual Studio Code", the standard convention: for example "EDGEkit for Visual Studio Code" for the extension pack. No Microsoft icons, logos or brand names that imply a connection to Microsoft or its endorsement. The EDGEkit app keeps its own name and icon everywhere. Sources: the [Marketplace Terms of Use](https://aka.ms/vsmarketplace-ToU) (PDF), [Microsoft's trademark guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks), the [VS Code brand guidelines](https://code.visualstudio.com/brand), upstream's [Differences between the repository and Visual Studio Code](https://github.com/microsoft/vscode/wiki/Differences-between-the-repository-and-Visual-Studio-Code), and the [Open VSX registry FAQ](https://www.eclipse.org/legal/open-vsx-registry-faq/) |
 | Upstream release | **1.140.0** (2026-09-30), in `upstream.json`. VSCodium's latest release (1.140.06880) is built on it, so its patches are a known-good reference while K1 gets the first build working |
@@ -157,7 +157,7 @@ Still open, to settle in K1:
 
 | Question | Notes |
 |---|---|
-| Upstream's Copilot code | Code - OSS 1.140.0 includes Copilot's source in `extensions/copilot` (seen in the K1 checkout, 2026-10-15). Whether its build ships it in the app, under which license, and whether EDGEkit keeps or strips it, to check in K1 and settle by K3. EDGEkit's assistant is REDagent, and Claude Code installs from Open VSX |
+| How to leave Copilot out | Decided: no Copilot (K0 decisions). Code - OSS 1.140.0 includes Copilot's source in `extensions/copilot` (seen in the K1 checkout, 2026-10-15). K1 checks whether upstream's build puts it in the app, and what else in the workbench points at it (the chat view's sign-in, `product.json` keys for the default chat agent). K2 strips or switches off each one, as VSCodium does (unverified), without touching the APIs Claude Code and REDagent use |
 | User or system installer | Code - OSS can build both. The user installer needs no admin rights and is what VS Code offers first; it is the likely choice |
 
 ## The EDGEkit extension pack
