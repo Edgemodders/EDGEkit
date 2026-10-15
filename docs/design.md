@@ -33,7 +33,7 @@ Nothing from upstream is committed. The scripts fetch it, change it and build it
 |---|---|---|
 | 1. Fetch | `tools/fetch-vscode.ps1` | Clones `microsoft/vscode` at the tag in `upstream.json`, shallow, into `build/vscode` |
 | 2. Brand | `tools/brand.mjs` | Merges `product/product.json` into upstream's `product.json`: names, ids, data folders, URLs, Open VSX. Icons and the default theme come in K2 |
-| 3. Bundle | `tools/bundle.mjs` | Builds each extension in `extensions.json` from its own repo (for example REDcode's `npm run core:package`), unpacks the VSIX files into `build/extensions`, then into the app as built-in extensions. How Code - OSS takes prebuilt extensions is a K3 question |
+| 3. Bundle | `tools/bundle.mjs` | Builds each extension in `extensions.json` from its own repo (for example REDcode's `npm run redcode:package`), unpacks the VSIX files into `build/extensions`, then into the app as built-in extensions. How Code - OSS takes prebuilt extensions is a K3 question |
 | 4. Build | `tools/build.ps1` | Runs the three steps, installs upstream's dependencies and runs its Windows build and installer tasks |
 
 The scripts in `tools/` are drafts: written from upstream's documented build, not yet run. K1 runs them and fixes what upstream's build needs.
@@ -41,6 +41,8 @@ The scripts in `tools/` are drafts: written from upstream's documented build, no
 ## Bundled extensions
 
 The list is `extensions.json`. Sources are the sibling repos, built by their own scripts.
+
+**Tracking:** `node tools/extensions-status.mjs` prints, for every extension in the list, its version in its repo, on the Microsoft Marketplace and on Open VSX. It also scans the Edgemodders organization and names any extension the list lacks, so a new one in development is not missed. It only reads.
 
 **Separate repos, not a monorepo** (agreed with the user on 2026-10-13). The extensions stay in their own repos, and EDGEkit fetches them finished:
 
@@ -50,7 +52,7 @@ The list is `extensions.json`. Sources are the sibling repos, built by their own
 | They ship without EDGEkit too | REDcode's extensions and the theme also go to Open VSX for VS Code and VSCodium users, with their own versions, releases and docs |
 | Build weight | EDGEkit's build pulls in all of Code - OSS; extension work stays quick without it |
 | Parallel work | Separate repos keep sessions working in different tools from tripping over each other |
-| Each extension has its own repo | REDcode's repo holds REDcode core and the HUD theme; REDdeck, EDGEmat and the other EDGE extensions live in their own repos. EDGEkit bundles each one from its repo's releases |
+| Each extension has its own repo | REDcode's repo holds REDcode and the HUD theme; REDdeck, EDGEwave, EDGEmat and the other EDGE extensions live in their own repos. EDGEkit bundles each one from its repo's releases |
 
 | Where EDGEkit gets them | How |
 |---|---|
@@ -62,11 +64,12 @@ Git submodules would also pin exact commits, but every update takes commits in t
 
 | Extension | From | Status |
 |---|---|---|
-| REDcode core (`edgemodders.redcode-core`) | REDcode, `npm run core:package` | Exists |
+| REDcode (`edgemodders.redcode`) | REDcode, `npm run redcode:package` | Exists |
 | REDnode HUD theme (`edgemodders.rednode-hud-theme`) | REDcode, `npm run theme:package` | Exists. The default theme |
 | REDdeck (`edgemodders.reddeck`) | REDdeck, `npm run package` | Exists. The mod manager. Its VSIX is built for `win32-x64` |
 | REDagent (`edgemodders.redagent`) | REDagent, phase C6 | Not built yet |
 | EDGEmat (`edgemodders.edgemat`) | EDGEmat | Phase M0 spec, not built yet. A material editor with an MCP server |
+| EDGEwave (`edgemodders.edgewave`) | EDGEwave | In development (0.0.1), no package script yet. The sound studio |
 | Redscript IDE (`jac3km4.redscript-ide-vscode`) | Built from its source (MIT) | To bundle in K3, with its notice. Its language server (`redscript-ide.exe`, MIT) ships beside it and `redscript.idePath` points at it, so it works offline. If it reaches Open VSX, that can replace the build |
 
 ## Phases
@@ -89,7 +92,7 @@ Answered with the user on 2026-10-15.
 | Question | Decision |
 |---|---|
 | The product name in the app | **EDGEkit.** It is the window title, the installer name and the data folder (`.edgekit`), as `product/product.json` already says |
-| Does "REDcode" stay a name? | **EDGEkit is the editor plus its extensions.** REDcode stays the name of its own extensions (REDcode core). For VS Code users there is an EDGEkit extension pack, below |
+| Does "REDcode" stay a name? | **EDGEkit is the editor plus its extensions.** REDcode stays the name of its own extension. For VS Code users there is an EDGEkit extension pack, below |
 | Platforms | **Windows x64 only for now.** Linux can come later |
 | Code signing | **A certificate later.** Early releases are unsigned, and the download page says how to get past the SmartScreen warning |
 | AI in the editor | **Claude Code runs in EDGEkit, from Open VSX.** Checked 2026-10-15: `Anthropic/claude-code` 2.1.300 is on Open VSX with a win32-x64 build. Its license is Anthropic's own, so EDGEkit does not bundle it; modders install it from the Extensions view. REDagent stays the built-in assistant |
@@ -110,10 +113,10 @@ For modders who stay in VS Code or VSCodium: one extension, `edgemodders.edgekit
 | | |
 |---|---|
 | What it is | An extension pack: a `package.json` with an `extensionPack` list and no code. Installing it installs every extension in the list; uninstalling it offers to remove them |
-| What it lists | REDcode core, the REDnode HUD theme, REDdeck, Redscript IDE, and REDagent and EDGEmat once they are published |
+| What it lists | Every extension in `extensions.json` that is published on the registry: REDcode, the REDnode HUD theme, REDdeck and Redscript IDE first; REDagent, EDGEmat, EDGEwave and later EDGE extensions as each one is published |
 | Where it lives | In this repo, in its own folder (`pack/`), because it belongs to EDGEkit and not to any one extension |
 | Not in the app | The EDGEkit app does not include the pack: its extensions are already built in |
-| What it needs | VS Code installs pack members from the Microsoft Marketplace, and VSCodium from Open VSX, so each member must be published to both. Checked 2026-10-15: REDdeck is on both; REDcode core and the theme are on neither; Redscript IDE is on the Marketplace only, so VSCodium users would not get it |
+| What it needs | VS Code installs pack members from the Microsoft Marketplace, and VSCodium from Open VSX, so each member must be published to both. A pack should list only published extensions: a missing one may stop the whole pack installing (unverified). `tools/extensions-status.mjs` shows which are ready. Checked 2026-10-15: REDdeck and the theme are on both; REDcode is being published; Redscript IDE is on the Marketplace only, so VSCodium users would not get it |
 | When | K4, once the members are published (each repo's own work) |
 
 ## Updates

@@ -2,11 +2,11 @@
   "//": "Extensions built into EDGEkit. On the dev PC, tools/bundle.mjs builds each sibling one with its own script and unpacks the newest VSIX. For a release (K4), \"version\" pins the one shipped, downloaded from the repo's GitHub release.",
   "extensions": [
     {
-      "id": "edgemodders.redcode-core",
+      "id": "edgemodders.redcode",
       "from": "sibling",
       "repo": "../REDcode",
-      "build": "npm run core:package",
-      "vsix": "dist/redcode-core-*.vsix",
+      "build": "npm run redcode:package",
+      "vsix": "dist/redcode-*.vsix",
       "status": "exists",
       "version": null
     },
@@ -25,7 +25,7 @@
       "from": "sibling",
       "repo": "../REDdeck",
       "build": "npm run package",
-      "vsix": "dist/reddeck-*.vsix",
+      "vsix": "dist/reddeck-win32-x64-*.vsix",
       "status": "exists",
       "version": null
     },
@@ -45,6 +45,15 @@
       "build": null,
       "vsix": null,
       "status": "EDGEmat phase M0, not built yet",
+      "version": null
+    },
+    {
+      "id": "edgemodders.edgewave",
+      "from": "sibling",
+      "repo": "../EDGEwave",
+      "build": null,
+      "vsix": null,
+      "status": "EDGEwave in development (0.0.1), no package script yet",
       "version": null
     },
     {

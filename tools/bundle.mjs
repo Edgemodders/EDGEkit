@@ -17,7 +17,7 @@ const build = !process.argv.includes('--no-build');
 const out = join(root, 'build', 'extensions');
 const { extensions } = JSON.parse(readFileSync(join(root, 'extensions.json'), 'utf8'));
 
-// The newest file matching a pattern such as dist/redcode-core-*.vsix, by version.
+// The newest file matching a pattern such as dist/redcode-*.vsix, by version.
 function newest(repo, pattern) {
   const dir = join(repo, dirname(pattern));
   if (!existsSync(dir)) return null;
