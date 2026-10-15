@@ -29,10 +29,18 @@ if ($LASTEXITCODE) { throw 'Branding failed.' }
 node (Join-Path $PSScriptRoot 'bundle.mjs')
 if ($LASTEXITCODE) { throw 'Bundling the extensions failed.' }
 
-# Code - OSS expects the Node version in its .nvmrc.
+# Code - OSS expects the Node version in its .nvmrc. Take it from nvm-windows for this
+# build only, without "nvm use", which would switch Node for every program on the PC.
 $want = (Get-Content (Join-Path $vscode '.nvmrc') -Raw).Trim()
 $have = (node --version).TrimStart('v')
-if ($have -ne $want) { Write-Warning "Code - OSS wants Node $want; this shell has $have (nvm use $want)." }
+if ($have -ne $want) {
+    $nvmNode = if ($env:NVM_HOME) { Join-Path $env:NVM_HOME "v$want" } else { $null }
+    if (-not $nvmNode -or -not (Test-Path (Join-Path $nvmNode 'node.exe'))) {
+        throw "Code - OSS wants Node $want; this shell has $have. Install it with: nvm install $want"
+    }
+    $env:Path = "$nvmNode;$env:Path"
+    Write-Output "Using Node $want from $nvmNode for this build."
+}
 
 Push-Location $vscode
 try {
