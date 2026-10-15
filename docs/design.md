@@ -157,6 +157,7 @@ Still open, to settle in K1:
 
 | Question | Notes |
 |---|---|
+| Upstream's Copilot code | Code - OSS 1.140.0 includes Copilot's source in `extensions/copilot` (seen in the K1 checkout, 2026-10-15). Whether its build ships it in the app, under which license, and whether EDGEkit keeps or strips it, to check in K1 and settle by K3. EDGEkit's assistant is REDagent, and Claude Code installs from Open VSX |
 | User or system installer | Code - OSS can build both. The user installer needs no admin rights and is what VS Code offers first; it is the likely choice |
 
 ## The EDGEkit extension pack
