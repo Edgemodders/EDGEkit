@@ -157,7 +157,7 @@ Still open, to settle in K1:
 
 | Question | Notes |
 |---|---|
-| How to leave Copilot out | Decided: no Copilot (K0 decisions). Code - OSS 1.140.0 includes Copilot's source in `extensions/copilot` (seen in the K1 checkout, 2026-10-15). K1 checks whether upstream's build puts it in the app, and what else in the workbench points at it (the chat view's sign-in, `product.json` keys for the default chat agent). K2 strips or switches off each one, as VSCodium does (unverified), without touching the APIs Claude Code and REDagent use |
+| How to leave Copilot out | Decided: no Copilot (K0 decisions). Checked 2026-10-15: upstream's build puts it in the app (`build/gulpfile.vscode.ts` compiles `extensions/copilot` and packs the `@github/copilot-sdk` runtime), so a plain Code - OSS build has it. VSCodium removes it with two patches: `52-ext-copilot-remove-it.json` (deletes `extensions/copilot` and Copilot's agent code) and `53-ext-copilot-remove-it.patch` (takes it out of the build, `package.json` and the lockfiles). EDGEkit copies both (MIT) from VSCodium's release built on 1.140.0. They change the dependencies, so they apply before `npm ci`: K1 builds plain upstream to prove the toolchain, K2 applies the patches, reinstalls and rebuilds |
 | User or system installer | Code - OSS can build both. The user installer needs no admin rights and is what VS Code offers first; it is the likely choice |
 
 ## The EDGEkit extension pack
