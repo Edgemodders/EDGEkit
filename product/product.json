@@ -3,6 +3,7 @@
   "nameShort": "EDGEkit",
   "nameLong": "EDGEkit",
   "applicationName": "edgekit",
+  "quality": "stable",
   "dataFolderName": ".edgekit",
   "win32MutexName": "edgekit",
   "win32DirName": "EDGEkit",

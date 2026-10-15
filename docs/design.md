@@ -84,10 +84,18 @@ Agreed with the user on 2026-10-15: watch the extension repos, pull released ext
 |---|---|---|
 | First start | Everything works, even offline | Needs the network during install; if Open VSX is down, the modder starts with a bare editor |
 | Redscript IDE | Included, with its language server | Missing: not on Open VSX, and its language server is not in the VSIX |
-| Updates | From Open VSX, if built-in extensions update there (to check) | From Open VSX as each extension publishes |
+| Updates | From Open VSX, automatically (below) | From Open VSX as each extension publishes |
 | Build | Downloads the pinned released VSIX files | Nothing to download |
 
-**First thing K3 checks:** whether Code - OSS updates a built-in extension from the gallery automatically, or only when the modder installs a newer one by hand. If only by hand, the installer also runs `edgekit --install-extension` for the pack, and the built-in copies remain the offline fallback.
+**Built-in extensions do update from the gallery, when the product lists them.** Read in upstream's source at 1.140.0 on 2026-10-15 (`extensionsWorkbenchService.ts`, `extensionsScannerService.ts`):
+
+| Rule in upstream | What it means for EDGEkit |
+|---|---|
+| In a build whose `quality` is `stable`, a built-in extension is never offered an update | Without the next rule, a bundled extension would update only with an EDGEkit release |
+| Unless its id is in `product.json`'s `builtInExtensionsEnabledWithAutoUpdates`. Then it is checked and updated like any installed extension, following the modder's auto-update setting | Microsoft uses this for Copilot Chat in 1.140.0. `tools/brand.mjs` fills the list with every EDGE extension in `extensions.json`, replacing upstream's entry |
+| Code - OSS's own `product.json` sets no `quality` | `product/product.json` sets `quality` to `stable`; the update service needs it too |
+
+Redscript IDE stays off the list: it ships with its own language server, which a gallery update would not carry. It updates with EDGEkit releases. K3 confirms all this in the built app (an older REDdeck built in, a newer one on Open VSX), and the installer fallback stays unused unless that test fails.
 
 The extension pack (`edgemodders.edgekit`) is for modders in VS Code and VSCodium. EDGEkit itself does not need it.
 
@@ -111,7 +119,7 @@ Phases are numbered K0 to K5, so they do not clash with the other repos' phases.
 | **K0 Decide** | The K0 decisions below, answered with the user. The current Marketplace and trademark terms, read directly. Which upstream release to pin | The plan and `upstream.json` are agreed |
 | **K1 Build** | Code - OSS built from source on this PC, unbranded, with the drafts in `tools/` made to work. Exact tool versions in Dev setup | An unbranded build starts, opens a folder, and installs an extension from Open VSX |
 | **K2 Brand** | `product.json` branding, icons (app, installer, file types) made from `tools/brand`, the REDnode HUD theme as default, a welcome page | The installed app says EDGEkit everywhere and never VS Code; its data lives in its own folders, beside an installed VS Code without touching it |
-| **K3 Bundle** | First, the check whether built-in extensions update from Open VSX (release pipeline). Then the EDGE extensions shipped as built-in extensions, from their released VSIX files at pinned versions (upstream's `builtInExtensions` list, if it fits), Redscript IDE with its language server, and a third-party notices file with every bundled project's license | A fresh install has REDcode, the theme, REDdeck, Redscript IDE and the other published EDGE extensions, with no network; a newer REDdeck on Open VSX reaches it, automatically or through the installer's fallback |
+| **K3 Bundle** | The EDGE extensions shipped as built-in extensions, from their released VSIX files at pinned versions (upstream's `builtInExtensions` list, if it fits), Redscript IDE with its language server, and a third-party notices file with every bundled project's license | A fresh install has REDcode, the theme, REDdeck, Redscript IDE and the other published EDGE extensions, with no network; an older built-in REDdeck updates itself from Open VSX |
 | **K4 Release** | The release pipeline in GitHub Actions: the daily watch with pin pull requests (may start earlier), the extension pack published to both registries (may ship earlier), and a Windows installer built on a pinned upstream tag and pinned extension versions downloaded from each extension repo's GitHub releases. EDGEkit's version scheme; updates through GitHub releases and the update service | A tagged release produces an installer anyone can download and install, and an older install updates itself to it. A new extension release becomes a pin pull request within a day |
 | **K5 Track upstream** | A routine for moving to a newer upstream release every month or so, or sooner for a security fix, preferring one VSCodium has already shipped: bump the tag, rebuild, smoke test, release | A move to a newer release ships within a week of starting it, by checklist |
 

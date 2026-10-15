@@ -30,6 +30,14 @@ function merge(base, ours) {
 
 const upstream = JSON.parse(readFileSync(original, 'utf8'));
 const ours = JSON.parse(readFileSync(join(root, 'product', 'product.json'), 'utf8'));
+
+// Built-in extensions in a stable build never update from the gallery, unless listed here;
+// listed ones update from Open VSX like any installed extension. The EDGE extensions are
+// listed, from extensions.json. Third-party ones are not: Redscript IDE ships with its own
+// language server, which a gallery update would not carry.
+const { extensions } = JSON.parse(readFileSync(join(root, 'extensions.json'), 'utf8'));
+ours.builtInExtensionsEnabledWithAutoUpdates = extensions.filter((e) => e.from === 'sibling').map((e) => e.id);
+
 const branded = merge(upstream, ours);
 writeFileSync(target, `${JSON.stringify(branded, null, '\t')}\n`);
 
