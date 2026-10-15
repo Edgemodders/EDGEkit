@@ -44,7 +44,7 @@
       "repo": "../EDGEmat",
       "build": null,
       "vsix": null,
-      "status": "EDGEmat phase M0, not built yet",
+      "status": "Planned extension, no code yet. Will live in EDGEmat's extensions/edgemat; the skeleton comes in M1. M0 (behavior spec) in progress, checked against the game 2026-10-14. Ships to both registries in M6",
       "version": null
     },
     {

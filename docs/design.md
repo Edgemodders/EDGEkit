@@ -68,7 +68,7 @@ Git submodules would also pin exact commits, but every update takes commits in t
 | REDnode HUD theme (`edgemodders.rednode-hud-theme`) | REDcode, `npm run theme:package` | Exists. The default theme |
 | REDdeck (`edgemodders.reddeck`) | REDdeck, `npm run package` | Exists. The mod manager. Its VSIX is built for `win32-x64` |
 | REDagent's editor view (id to be decided; `edgemodders.redagent` is a placeholder) | REDagent, phase C6 | Not started. REDagent today is a REDnode package that runs in the game (C5 passed in game). C6 adds a view in the editor's activity bar; whether that is its own extension or part of REDcode is REDagent's decision. The in-game part is not an editor extension, so EDGEkit does not bundle it |
-| EDGEmat (`edgemodders.edgemat`) | EDGEmat | Phase M0 spec, not built yet. A material editor with an MCP server |
+| EDGEmat (`edgemodders.edgemat`) | EDGEmat, `extensions/edgemat` | Planned extension, no code yet. The material editor (`.mlsetup` first), with an MCP server (`packages/edgemat-mcp`) beside it. M0, the behavior spec, is in progress (checked against the game 2026-10-14); the extension skeleton comes in M1; Open VSX and Marketplace in M6 |
 | EDGEwave (`edgemodders.edgewave`) | EDGEwave | In development (0.0.1), no package script yet. The sound studio |
 | Redscript IDE (`jac3km4.redscript-ide-vscode`) | Built from its source (MIT) | To bundle in K3, with its notice. Its language server (`redscript-ide.exe`, MIT) ships beside it and `redscript.idePath` points at it, so it works offline. If it reaches Open VSX, that can replace the build |
 
