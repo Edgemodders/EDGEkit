@@ -14,8 +14,8 @@ As of 2026-10-13.
 
 | Phase | Status |
 |---|---|
-| K0 Decide | Under way. Decided 2026-10-15: the name EDGEkit, Windows x64, a certificate later, Claude Code from Open VSX, updates through GitHub releases, an EDGEkit extension pack, upstream release 1.140.0. Still open: reading the Marketplace and trademark terms |
-| K1 Build | Not started. Code - OSS built on the dev PC, unbranded |
+| K0 Decide | Done 2026-10-15: the name EDGEkit, Windows x64, a certificate later, Claude Code from Open VSX, updates through GitHub releases, an EDGEkit extension pack, upstream release 1.140.0; trademark wording ("*Name* for Visual Studio Code" on the Marketplace) |
+| K1 Build | Next. Code - OSS built on the dev PC, unbranded |
 | K2 Brand | Not started. Names, icons, default theme, welcome page. The branding overlay exists |
 | K3 Bundle | Not started. The EDGE extensions as built-ins. Unpacking REDcode's VSIX files works |
 | K4 Release | Not started. An installer from GitHub Actions |

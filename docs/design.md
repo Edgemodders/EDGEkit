@@ -2,7 +2,7 @@
 
 EDGEkit is the EDGEmodders editor: a build of Code - OSS, the open-source core of VS Code, with EDGEmodders branding and every EDGE tool built in. A modder installs one app and gets REDcode's editors, REDnode's views, the REDnode HUD theme, REDdeck's mod manager and REDagent, with no extension hunting.
 
-**Status: K0 under way.** The repository, the plan and draft scripts exist; nothing has been built yet. Most K0 decisions were made on 2026-10-15; the Marketplace and trademark terms are still to read.
+**Status: K0 decided (2026-10-15).** The repository, the plan and draft scripts exist; nothing has been built yet. Next: K1, the first build of Code - OSS on this PC.
 
 ## What EDGEkit is, and is not
 
@@ -18,9 +18,9 @@ REDcode's design ([Decision 1: how much of VS Code to fork](https://edgemodders.
 
 | Fact | Consequence |
 |---|---|
-| The Microsoft Marketplace may be used only by Microsoft's own VS Code products | EDGEkit points its extension gallery at [Open VSX](https://open-vsx.org/), as VSCodium and other forks do. The exact current terms must be read directly before release (REDcode's design notes they were reported second-hand) |
+| The Microsoft Marketplace may be used only by Microsoft's own VS Code products | EDGEkit points its extension gallery at [Open VSX](https://open-vsx.org/), as VSCodium and other forks do. The user read the current terms on 2026-10-15 (sources in the K0 decisions) |
 | Some Microsoft extensions (for example C# Dev Kit, Pylance, Remote Development, Live Share) are licensed for Microsoft's products only | EDGEkit does not bundle or advertise them. Modders who need them use VS Code with the EDGE extensions instead |
-| "Visual Studio Code" and its logo are Microsoft trademarks | EDGEkit uses its own name and icon everywhere: window titles, installer, file associations, data folders. "Built on Code - OSS" is a plain description, to check with the trademark rules in K0 |
+| "Visual Studio Code" and its logo are Microsoft trademarks | EDGEkit uses its own name and icon everywhere: window titles, installer, file associations, data folders. "Built on Code - OSS" is a plain description. Extensions listed on the Marketplace may say "*Name* for Visual Studio Code", the standard convention (K0 decisions) |
 | The Redscript IDE extension (`jac3km4.redscript-ide-vscode`) is on the Marketplace only, not on Open VSX (REDcode C0, 2026-10-11). It, its language server (`jac3km4/redscript-ide`) and the compiler are all MIT (checked 2026-10-13) | EDGEkit may bundle it, with its copyright and license notice. Its newest VSIX on GitHub (0.2.2) is older than its source (0.3.4), so EDGEkit builds it from source. The user is telling its author and asking about Open VSX |
 | Code - OSS builds need its own toolchain: the Node version in its `.nvmrc`, Python, and Visual Studio's C++ build tools for native modules, and many GB of disk | K1 proves the build on this PC first, unbranded, and records exact versions in [Dev setup](dev-setup.md) |
 | Code - OSS releases about weekly (1.136 to 1.142 in six weeks, checked 2026-10-15) | EDGEkit pins an upstream release tag in `upstream.json` and moves it on purpose every few releases, as VSCodium does, with a rebuild and a smoke test |
@@ -94,13 +94,13 @@ Answered with the user on 2026-10-15.
 | Code signing | **A certificate later.** Early releases are unsigned, and the download page says how to get past the SmartScreen warning |
 | AI in the editor | **Claude Code runs in EDGEkit, from Open VSX.** Checked 2026-10-15: `Anthropic/claude-code` 2.1.300 is on Open VSX with a win32-x64 build. Its license is Anthropic's own, so EDGEkit does not bundle it; modders install it from the Extensions view. REDagent stays the built-in assistant |
 | Updates | **Code - OSS's update service, pointed at EDGEkit's GitHub releases.** How it works is below |
+| Trademarks | **Read by the user on 2026-10-15.** Extension listings on the Marketplace, and docs about them, use "*Name* for Visual Studio Code", the standard convention: for example "EDGEkit for Visual Studio Code" for the extension pack. No Microsoft icons, logos or brand names that imply a connection to Microsoft or its endorsement. The EDGEkit app keeps its own name and icon everywhere. Sources: the [Marketplace Terms of Use](https://aka.ms/vsmarketplace-ToU) (PDF), [Microsoft's trademark guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks), the [VS Code brand guidelines](https://code.visualstudio.com/brand), upstream's [Differences between the repository and Visual Studio Code](https://github.com/microsoft/vscode/wiki/Differences-between-the-repository-and-Visual-Studio-Code), and the [Open VSX registry FAQ](https://www.eclipse.org/legal/open-vsx-registry-faq/) |
 | Upstream release | **1.140.0** (2026-09-30), in `upstream.json`. VSCodium's latest release (1.140.06880) is built on it, so its patches are a known-good reference while K1 gets the first build working |
 
-Still open in K0:
+Still open, to settle in K1:
 
 | Question | Notes |
 |---|---|
-| Marketplace and trademark terms | Read directly, not second-hand. Includes whether "Built on Code - OSS" is acceptable wording. Sources: the [Marketplace Terms of Use](https://aka.ms/vsmarketplace-ToU) (PDF), [Microsoft's trademark guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks), the [VS Code brand guidelines](https://code.visualstudio.com/brand), upstream's [Differences between the repository and Visual Studio Code](https://github.com/microsoft/vscode/wiki/Differences-between-the-repository-and-Visual-Studio-Code), and the [Open VSX registry FAQ](https://www.eclipse.org/legal/open-vsx-registry-faq/) |
 | User or system installer | Code - OSS can build both. The user installer needs no admin rights and is what VS Code offers first; it is the likely choice |
 
 ## The EDGEkit extension pack
