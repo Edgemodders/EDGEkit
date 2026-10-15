@@ -5,7 +5,7 @@ EDGEkit is the EDGEmodders editor: Code - OSS with EDGEmodders branding and the 
 ## Status and next step
 
 - Scaffold created 2026-10-13: design and phases K0 to K5, branding overlay (`product/product.json`), extension list (`extensions.json`), draft scripts in `tools/`, docs site and brand assets.
-- **K0 Decide** is mostly done (decisions in the design, 2026-10-15). Still open: the upstream tag in `upstream.json`, and reading the Marketplace and trademark terms. Then **K1 Build**: Code - OSS from source on the dev PC, unbranded, recording exact tool versions in docs/dev-setup.md.
+- **K0 Decide** is mostly done (decisions in the design, 2026-10-15). Upstream is pinned at 1.140.0. Still open: reading the Marketplace and trademark terms. Then **K1 Build**: Code - OSS from source on the dev PC, unbranded, recording exact tool versions in docs/dev-setup.md.
 - `tools/brand.mjs` and `tools/bundle.mjs --no-build` were tried on 2026-10-13 (a stand-in product.json; REDcode's existing VSIX files). `fetch-vscode.ps1` and `build.ps1` have never run.
 
 ## Conventions
