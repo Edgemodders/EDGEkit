@@ -1,5 +1,5 @@
 {
   "//": "The Code - OSS release EDGEkit builds on. Chosen in K0; tools/fetch-vscode.ps1 clones this tag.",
   "repository": "https://github.com/microsoft/vscode.git",
-  "tag": null
+  "tag": "1.140.0"
 }
