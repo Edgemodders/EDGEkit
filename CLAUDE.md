@@ -5,8 +5,8 @@ EDGEkit is the EDGEmodders editor: Code - OSS with EDGEmodders branding and the 
 ## Status and next step
 
 - Scaffold created 2026-10-13: design and phases K0 to K5, branding overlay (`product/product.json`), extension list (`extensions.json`), draft scripts in `tools/`, docs site and brand assets.
-- **K0 Decide** is done (decisions in the design, 2026-10-15). Upstream is pinned at 1.140.0. **Next: K1 Build**: Code - OSS from source on the dev PC, unbranded, recording exact tool versions in docs/dev-setup.md. Alongside it, the release pipeline's first steps (design, "Release pipeline"): release tag and asset patterns in `extensions.json`, the daily watch workflow (one status issue, no pull request per extension release), and the extension pack once REDcode is published. Full EDGEkit releases are rare, only when the editor changes (design, "When EDGEkit releases").
-- `tools/brand.mjs` and `tools/bundle.mjs --no-build` were tried on 2026-10-13 (a stand-in product.json; REDcode's existing VSIX files). `fetch-vscode.ps1` and `build.ps1` have never run.
+- **K0 Decide** is done (decisions in the design, 2026-10-15). Upstream is pinned at 1.140.0. **Next: K1 Build**: Code - OSS from source on the dev PC, unbranded, recording exact tool versions in docs/dev-setup.md. Alongside it, the release pipeline's first steps (design, "Release pipeline"): release tag and asset patterns in `extensions.json`, the daily watch workflow (one status issue, no pull request per extension release), and the extension pack (built as 0.1.0 in `pack/` with `tools/pack.mjs`; publishing it is the user's call: the `pack-v0.1.0` tag). Full EDGEkit releases are rare, only when the editor changes (design, "When EDGEkit releases").
+- K1 so far (2026-10-15): `fetch-vscode.ps1` works (1.140.0 in `build/vscode`); `brand.mjs` and `bundle.mjs --no-build` work on it. `npm ci` waits for an outbound firewall rule for Node 24.18.0 on the dev PC (Dev setup). `build.ps1` has not run end to end.
 
 ## Conventions
 

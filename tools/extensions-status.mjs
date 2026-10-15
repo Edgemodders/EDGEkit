@@ -10,35 +10,12 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { marketplace, openVsx } from './registries.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const { extensions } = JSON.parse(readFileSync(join(root, 'extensions.json'), 'utf8'));
 const ORG = 'Edgemodders';
-
-// The latest version on the Microsoft Marketplace, or null.
-async function marketplace(id) {
-  const res = await fetch('https://marketplace.visualstudio.com/_apis/public/gallery/extensionquery', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', Accept: 'application/json;api-version=7.2-preview.1' },
-    body: JSON.stringify({
-      // filterType 7: extension name (publisher.name); 8: the VS Code target. flags 0x201: latest version only.
-      filters: [{ criteria: [{ filterType: 7, value: id }, { filterType: 8, value: 'Microsoft.VisualStudio.Code' }] }],
-      flags: 0x201,
-    }),
-  });
-  if (!res.ok) return `error ${res.status}`;
-  const found = (await res.json()).results?.[0]?.extensions?.[0];
-  return found?.versions?.[0]?.version ?? null;
-}
-
-// The latest version on Open VSX, or null.
-async function openVsx(id) {
-  const [namespace, name] = id.split('.');
-  const res = await fetch(`https://open-vsx.org/api/${namespace}/${name}`);
-  if (res.status === 404) return null;
-  if (!res.ok) return `error ${res.status}`;
-  return (await res.json()).version ?? null;
-}
+const orError = (p) => p.catch((err) => `error: ${err.message}`);
 
 function gh(path) {
   return JSON.parse(execFileSync('gh', ['api', path], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], env: { ...process.env, GH_PROMPT_DISABLED: '1' } }));
@@ -72,7 +49,7 @@ try {
 
 const rows = [['Extension', 'Repo', 'Marketplace', 'Open VSX', 'Status']];
 for (const e of extensions) {
-  const [mp, ovsx] = await Promise.all([marketplace(e.id), openVsx(e.id)]);
+  const [mp, ovsx] = await Promise.all([orError(marketplace(e.id)), orError(openVsx(e.id))]);
   const inRepo = org?.get(e.id.toLowerCase());
   rows.push([e.id, inRepo?.version ?? '-', mp ?? 'no', ovsx ?? 'no', e.status]);
 }

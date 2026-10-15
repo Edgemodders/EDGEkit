@@ -1,0 +1,41 @@
+{
+  "name": "edgekit",
+  "publisher": "edgemodders",
+  "displayName": "EDGEkit",
+  "description": "EDGEkit for Visual Studio Code: the EDGE tools for Cyberpunk 2077 modding in one install. REDcode, REDdeck, the REDnode HUD theme and more.",
+  "version": "0.1.0",
+  "license": "MIT",
+  "icon": "icon.png",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Extension Packs"
+  ],
+  "keywords": [
+    "cyberpunk 2077",
+    "modding",
+    "wolvenkit",
+    "redscript",
+    "edgemodders"
+  ],
+  "galleryBanner": {
+    "color": "#0b0d10",
+    "theme": "dark"
+  },
+  "homepage": "https://edgemodders.github.io/EDGEkit/",
+  "bugs": {
+    "url": "https://github.com/Edgemodders/EDGEkit/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Edgemodders/EDGEkit.git"
+  },
+  "files": [
+    "icon.png",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "extensionPack": []
+}

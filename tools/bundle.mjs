@@ -17,13 +17,13 @@ const build = !process.argv.includes('--no-build');
 const out = join(root, 'build', 'extensions');
 const { extensions } = JSON.parse(readFileSync(join(root, 'extensions.json'), 'utf8'));
 
-// The newest file matching a pattern such as dist/redcode-*.vsix, by version.
+// The newest file matching a pattern such as dist/redcode-cyberpunk-*.vsix, by version.
 function newest(repo, pattern) {
   const dir = join(repo, dirname(pattern));
   if (!existsSync(dir)) return null;
   const [before, after] = basename(pattern).split('*');
   const version = (f) => f.slice(before.length, f.length - after.length).split('.').map(Number);
-  // The * must be a version, so redcode-*.vsix does not also take redcode-core-0.5.0.vsix.
+  // The * must be a version, so redcode-*.vsix does not also take redcode-core-0.5.0.vsix (a pattern prefix can be another name's start).
   const files = readdirSync(dir).filter((f) => f.startsWith(before) && f.endsWith(after)
     && /^\d+(\.\d+)*$/.test(f.slice(before.length, f.length - after.length)));
   files.sort((a, b) => {

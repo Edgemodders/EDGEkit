@@ -1,0 +1,59 @@
+# Publishes the EDGEkit extension pack (pack/, edgemodders.edgekit) when its version tag is pushed:
+#   git tag pack-v0.1.0 && git push origin pack-v0.1.0
+# Checks the tag against pack/package.json, builds one pack per registry with tools/pack.mjs (each
+# lists only the EDGE extensions published there), publishes them to the VS Code Marketplace
+# (VSCE_PAT) and Open VSX (OVSX_PAT), and makes the GitHub release with both VSIX files. The tokens
+# are Edgemodders organisation secrets, shared with REDcode's and REDdeck's workflows; the
+# organisation must make them available to this repo.
+name: Pack
+
+on:
+  push:
+    tags: ["pack-v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: The tag matches pack/package.json
+        run: |
+          version="${GITHUB_REF_NAME#pack-v}"
+          have=$(node -p "require('./pack/package.json').version")
+          if [ "${have}" != "${version}" ]; then
+            echo "::error::Tag ${GITHUB_REF_NAME} does not match pack/package.json version ${have}"
+            exit 1
+          fi
+          echo "VERSION=${version}" >> "$GITHUB_ENV"
+
+      - name: Build the packs
+        id: package
+        run: node tools/pack.mjs
+
+      - name: VS Code Marketplace
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+        run: npx --yes @vscode/vsce@4.0.0 publish --packagePath "build/pack/edgekit-${VERSION}-marketplace.vsix"
+
+      # Each registry is tried even when another one failed; the run still fails if any of them did.
+      - name: Open VSX
+        if: ${{ !cancelled() && steps.package.outcome == 'success' }}
+        env:
+          OVSX_PAT: ${{ secrets.OVSX_PAT }}
+        run: npx --yes ovsx@1.2.0 publish "build/pack/edgekit-${VERSION}-openvsx.vsix" --pat "${OVSX_PAT}"
+
+      - name: GitHub release
+        if: ${{ !cancelled() && steps.package.outcome == 'success' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          notes=$(node -e "const s=require('fs').readFileSync('pack/CHANGELOG.md','utf8');const m=s.split(/^## /m).find(p=>p.startsWith(process.argv[1]+'\n'));console.log(m?m.split('\n').slice(1).join('\n').trim():'')" "${VERSION}")
+          gh release create "${GITHUB_REF_NAME}" build/pack/edgekit-${VERSION}-*.vsix --title "EDGEkit extension pack ${VERSION}" --notes "${notes}"

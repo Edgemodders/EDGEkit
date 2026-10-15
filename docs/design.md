@@ -64,7 +64,7 @@ Git submodules would also pin exact commits, but every update takes commits in t
 
 | Extension | From | Status |
 |---|---|---|
-| REDcode (`edgemodders.redcode`) | REDcode, `npm run redcode:package` | Exists |
+| REDcode for Cyberpunk 2077 (`edgemodders.redcode-cyberpunk`, renamed from `edgemodders.redcode` in 0.8.0: the Marketplace already had a "redcode") | REDcode, `npm run redcode:package` | Exists. On both registries from 0.8.2 |
 | REDnode HUD theme (`edgemodders.rednode-hud-theme`) | REDcode, `npm run theme:package` | Exists. The default theme |
 | REDdeck (`edgemodders.reddeck`) | REDdeck, `npm run package` | Exists. The mod manager. Its VSIX is built for `win32-x64` |
 | REDagent's editor view (id to be decided; `edgemodders.redagent` is a placeholder) | REDagent, phase C6 | Not started. REDagent today is a REDnode package that runs in the game (C5 passed in game). C6 adds a view in the editor's activity bar; whether that is its own extension or part of REDcode is REDagent's decision. The in-game part is not an editor extension, so EDGEkit does not bundle it |
@@ -168,10 +168,10 @@ For modders who stay in VS Code or VSCodium: one extension, `edgemodders.edgekit
 |---|---|
 | What it is | An extension pack: a `package.json` with an `extensionPack` list and no code. Installing it installs every extension in the list; uninstalling it offers to remove them |
 | What it lists | Every extension in `extensions.json` that is published on the registry: REDcode, the REDnode HUD theme, REDdeck and Redscript IDE first; REDagent, EDGEmat, EDGEwave and later EDGE extensions as each one is published |
-| Where it lives | In this repo, in its own folder (`pack/`), because it belongs to EDGEkit and not to any one extension |
+| Where it lives | In this repo, because it belongs to EDGEkit and not to any one extension: `pack/` (manifest, README, changelog), `tools/pack.mjs` (builds one pack per registry, each listing only the extensions published there; `--list` shows the lists) and `.github/workflows/pack.yml` (publishes on a `pack-v*` tag, with the organisation's `VSCE_PAT` and `OVSX_PAT`) |
 | Not in the app | The EDGEkit app does not include the pack: its extensions are already built in |
 | What it needs | VS Code installs pack members from the Microsoft Marketplace, and VSCodium from Open VSX, so each member must be published to both. A pack should list only published extensions: a missing one may stop the whole pack installing (unverified). `tools/extensions-status.mjs` shows which are ready. Checked 2026-10-15: REDdeck and the theme are on both; REDcode is being published; Redscript IDE is on the Marketplace only, so VSCodium users would not get it |
-| When | As soon as REDcode is published (release pipeline, step 2); it does not wait for the editor build |
+| When | REDcode reached both registries on 2026-10-15 (0.8.2, as `edgemodders.redcode-cyberpunk`). Pack 0.1.0 is built: on the Marketplace it lists REDcode, the theme, REDdeck and Redscript IDE; on Open VSX the first three. It publishes when the user pushes the `pack-v0.1.0` tag. A new member means a new pack version |
 
 ## Updates
 

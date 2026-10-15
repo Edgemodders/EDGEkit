@@ -2,11 +2,11 @@
   "//": "Extensions built into EDGEkit. On the dev PC, tools/bundle.mjs builds each sibling one with its own script and unpacks the newest VSIX. For a release (K4), \"version\" pins the one shipped, downloaded from the repo's GitHub release.",
   "extensions": [
     {
-      "id": "edgemodders.redcode",
+      "id": "edgemodders.redcode-cyberpunk",
       "from": "sibling",
       "repo": "../REDcode",
       "build": "npm run redcode:package",
-      "vsix": "dist/redcode-*.vsix",
+      "vsix": "dist/redcode-cyberpunk-*.vsix",
       "status": "exists",
       "version": null
     },
