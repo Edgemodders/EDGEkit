@@ -18,7 +18,7 @@ As of 2026-10-13.
 | K1 Build | Next. Code - OSS built on the dev PC, unbranded |
 | K2 Brand | Not started. Names, icons, default theme, welcome page. The branding overlay exists |
 | K3 Bundle | Not started. The released EDGE extensions as built-ins, updated from Open VSX through `builtInExtensionsEnabledWithAutoUpdates`. Unpacking REDcode's VSIX files works |
-| K4 Release | Not started. The release pipeline: a daily watch with pin pull requests and the extension pack can start before K1; then the installer from GitHub Actions |
+| K4 Release | Not started. The release pipeline: a daily watch with a status issue and the extension pack can start before K1; then the installer from GitHub Actions. Full EDGEkit releases are rare: extensions update themselves |
 | K5 Track upstream | Not started |
 
 Source code and issues: [github.com/Edgemodders/EDGEkit](https://github.com/Edgemodders/EDGEkit)
