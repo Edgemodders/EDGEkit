@@ -1,0 +1,58 @@
+# The daily watch over the EDGE extensions (design, "Release pipeline", step 1).
+# Runs tools/watch.mjs, keeps one open issue labelled "watch" up to date with its report, and,
+# when an extension is newly published, opens or updates one pull request (branch watch/pack)
+# that adds it to extensions.json and to the pack with a new pack version. Merging it and
+# pushing the pack-v tag stay the user's. Needs Settings > Actions > General > "Allow GitHub
+# Actions to create and approve pull requests" for the pull request.
+name: Watch
+
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Watch
+        id: watch
+        run: node tools/watch.mjs
+
+      - name: Status issue
+        run: |
+          gh label create watch --color 19F3FF --description "The daily watch over the EDGE extensions" --force
+          number=$(gh issue list --label watch --state open --json number --jq '.[0].number // empty')
+          if [ -n "${number}" ]; then
+            gh issue edit "${number}" --body-file build/watch/status.md
+          else
+            gh issue create --title "EDGE extensions: status" --label watch --body-file build/watch/status.md
+          fi
+
+      - name: Pull request
+        if: steps.watch.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c watch/pack
+          git add extensions.json pack/members.json pack/package.json pack/CHANGELOG.md
+          git commit -m "Watch: pack ${{ steps.watch.outputs.version }}, newly published EDGE extensions"
+          git push --force origin watch/pack
+          if [ -z "$(gh pr list --head watch/pack --state open --json number --jq '.[0].number // empty')" ]; then
+            gh pr create --head watch/pack --title "Watch: pack ${{ steps.watch.outputs.version }}" --body-file build/watch/status.md
+          else
+            gh pr edit watch/pack --title "Watch: pack ${{ steps.watch.outputs.version }}" --body-file build/watch/status.md
+          fi

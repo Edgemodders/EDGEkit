@@ -1,0 +1,14 @@
+{
+  "//": "What the pack version in package.json lists on each registry. tools/pack.mjs builds from this; tools/watch.mjs proposes changes to it (with a new pack version) when an extension is published on a registry.",
+  "marketplace": [
+    "edgemodders.redcode-cyberpunk",
+    "edgemodders.rednode-hud-theme",
+    "edgemodders.reddeck",
+    "jac3km4.redscript-ide-vscode"
+  ],
+  "openvsx": [
+    "edgemodders.redcode-cyberpunk",
+    "edgemodders.rednode-hud-theme",
+    "edgemodders.reddeck"
+  ]
+}
