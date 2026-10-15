@@ -23,7 +23,9 @@ function newest(repo, pattern) {
   if (!existsSync(dir)) return null;
   const [before, after] = basename(pattern).split('*');
   const version = (f) => f.slice(before.length, f.length - after.length).split('.').map(Number);
-  const files = readdirSync(dir).filter((f) => f.startsWith(before) && f.endsWith(after));
+  // The * must be a version, so redcode-*.vsix does not also take redcode-core-0.5.0.vsix.
+  const files = readdirSync(dir).filter((f) => f.startsWith(before) && f.endsWith(after)
+    && /^\d+(\.\d+)*$/.test(f.slice(before.length, f.length - after.length)));
   files.sort((a, b) => {
     const x = version(a);
     const y = version(b);
