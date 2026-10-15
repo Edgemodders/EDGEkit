@@ -17,9 +17,14 @@ $upstream = Get-Content (Join-Path $root 'upstream.json') -Raw | ConvertFrom-Jso
 if (-not $upstream.tag) { throw 'No upstream tag yet: choose one in upstream.json (phase K0).' }
 
 $target = Join-Path $root 'build\vscode'
-if (Test-Path $target) { Remove-Item -Recurse -Force $target }
-New-Item -ItemType Directory -Force (Split-Path $target) | Out-Null
+# Empty the folder rather than delete it: a shell or file watcher holding the folder itself
+# open makes deleting it fail, and git clones into an empty folder fine.
+New-Item -ItemType Directory -Force $target | Out-Null
+Get-ChildItem $target -Force | Remove-Item -Recurse -Force
 
+# Upstream keeps only test caches in Git LFS (extensions/copilot/test/simulation/cache/*.sqlite
+# at 1.140.0); the build does not need them, so the clone leaves them as pointer files.
+$env:GIT_LFS_SKIP_SMUDGE = '1'
 git clone --depth 1 --branch $upstream.tag $upstream.repository $target
 if ($LASTEXITCODE) { throw "Cloning $($upstream.repository) at $($upstream.tag) failed." }
 Write-Output "Code - OSS $($upstream.tag) is in $target"
