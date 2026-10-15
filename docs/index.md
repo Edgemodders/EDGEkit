@@ -4,7 +4,7 @@ EDGEkit is the EDGEmodders editor: a build of Code - OSS, the open-source core o
 
 | Document | What it covers |
 |---|---|
-| [Design](design.html) | What EDGEkit is and is not, the facts that shape it (Open VSX, trademarks, licenses), how it is built, the bundled extensions, the extension pack, updates, phases K0 to K5 and the K0 decisions |
+| [Design](design.html) | What EDGEkit is and is not, the facts that shape it (Open VSX, trademarks, licenses), how it is built, the bundled extensions, the extension pack, updates, the release pipeline (watch, pack, build, release), phases K0 to K5 and the K0 decisions |
 | [Dev setup](dev-setup.html) | What a PC needs to build EDGEkit |
 | [REDcode docs](https://edgemodders.github.io/REDcode/) | The editor extensions EDGEkit bundles |
 
@@ -17,8 +17,8 @@ As of 2026-10-13.
 | K0 Decide | Done 2026-10-15: the name EDGEkit, Windows x64, a certificate later, Claude Code from Open VSX, updates through GitHub releases, an EDGEkit extension pack, upstream release 1.140.0; trademark wording ("*Name* for Visual Studio Code" on the Marketplace) |
 | K1 Build | Next. Code - OSS built on the dev PC, unbranded |
 | K2 Brand | Not started. Names, icons, default theme, welcome page. The branding overlay exists |
-| K3 Bundle | Not started. The EDGE extensions as built-ins. Unpacking REDcode's VSIX files works |
-| K4 Release | Not started. An installer from GitHub Actions |
+| K3 Bundle | Not started. The released EDGE extensions as built-ins, updated from Open VSX (to check first). Unpacking REDcode's VSIX files works |
+| K4 Release | Not started. The release pipeline: a daily watch with pin pull requests and the extension pack can start before K1; then the installer from GitHub Actions |
 | K5 Track upstream | Not started |
 
 Source code and issues: [github.com/Edgemodders/EDGEkit](https://github.com/Edgemodders/EDGEkit)
