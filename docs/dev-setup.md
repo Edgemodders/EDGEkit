@@ -9,6 +9,7 @@ What a Windows PC needs to build EDGEkit. The versions below were checked on the
 | Python 3 | node-gyp, for native modules | 3.13.9 | |
 | Visual Studio 2022 with the C++ x64 tools | Native modules; upstream's preinstall looks for Visual Studio 2022 or 2019 | Build Tools 2022 17.14.24, with the C++ x64 tools and the Windows 11 SDK (26100) | The Spectre-mitigated libraries, which Code - OSS's instructions mention, are not installed. Upstream's preinstall does not require them; if a native module does, the build fails with `MSB8040`, and they are added with the Visual Studio Installer |
 | Disk | The checkout, its dependencies and the build | 290 GB free on E: | Measured in K1 |
+| Outbound firewall rules | `npm ci` downloads packages, Electron and headers | The dev PC's firewall blocks outbound by default (`BlockOutbound`) and allows programs one by one | Each new `node.exe` needs its own rule, or `npm ci` fails with `EACCES` on the registry. The built app's own executable will need one too, to reach Open VSX. In an administrator PowerShell: `New-NetFirewallRule -DisplayName "Node.js JavaScript Runtime (node.exe)" -Direction Outbound -Action Allow -Program "$env:NVM_HOME\v24.18.0\node.exe"` |
 | The sibling repos beside this one | The bundled extensions, on the dev PC | `../REDcode`, `../REDdeck` | Release builds download released VSIX files instead (design, "Release pipeline") |
 
 ## Building
