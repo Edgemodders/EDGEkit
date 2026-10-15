@@ -2,7 +2,7 @@
 
 EDGEkit is the EDGEmodders editor: a build of Code - OSS, the open-source core of VS Code, with EDGEmodders branding and every EDGE tool built in. A modder installs one app and gets REDcode's editors, REDnode's views, the REDnode HUD theme, REDdeck's mod manager and REDagent, with no extension hunting.
 
-**Status: scaffold.** The repository, the plan and draft scripts exist; nothing has been built yet. Next: K0, the decisions below, with the user.
+**Status: K0 under way.** The repository, the plan and draft scripts exist; nothing has been built yet. Most K0 decisions were made on 2026-10-15; the upstream tag and the terms are still open.
 
 ## What EDGEkit is, and is not
 
@@ -75,20 +75,56 @@ Phases are numbered K0 to K5, so they do not clash with the other repos' phases.
 
 | Phase | Builds | The test proves |
 |---|---|---|
-| **K0 Decide** | The open questions below, answered with the user. The current Marketplace and trademark terms, read directly. Which upstream release to pin | The plan and `upstream.json` are agreed |
+| **K0 Decide** | The K0 decisions below, answered with the user. The current Marketplace and trademark terms, read directly. Which upstream release to pin | The plan and `upstream.json` are agreed |
 | **K1 Build** | Code - OSS built from source on this PC, unbranded, with the drafts in `tools/` made to work. Exact tool versions in Dev setup | An unbranded build starts, opens a folder, and installs an extension from Open VSX |
 | **K2 Brand** | `product.json` branding, icons (app, installer, file types) made from `tools/brand`, the REDnode HUD theme as default, a welcome page | The installed app says EDGEkit everywhere and never VS Code; its data lives in its own folders, beside an installed VS Code without touching it |
 | **K3 Bundle** | The EDGE extensions built from their repos and shipped as built-in extensions, Redscript IDE with its language server, and a third-party notices file with every bundled project's license | A fresh install has REDcode, the theme, REDdeck, Redscript IDE and (once C6 exists) REDagent, with no network |
-| **K4 Release** | A Windows installer, built by GitHub Actions on a pinned upstream tag and pinned extension versions, downloaded from each extension repo's GitHub releases (each repo gains a "publish the VSIX on a tag" workflow); updates through GitHub releases | A tagged release produces an installer anyone can download and install |
+| **K4 Release** | A Windows installer, built by GitHub Actions on a pinned upstream tag and pinned extension versions, downloaded from each extension repo's GitHub releases (each repo gains a "publish the VSIX on a tag" workflow); updates through GitHub releases and the update service. The EDGEkit extension pack for VS Code users | A tagged release produces an installer anyone can download and install, and an older install updates itself to it |
 | **K5 Track upstream** | A routine for moving to a new VS Code release: bump the tag, rebuild, smoke test, release | A new upstream release ships within a week, by checklist |
 
-## Open questions for K0
+## K0 decisions
+
+Answered with the user on 2026-10-15.
+
+| Question | Decision |
+|---|---|
+| The product name in the app | **EDGEkit.** It is the window title, the installer name and the data folder (`.edgekit`), as `product/product.json` already says |
+| Does "REDcode" stay a name? | **EDGEkit is the editor plus its extensions.** REDcode stays the name of its own extensions (REDcode core). For VS Code users there is an EDGEkit extension pack, below |
+| Platforms | **Windows x64 only for now.** Linux can come later |
+| Code signing | **A certificate later.** Early releases are unsigned, and the download page says how to get past the SmartScreen warning |
+| AI in the editor | **Claude Code runs in EDGEkit, from Open VSX.** Checked 2026-10-15: `Anthropic/claude-code` 2.1.300 is on Open VSX with a win32-x64 build. Its license is Anthropic's own, so EDGEkit does not bundle it; modders install it from the Extensions view. REDagent stays the built-in assistant |
+| Updates | **Code - OSS's update service, pointed at EDGEkit's GitHub releases.** How it works is below |
+
+Still open in K0:
 
 | Question | Notes |
 |---|---|
-| The product name in the app | "EDGEkit", or a longer name such as "EDGEkit Editor". It becomes the window title, the installer name and the data folder (`.edgekit`) |
-| Does "REDcode" stay a name? | REDcode could stay the name of the extension pack inside EDGEkit, or EDGEkit could be what modders call the editor |
-| Platforms | Windows x64 first (the game is Windows-only)? Linux later for Steam Deck modders? |
-| Code signing | An unsigned installer warns in Windows SmartScreen. A certificate costs money; it can wait for K4 |
-| AI in the editor | REDagent's C6 view is the built-in assistant. Whether Anthropic's own Claude Code extension can be installed from Open VSX is to check, not assume |
-| Updates | GitHub releases with Code - OSS's update service pointed at them, or a simple "new version" notice at first |
+| Which upstream release to pin | Goes in `upstream.json` (`tag` is still `null`) |
+| Marketplace and trademark terms | Read directly, not second-hand. Includes whether "Built on Code - OSS" is acceptable wording |
+| User or system installer | Code - OSS can build both. The user installer needs no admin rights and is what VS Code offers first; it is the likely choice |
+
+## The EDGEkit extension pack
+
+For modders who stay in VS Code or VSCodium: one extension, `edgemodders.edgekit` (display name EDGEkit), that installs every EDGE extension.
+
+| | |
+|---|---|
+| What it is | An extension pack: a `package.json` with an `extensionPack` list and no code. Installing it installs every extension in the list; uninstalling it offers to remove them |
+| What it lists | REDcode core, the REDnode HUD theme, REDdeck, Redscript IDE, and REDagent and EDGEmat once they are published |
+| Where it lives | In this repo, in its own folder (`pack/`), because it belongs to EDGEkit and not to any one extension |
+| Not in the app | The EDGEkit app does not include the pack: its extensions are already built in |
+| What it needs | VS Code installs pack members from the Microsoft Marketplace, and VSCodium from Open VSX, so each member must be published to both. Checked 2026-10-15: REDdeck is on both; REDcode core and the theme are on neither; Redscript IDE is on the Marketplace only, so VSCodium users would not get it |
+| When | K4, once the members are published (each repo's own work) |
+
+## Updates
+
+Code - OSS has an update service built in, switched off because upstream's `product.json` has no `updateUrl`. EDGEkit switches it on and points it at its own releases. **Unverified:** from upstream's source and VSCodium as remembered, to check against the pinned upstream in K4.
+
+| Part | What it does |
+|---|---|
+| `product.json` | `updateUrl` (where to ask), `quality` (`stable`), `downloadUrl` (the releases page) and `releaseNotesUrl` |
+| The check | The app asks `{updateUrl}/api/update/{platform}/{quality}/{commit}`, for example platform `win32-x64-user`. The answer is "nothing new" or a small JSON file: the installer's URL, its version, the upstream commit and its SHA-256 hash |
+| The install | On Windows the app downloads the installer, checks the hash, and runs it quietly when the user restarts |
+| EDGEkit's answer | GitHub releases cannot answer that URL, because it changes with every commit. VSCodium's way: a small patch makes the app ask a fixed path instead (`{updateUrl}/{quality}/{platform}/{arch}/latest.json`), and the release workflow writes that file. EDGEkit can publish it on its GitHub Pages site, pointing at the installer in the GitHub release |
+
+The other services in `product.json`: the extension gallery is Open VSX (set); telemetry is off (set); Settings Sync uses Microsoft's servers and stays off.

@@ -4,7 +4,7 @@ EDGEkit is the EDGEmodders editor: a build of Code - OSS, the open-source core o
 
 | Document | What it covers |
 |---|---|
-| [Design](design.html) | What EDGEkit is and is not, the facts that shape it (Open VSX, trademarks, licenses), how it is built, the bundled extensions, phases K0 to K5 and the open questions |
+| [Design](design.html) | What EDGEkit is and is not, the facts that shape it (Open VSX, trademarks, licenses), how it is built, the bundled extensions, the extension pack, updates, phases K0 to K5 and the K0 decisions |
 | [Dev setup](dev-setup.html) | What a PC needs to build EDGEkit |
 | [REDcode docs](https://edgemodders.github.io/REDcode/) | The editor extensions EDGEkit bundles |
 
@@ -14,7 +14,7 @@ As of 2026-10-13.
 
 | Phase | Status |
 |---|---|
-| K0 Decide | Next. The product name, platforms, signing, updates and the Redscript IDE question, with the user |
+| K0 Decide | Under way. Decided 2026-10-15: the name EDGEkit, Windows x64, a certificate later, Claude Code from Open VSX, updates through GitHub releases, an EDGEkit extension pack. Still open: the upstream tag, the Marketplace and trademark terms |
 | K1 Build | Not started. Code - OSS built on the dev PC, unbranded |
 | K2 Brand | Not started. Names, icons, default theme, welcome page. The branding overlay exists |
 | K3 Bundle | Not started. The EDGE extensions as built-ins. Unpacking REDcode's VSIX files works |
