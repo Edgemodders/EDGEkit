@@ -2,6 +2,8 @@
 
 EDGEkit for Visual Studio Code: the EDGE tools for Cyberpunk 2077 modding in one install.
 
+> **Windows x64.** REDcode and REDdeck work with the game's files through REDbridge, which runs on Windows only, so they install on Windows x64 only. The theme and REDscript IDE work everywhere. The pack is a preview, like REDcode and REDdeck.
+
 Install this pack and you get every published EDGE extension, ready to use:
 
 | Extension | What it does | Links |

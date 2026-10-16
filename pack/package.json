@@ -6,6 +6,7 @@
   "version": "0.1.0",
   "license": "MIT",
   "icon": "icon.png",
+  "preview": true,
   "engines": {
     "vscode": "^1.80.0"
   },
