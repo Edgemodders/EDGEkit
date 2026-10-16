@@ -2,13 +2,14 @@
 
 [center][size=5][b][color=#fcee0a]One editor for Cyberpunk 2077 modding. Every EDGE tool built in. AI included.[/color][/b][/size][/center]
 
-[center][size=3]Install one app and get a modding IDE that already knows Night City: WolvenKit projects, the game's archives, redscript, a HUD theme made for the game, and an AI assistant that can read your mod, run it in the game and help you fix it.[/size][/center]
+[center][size=3]Install one app and get a modding IDE that already knows Night City: WolvenKit projects, the game's archives, the TweakDB, redscript, a mod manager, a HUD theme made for the game, and an AI assistant that can read your mod, run it in the game and help you fix it.[/size][/center]
 
 [line]
 
 [quote][size=4][b][color=#fcee0a]STATUS: IN DEVELOPMENT[/color][/b][/size]
-EDGEkit is being built in the open. There is no installer yet: the first one comes with phase K4 (see the roadmap below).
-[b]Track this page[/b] to hear when it lands. Until then, the tools inside EDGEkit already work on their own in VS Code; the links are in "The EDGE platform" below.[/quote]
+EDGEkit is being built in the open. The plan is decided and the first build of the editor is under way (phase K1). There is no installer yet: the first one comes with phase K4 (see the roadmap below).
+[b]You can use the tools today.[/b] The [b]EDGEkit extension pack[/b] installs REDcode, REDdeck, the REDnode HUD theme and REDscript IDE in VS Code or VSCodium in one go: get it from the [url=https://marketplace.visualstudio.com/items?itemName=edgemodders.edgekit]VS Code Marketplace[/url] or [url=https://open-vsx.org/extension/edgemodders/edgekit]Open VSX[/url]. It is a preview, and REDcode and REDdeck need Windows x64.
+[b]Track this page[/b] to hear when the EDGEkit installer lands.[/quote]
 
 [line]
 
@@ -21,14 +22,17 @@ Under the hood it is a build of [b]Code - OSS[/b], the open-source core that VS 
 [size=5][b][color=#fcee0a]What you get[/color][/b][/size]
 
 [list]
-[*][b]REDcode[/b], the modding IDE: open WolvenKit projects, browse the game's archives folder by folder, pull game files into your project, and read them as JSON. Built on WolvenKit's own engine, so it reads the files the way WolvenKit does.
-[*][b]Redscript support[/b]: the Redscript IDE extension and its language server, built in, so code completion and errors work offline from the first start.
+[*][b]REDcode for Cyberpunk 2077[/b], the modding workspace: browse the game's archives, add files to a WolvenKit project, edit CR2W files in a tree and property grid, view textures, meshes in 3D and sounds, browse and change the TweakDB, then pack, install and start the game. Built on WolvenKit's own engine, so it reads the files the way WolvenKit does.
+[*][b]REDdeck[/b], the mod manager: one list of mods and four verbs (add, on/off, deploy, remove). Hardlink deploys you can undo, conflicts shown even inside archives, Nexus Mods sign-in and updates.
+[*][b]REDscript IDE[/b]: redscript support with its language server, built in, so code completion and errors work offline from the first start.
 [*][b]The REDnode HUD theme[/b] as the default look: dark, yellow and cyan, made to sit beside the game.
-[*][b]REDdeck[/b], the mod manager: one list of mods, deploy and undo, conflicts shown even inside archives.
-[*][b]REDagent[/b], the AI assistant, powered by Claude: it can write a REDnode mod with you, run it in the live game, read what went wrong, and fix it. [i](Its editor panel is still being built; the in-game assistant already works.)[/i]
+[*][b]REDagent[/b], the AI assistant, powered by Claude: it can write a REDnode mod with you, run it in the live game, read what went wrong, and fix it. [i](Its editor panel is still being built; the in-game assistant already works.)[/i] Claude Code also runs in EDGEkit: install it from the Extensions view.
+[*][b]Extensions that keep themselves current.[/b] The built-in EDGE extensions update from Open VSX as soon as their authors release, so you do not wait for a new EDGEkit.
 [*][b]Extensions from Open VSX[/b], the open extension registry, so you can add the language tools and helpers you like.
 [*][b]Nothing to hunt for.[/b] No list of extensions to install, no settings to copy from a guide. Install, open your mod folder, start.
 [/list]
+
+[b]Coming next:[/b] [b]EDGEmat[/b], a material editor (pick a garment, click a layer, choose a color, see it on the model), and [b]EDGEwave[/b], a sound studio for editing, mixing and re-voicing the game's sounds. Both join EDGEkit and the extension pack when they are released.
 
 [size=5][b][color=#fcee0a]Why one app[/color][/b][/size]
 
@@ -38,25 +42,29 @@ EDGEkit does [b]not[/b] replace the tools you know. WolvenKit, Cyber Engine Twea
 
 [size=5][b][color=#fcee0a]The EDGE platform[/color][/b][/size]
 
-EDGEkit is the front door to five tools. Each one is also usable on its own:
+EDGEkit is the front door to the EDGE tools. Each one is also usable on its own:
 
 [list]
-[*][b][url=https://github.com/Edgemodders/REDcode]REDcode[/url][/b]: the modding IDE extensions, for EDGEkit or plain VS Code.
-[*][b][url=https://github.com/Edgemodders/REDdeck]REDdeck[/url][/b]: a simple mod manager with one list of mods and four verbs (add, on/off, deploy, remove). Hardlink deploys you can undo, conflicts shown even inside archives. In daily use today.
+[*][b][url=https://github.com/Edgemodders/REDcode]REDcode[/url][/b]: the modding workspace, for EDGEkit or plain VS Code. In preview on the Marketplace and Open VSX.
+[*][b][url=https://github.com/Edgemodders/REDdeck]REDdeck[/url][/b]: the mod manager. In preview on the Marketplace and Open VSX, and in daily use.
 [*][b][url=https://github.com/Edgemodders/REDnode]REDnode[/url][/b]: write Cyberpunk mods in JavaScript and TypeScript, with web pages drawn over the game as windows and HUD widgets.
 [*][b][url=https://github.com/Edgemodders/REDagent]REDagent[/url][/b]: the AI assistant inside the game, powered by Claude.
 [*][b][url=https://github.com/Edgemodders/REDbridge]REDbridge[/url][/b]: the engine room. It runs WolvenKit's libraries as a separate program so the other tools can read and write the game's files.
+[*][b][url=https://github.com/Edgemodders/EDGEmat]EDGEmat[/url][/b]: the material editor. In development.
+[*][b][url=https://github.com/Edgemodders/EDGEwave]EDGEwave[/url][/b]: the sound studio. In development.
+[*][b][url=https://github.com/Edgemodders/EDGEbuilder]EDGEbuilder[/url][/b]: a world builder that runs inside the game on REDnode: browse, drop, position, bake. In development.
 [/list]
 
 [size=5][b][color=#fcee0a]Roadmap[/color][/b][/size]
 
 [list]
-[*][b]K0 Decide[/b]: names, platforms and the Code - OSS release to build on. [color=#19f3ff]Next[/color]
-[*][b]K1 Build[/b]: Code - OSS built from source, unbranded.
+[*][b]K0 Decide[/b]: the name, Windows x64 first, the Code - OSS release to build on (1.140.0), updates, no Copilot. Done.
+[*][b]Extension pack[/b]: the EDGE extensions in one install for VS Code and VSCodium. Published as a preview.
+[*][b]K1 Build[/b]: Code - OSS built from source, unbranded. [color=#19f3ff]In progress[/color]
 [*][b]K2 Brand[/b]: the EDGEkit name, icons and default theme everywhere. It never says VS Code, and it keeps its data apart from an installed VS Code.
-[*][b]K3 Bundle[/b]: REDcode, the HUD theme, REDdeck, Redscript IDE and REDagent built in, working with no network.
-[*][b]K4 Release[/b]: a Windows installer, published here and on GitHub.
-[*][b]K5 Track upstream[/b]: new VS Code releases picked up within a week.
+[*][b]K3 Bundle[/b]: REDcode, REDdeck, the HUD theme, REDscript IDE and the other released EDGE extensions built in, working with no network, and updating themselves from Open VSX.
+[*][b]K4 Release[/b]: a Windows installer, published here and on GitHub. EDGEkit updates itself, too.
+[*][b]K5 Track upstream[/b]: newer Code - OSS releases picked up every month or so, sooner for security fixes.
 [/list]
 
 The plan in full: [url=https://edgemodders.github.io/EDGEkit/design.html]EDGEkit design[/url].
@@ -64,7 +72,7 @@ The plan in full: [url=https://edgemodders.github.io/EDGEkit/design.html]EDGEkit
 [size=5][b][color=#fcee0a]Requirements[/color][/b][/size]
 
 [list]
-[*]Windows 10 or 11, 64-bit. (Linux, for Steam Deck modders, is an open question.)
+[*]Windows 10 or 11, 64-bit. (Linux, for Steam Deck modders, may come later.)
 [*]Cyberpunk 2077 on PC, for the game's files.
 [*]For the in-game features: REDnode, and the frameworks it lists. REDdeck installs them.
 [*]For REDagent: your own Anthropic API key. Each answer costs you a little; nothing is charged by EDGEmodders.
@@ -76,10 +84,16 @@ The plan in full: [url=https://edgemodders.github.io/EDGEkit/design.html]EDGEkit
 No. It is built from Code - OSS, the open-source (MIT) project that VS Code is also made from, the same way VSCodium is. EDGEkit is not made by or affiliated with Microsoft, and it does not use the Visual Studio Code name or logo.
 
 [b]Can I keep my VS Code?[/b]
-Yes. EDGEkit has its own name, its own settings folder and its own extensions, and does not touch an installed VS Code. The EDGE extensions also work in VS Code itself if you prefer it.
+Yes. EDGEkit has its own name, its own settings folder and its own extensions, and does not touch an installed VS Code. If you would rather stay in VS Code, install the EDGEkit extension pack there instead.
+
+[b]How do updates work?[/b]
+The EDGE extensions update themselves from Open VSX whenever they are released. A new EDGEkit installer is only needed when the editor itself changes, for example a newer Code - OSS release, so you are not asked to reinstall every few days.
+
+[b]Is Copilot included?[/b]
+No. EDGEkit's build leaves Copilot out. Its assistant is REDagent, and Claude Code can be installed from Open VSX if you want it.
 
 [b]Why Open VSX and not the VS Code Marketplace?[/b]
-The Marketplace may only be used by Microsoft's own products. Open VSX is the open registry that VSCodium and other editors built on Code - OSS use.
+The Marketplace may only be used by Microsoft's own products. Open VSX is the open registry that VSCodium and other editors built on Code - OSS use. The EDGE extensions are published on both.
 
 [b]Does it send telemetry?[/b]
 EDGEkit's build turns telemetry off.
@@ -98,6 +112,7 @@ Yes. Cyberpunk 2077 is a single-player game, and the EDGE tools are for single-p
 [*]EDGEmodders: [url=https://edgemodders.ai/]edgemodders.ai[/url]
 [*]Docs: [url=https://edgemodders.github.io/EDGEkit/]edgemodders.github.io/EDGEkit[/url]
 [*]Source: [url=https://github.com/Edgemodders/EDGEkit]github.com/Edgemodders/EDGEkit[/url]
+[*]EDGEkit extension pack: [url=https://marketplace.visualstudio.com/items?itemName=edgemodders.edgekit]VS Code Marketplace[/url] and [url=https://open-vsx.org/extension/edgemodders/edgekit]Open VSX[/url]
 [*]Community Discord: [url=https://discord.gg/63qP3Erw43]discord.gg/63qP3Erw43[/url]
 [/list]
 
@@ -105,10 +120,11 @@ Yes. Cyberpunk 2077 is a single-player game, and the EDGE tools are for single-p
 
 [list]
 [*][b]Code - OSS[/b] by Microsoft and its contributors (MIT), the base EDGEkit is built from.
+[*][b]VSCodium[/b] (MIT), whose build of Code - OSS EDGEkit follows.
 [*][b]WolvenKit[/b] and its team, whose libraries REDbridge runs; EDGEmodders tools read the game's files the way WolvenKit does.
-[*][b]Redscript IDE[/b] and its language server by jac3km4 (MIT), bundled with their license notice.
+[*][b]REDscript IDE[/b] and its language server by jac3km4 (MIT), bundled with their license notice.
 [*][b]Open VSX[/b] and the Eclipse Foundation, for the open extension registry.
 [*]The Cyberpunk 2077 modding community, whose tools and knowledge this builds on.
 [/list]
 
-[size=2]EDGEkit is not affiliated with Microsoft, CD PROJEKT RED or Anthropic. Visual Studio Code is a trademark of Microsoft. Cyberpunk 2077 and REDengine are trademarks of CD PROJEKT. Claude is a trademark of Anthropic.[/size]
+[size=2]EDGEkit is not affiliated with Microsoft, GitHub, CD PROJEKT RED or Anthropic. Visual Studio Code is a trademark of Microsoft. Copilot is a trademark of Microsoft and GitHub. Cyberpunk 2077 and REDengine are trademarks of CD PROJEKT. Claude and Claude Code are trademarks of Anthropic.[/size]
