@@ -45,6 +45,18 @@ if ($have -ne $want) {
     Write-Output "Using Node $want from $nvmNode for this build."
 }
 
+# The Windows build runs signtool.exe (to strip signatures before it stamps version
+# details on native files). It comes with the Windows SDK; take the newest x64 one.
+if (-not (Get-Command signtool.exe -ErrorAction SilentlyContinue)) {
+    $kits = Join-Path ${env:ProgramFiles(x86)} 'Windows Kits\10\bin'
+    $signtool = Get-ChildItem $kits -Directory -ErrorAction SilentlyContinue |
+        Where-Object { Test-Path (Join-Path $_.FullName 'x64\signtool.exe') } |
+        Sort-Object { [version]$_.Name } | Select-Object -Last 1
+    if (-not $signtool) { throw "No signtool.exe in $kits. Install the Windows SDK with the Visual Studio Installer (docs\dev-setup.md)." }
+    $env:Path = "$(Join-Path $signtool.FullName 'x64');$env:Path"
+    Write-Output "Using signtool from the Windows SDK $($signtool.Name) for this build."
+}
+
 Push-Location $vscode
 try {
     npm ci
