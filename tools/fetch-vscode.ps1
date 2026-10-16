@@ -1,12 +1,12 @@
 <#
 .SYNOPSIS
-  Fetches Code - OSS at the release EDGEkit builds on (upstream.json) into build\vscode.
+  Fetches Code - OSS at the release EDGEkit builds on (upstream.json) into the
+  checkout folder (tools\checkout.ps1: "vscode" in local.json, else build\vscode).
 
 .DESCRIPTION
   A shallow clone of microsoft/vscode at one tag. Nothing from upstream is
-  committed: build\ is ignored by git. Run again after changing the tag; it
-  replaces build\vscode. DRAFT: written from upstream's documented build, not yet
-  run (phase K1).
+  committed: the checkout is outside the repo, or in build\, which git ignores.
+  Run again after changing the tag; it replaces the checkout.
 
 .EXAMPLE
   .\tools\fetch-vscode.ps1
@@ -16,7 +16,7 @@ $root = Split-Path -Parent $PSScriptRoot
 $upstream = Get-Content (Join-Path $root 'upstream.json') -Raw | ConvertFrom-Json
 if (-not $upstream.tag) { throw 'No upstream tag yet: choose one in upstream.json (phase K0).' }
 
-$target = Join-Path $root 'build\vscode'
+$target = & (Join-Path $PSScriptRoot 'checkout.ps1')
 # Empty the folder rather than delete it: a shell or file watcher holding the folder itself
 # open makes deleting it fail, and git clones into an empty folder fine.
 New-Item -ItemType Directory -Force $target | Out-Null

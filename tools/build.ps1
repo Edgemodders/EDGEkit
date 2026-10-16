@@ -10,7 +10,7 @@
   docs\dev-setup.md. Output goes to build\, which git ignores.
 
 .PARAMETER SkipFetch
-  Reuse build\vscode as it is.
+  Reuse the Code - OSS checkout as it is (tools\checkout.ps1 says where it is).
 
 .EXAMPLE
   .\tools\build.ps1
@@ -19,12 +19,12 @@ param([switch] $SkipFetch)
 
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
-$vscode = Join-Path $root 'build\vscode'
+$vscode = & (Join-Path $PSScriptRoot 'checkout.ps1')
 
 if (-not $SkipFetch) { & (Join-Path $PSScriptRoot 'fetch-vscode.ps1') }
 if (-not (Test-Path $vscode)) { throw "No Code - OSS checkout in $vscode." }
 
-node (Join-Path $PSScriptRoot 'brand.mjs')
+node (Join-Path $PSScriptRoot 'brand.mjs') (Join-Path $vscode 'product.json')
 if ($LASTEXITCODE) { throw 'Branding failed.' }
 node (Join-Path $PSScriptRoot 'bundle.mjs')
 if ($LASTEXITCODE) { throw 'Bundling the extensions failed.' }

@@ -1,6 +1,8 @@
 // Merges EDGEkit's branding (product/product.json) into Code - OSS's product.json.
 //
-//   node tools/brand.mjs [path to upstream product.json]   default: build/vscode/product.json
+//   node tools/brand.mjs [path to upstream product.json]
+//
+// The default is product.json in the Code - OSS checkout: "vscode" in local.json, else build/vscode.
 //
 // Objects merge key by key; anything else in ours replaces upstream's. Keys that start
 // with "//" are notes and are left out. Upstream's original is kept beside it as
@@ -10,7 +12,9 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const target = resolve(process.argv[2] ?? join(root, 'build', 'vscode', 'product.json'));
+const local = join(root, 'local.json');
+const checkout = (existsSync(local) && JSON.parse(readFileSync(local, 'utf8')).vscode) || join(root, 'build', 'vscode');
+const target = resolve(process.argv[2] ?? join(checkout, 'product.json'));
 if (!existsSync(target)) {
   console.error(`No upstream product.json at ${target}. Run tools/fetch-vscode.ps1 first.`);
   process.exit(1);

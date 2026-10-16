@@ -3,3 +3,5 @@ build/
 node_modules/
 *.vsix
 .DS_Store
+# This PC's build settings, such as where the Code - OSS checkout lives (tools/checkout.ps1).
+local.json

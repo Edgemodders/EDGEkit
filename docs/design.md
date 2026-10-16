@@ -31,7 +31,7 @@ Nothing from upstream is committed. The scripts fetch it, change it and build it
 
 | Step | Script | What it does |
 |---|---|---|
-| 1. Fetch | `tools/fetch-vscode.ps1` | Clones `microsoft/vscode` at the tag in `upstream.json`, shallow, into `build/vscode` |
+| 1. Fetch | `tools/fetch-vscode.ps1` | Clones `microsoft/vscode` at the tag in `upstream.json`, shallow, into the checkout folder (`local.json`, else `build/vscode`; no spaces in its path) |
 | 2. Brand | `tools/brand.mjs` | Merges `product/product.json` into upstream's `product.json`: names, ids, data folders, URLs, Open VSX. Icons and the default theme come in K2 |
 | 3. Bundle | `tools/bundle.mjs` | On the dev PC, builds each extension in `extensions.json` from its own repo (for example REDcode's `npm run redcode:package`); in CI, downloads the released VSIX at its pinned version instead. Unpacks the VSIX files into `build/extensions`, then into the app as built-in extensions. How Code - OSS takes them is a K3 question; upstream's own `builtInExtensions` list in `product.json` is the likely way (see the release pipeline) |
 | 4. Build | `tools/build.ps1` | Runs the three steps, installs upstream's dependencies and runs its Windows build and installer tasks |
