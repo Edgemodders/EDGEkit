@@ -123,7 +123,7 @@ The pinned extension versions are raised only when a release is being prepared, 
 | 3. Build | A release workflow builds the editor with the pinned extensions inside and makes the installer | Proven on this PC first (K1 to K3); CI copies a build that works rather than debugging a long Code - OSS build in CI. GitHub's hosted Windows runners build VSCodium, so they can likely build EDGEkit; disk and time limits to check in K4 (unverified). A smoke test checks that the app holds every pinned extension at its pinned version. The installer carries the third-party notices, Redscript IDE's and its language server's included |
 | 4. Release | The tagged release publishes the installer on GitHub and writes `latest.json` for the update service | EDGEkit's own version scheme to decide in K4: VSCodium uses the upstream version plus a build number (`1.140.06880`), and the update service compares these. Before the build, the pins in `extensions.json` are raised to the latest released versions (a pull request the user merges). Releases are rare, for the reasons above |
 
-Not planned yet: whether EDGEkit sets up REDcode's and EDGEmat's MCP servers for Claude Code by itself. It waits until EDGEmat reaches M1.
+Claude Code as a modding assistant: [EDGEplugin](https://github.com/Edgemodders/EDGEplugin) (repo created 2026-10-16, design draft 0.1) is a Claude Code plugin with the modding knowledge as skills and the EDGE MCP servers (REDnode's, REDcode's, later EDGEmat's). EDGEkit does not configure Claude Code itself; its welcome page and docs point to Claude Code from Open VSX and the plugin (EDGEplugin's P4).
 
 ## Phases
 
