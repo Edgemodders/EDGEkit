@@ -27,16 +27,17 @@ REDcode's design ([Decision 1: how much of VS Code to fork](https://edgemodders.
 
 ## How it is built
 
-Nothing from upstream is committed. The scripts fetch it, change it and build it in `build/`, which git ignores.
+Nothing from upstream is committed. The scripts fetch it, change it and build it in the checkout folder, outside the repo or in `build/`, which git ignores.
 
 | Step | Script | What it does |
 |---|---|---|
 | 1. Fetch | `tools/fetch-vscode.ps1` | Clones `microsoft/vscode` at the tag in `upstream.json`, shallow, into the checkout folder (`local.json`, else `build/vscode`; no spaces in its path) |
 | 2. Brand | `tools/brand.mjs` | Merges `product/product.json` into upstream's `product.json`: names, ids, data folders, URLs, Open VSX. Icons and the default theme come in K2 |
 | 3. Bundle | `tools/bundle.mjs` | On the dev PC, builds each extension in `extensions.json` from its own repo (for example REDcode's `npm run redcode:package`); in CI, downloads the released VSIX at its pinned version instead. Unpacks the VSIX files into `build/extensions`, then into the app as built-in extensions. How Code - OSS takes them is a K3 question; upstream's own `builtInExtensions` list in `product.json` is the likely way (see the release pipeline) |
-| 4. Build | `tools/build.ps1` | Runs the three steps, installs upstream's dependencies and runs its Windows build and installer tasks |
+| 4. No Copilot | `tools/remove-copilot.mjs` | Downloads VSCodium's two Copilot removal patches (MIT) from its release on the same Code - OSS version (`upstream.json` `vscodium`), adjusts the one line an earlier VSCodium patch changes, and applies them. Before `npm ci`, because they change the dependencies |
+| 5. Build | `tools/build.ps1` | Runs the steps above, installs upstream's dependencies and runs its Windows build and installer tasks |
 
-The scripts in `tools/` are drafts: written from upstream's documented build, not yet run. K1 runs them and fixes what upstream's build needs.
+K1 runs the scripts and fixes what upstream's build needs. Fetch, brand, the Copilot removal and `npm ci` have run (2026-10-16); `build.ps1` has not run end to end.
 
 ## Bundled extensions
 
@@ -157,7 +158,7 @@ Still open, to settle in K1:
 
 | Question | Notes |
 |---|---|
-| How to leave Copilot out | Decided: no Copilot (K0 decisions). Checked 2026-10-15: upstream's build puts it in the app (`build/gulpfile.vscode.ts` compiles `extensions/copilot` and packs the `@github/copilot-sdk` runtime), so a plain Code - OSS build has it. VSCodium removes it with two patches: `52-ext-copilot-remove-it.json` (deletes `extensions/copilot` and Copilot's agent code) and `53-ext-copilot-remove-it.patch` (takes it out of the build, `package.json` and the lockfiles). EDGEkit copies both (MIT) from VSCodium's release built on 1.140.0. They change the dependencies, so they apply before `npm ci`: K1 builds plain upstream to prove the toolchain, K2 applies the patches, reinstalls and rebuilds |
+| How to leave Copilot out | Decided: no Copilot (K0 decisions). Checked 2026-10-15: upstream's build puts it in the app (`build/gulpfile.vscode.ts` compiles `extensions/copilot` and packs the `@github/copilot-sdk` runtime), so a plain Code - OSS build has it. VSCodium removes it with two patches: `52-ext-copilot-remove-it.json` (deletes `extensions/copilot` and Copilot's agent code) and `53-ext-copilot-remove-it.patch` (takes it out of the build, `package.json` and the lockfiles). EDGEkit takes both (MIT) from VSCodium's release built on 1.140.0 (`1.140.06880`) with `tools/remove-copilot.mjs`, which downloads them rather than committing them. They change the dependencies, so they apply before `npm ci`. **Moved into K1** (2026-10-16): plain upstream's local build stops at packaging, `[prepareBuiltInCopilotRipgrepShim] Copilot SDK directory not found` (upstream's CI builds Copilot separately), so K1 builds without Copilot. The patches also remove the Copilot and Claude agents in upstream's agent host (`src/vs/platform/agentHost/node/copilot` and `claude`); Claude Code comes from Open VSX instead |
 | User or system installer | Code - OSS can build both. The user installer needs no admin rights and is what VS Code offers first; it is the likely choice |
 
 ## The EDGEkit extension pack

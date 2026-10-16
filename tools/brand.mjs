@@ -9,11 +9,8 @@
 // product.upstream.json, so branding again always starts from upstream.
 import { copyFileSync, existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { checkout, root } from './checkout.mjs';
 
-const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const local = join(root, 'local.json');
-const checkout = (existsSync(local) && JSON.parse(readFileSync(local, 'utf8')).vscode) || join(root, 'build', 'vscode');
 const target = resolve(process.argv[2] ?? join(checkout, 'product.json'));
 if (!existsSync(target)) {
   console.error(`No upstream product.json at ${target}. Run tools/fetch-vscode.ps1 first.`);

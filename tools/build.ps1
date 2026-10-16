@@ -1,7 +1,7 @@
 <#
 .SYNOPSIS
   Builds EDGEkit for Windows x64: fetch Code - OSS, brand it, bundle the EDGE
-  extensions, build the app and its installer.
+  extensions, take Copilot out, build the app and its installer.
 
 .DESCRIPTION
   DRAFT for phase K1: the upstream steps follow Code - OSS's documented build
@@ -28,6 +28,9 @@ node (Join-Path $PSScriptRoot 'brand.mjs') (Join-Path $vscode 'product.json')
 if ($LASTEXITCODE) { throw 'Branding failed.' }
 node (Join-Path $PSScriptRoot 'bundle.mjs')
 if ($LASTEXITCODE) { throw 'Bundling the extensions failed.' }
+# No Copilot (design, K0 decisions). It changes the dependencies, so it comes before npm ci.
+node (Join-Path $PSScriptRoot 'remove-copilot.mjs')
+if ($LASTEXITCODE) { throw 'Removing Copilot failed.' }
 
 # Code - OSS expects the Node version in its .nvmrc. Take it from nvm-windows for this
 # build only, without "nvm use", which would switch Node for every program on the PC.

@@ -1,5 +1,7 @@
 {
   "//": "The Code - OSS release EDGEkit builds on. Chosen in K0; tools/fetch-vscode.ps1 clones this tag.",
   "repository": "https://github.com/microsoft/vscode.git",
-  "tag": "1.140.0"
+  "tag": "1.140.0",
+  "//vscodium": "VSCodium's release built on the same Code - OSS version; tools/remove-copilot.mjs takes its Copilot removal patches from it.",
+  "vscodium": "1.140.06880"
 }
