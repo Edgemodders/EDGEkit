@@ -61,9 +61,12 @@ Push-Location $vscode
 try {
     npm ci
     if ($LASTEXITCODE) { throw 'npm ci failed in Code - OSS.' }
-    # The minified Windows app, then the per-user installer.
+    # The minified Windows app, the update helper the installer ships in tools\, then the
+    # per-user installer.
     npm run gulp -- vscode-win32-x64-min
     if ($LASTEXITCODE) { throw 'The Code - OSS build failed.' }
+    npm run gulp -- vscode-win32-x64-inno-updater
+    if ($LASTEXITCODE) { throw 'Adding the update helper failed.' }
     npm run gulp -- vscode-win32-x64-user-setup
     if ($LASTEXITCODE) { throw 'The installer build failed.' }
 }

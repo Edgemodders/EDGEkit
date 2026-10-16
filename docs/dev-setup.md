@@ -1,6 +1,6 @@
 # Dev setup
 
-What a Windows PC needs to build EDGEkit. The versions below were checked on the dev PC on 2026-10-15 against Code - OSS 1.140.0's own checks (`build/npm/preinstall.ts`). The build itself has not run yet: K1 runs it and completes this page with exact commands.
+What a Windows PC needs to build EDGEkit. The versions below were checked on the dev PC on 2026-10-15 against Code - OSS 1.140.0's own checks (`build/npm/preinstall.ts`). The unbranded build first ran on 2026-10-16 (K1): app and installer, without Copilot.
 
 | Tool | Why | On the dev PC (2026-10-15) | Notes |
 |---|---|---|---|
@@ -21,3 +21,15 @@ nvm install 24.18.0                # once; the version in Code - OSS's .nvmrc
 node tools/bundle.mjs --no-build   # only unpack the extensions the sibling repos already built
 node tools/extensions-status.mjs   # where each EDGE extension is published
 ```
+
+The first build on the dev PC (2026-10-16), Code - OSS 1.140.0 unbranded, step by step:
+
+| Step | Command (in the checkout) | Time | Result |
+|---|---|---|---|
+| Take Copilot out | `node tools/remove-copilot.mjs` (from the repo) | Seconds | 177 paths deleted, the build patch applied |
+| Install the dependencies | `npm ci` | 3 to 4 min | |
+| The app | `npm run gulp -- vscode-win32-x64-min` | 2 min | `VSCode-win32-x64` beside the checkout, 928 MB. `bin\code-oss.cmd --version` prints 1.140.0, x64 |
+| The update helper | `npm run gulp -- vscode-win32-x64-inno-updater` | Seconds | `inno_updater.exe` in the app's `tools` folder, which the installer needs |
+| The installer | `npm run gulp -- vscode-win32-x64-user-setup` | 3 min | `.build\win32-x64\user-setup\VSCodeSetup.exe`, 200 MB. The name comes from upstream's `build/win32/code.iss`; K2 renames it |
+
+`tools/build.ps1` runs all of these; it has not yet run end to end in one go.
