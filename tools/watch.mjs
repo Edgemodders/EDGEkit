@@ -67,7 +67,10 @@ if (!anyFailed) {
     const minus = before.filter((id) => !live.includes(id));
     if (plus.length || minus.length) nextMembers[registry] = live;
     for (const id of plus) changes.push(`Adds \`${id}\` on ${registry === 'marketplace' ? 'the Marketplace' : 'Open VSX'}.`);
-    for (const id of minus) changes.push(`Removes \`${id}\` from ${registry === 'marketplace' ? 'the Marketplace' : 'Open VSX'}: no longer published there.`);
+    for (const id of minus) {
+      const why = candidates.includes(id) ? 'no longer published there' : 'no longer in `extensions.json` (renamed or dropped)';
+      changes.push(`Removes \`${id}\` from ${registry === 'marketplace' ? 'the Marketplace' : 'Open VSX'}: ${why}.`);
+    }
   }
 }
 

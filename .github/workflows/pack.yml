@@ -3,7 +3,7 @@
 # Checks the tag against pack/package.json, builds one pack per registry with tools/pack.mjs (each
 # lists only the EDGE extensions published there), publishes them to the VS Code Marketplace
 # (VSCE_PAT) and Open VSX (OVSX_PAT), and makes the GitHub release with both VSIX files. The tokens
-# are Edgemodders organisation secrets, shared with REDcode's and REDdeck's workflows; the
+# are Edgemodders organisation secrets, shared with REDcode's and EDGEdeck's workflows; the
 # organisation must make them available to this repo.
 name: Pack
 

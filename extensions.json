@@ -21,11 +21,11 @@
       "version": null
     },
     {
-      "id": "edgemodders.reddeck",
+      "id": "edgemodders.edgedeck",
       "from": "sibling",
       "repo": "../REDdeck",
       "build": "npm run package",
-      "vsix": "dist/reddeck-win32-x64-*.vsix",
+      "vsix": "dist/edgedeck-win32-x64-*.vsix",
       "status": "exists",
       "version": null
     },
