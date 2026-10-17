@@ -2,10 +2,7 @@
 
 ## 0.2.0
 
-- Adds `edgemodders.edgedeck` on the Marketplace.
-- Removes `edgemodders.reddeck` from the Marketplace: no longer in `extensions.json` (renamed or dropped).
-- Adds `edgemodders.edgedeck` on Open VSX.
-- Removes `edgemodders.reddeck` from Open VSX: no longer in `extensions.json` (renamed or dropped).
+- REDdeck is now EDGEdeck: the pack installs `edgemodders.edgedeck` in place of `edgemodders.reddeck`, on the Marketplace and Open VSX. The pack page's EDGEdeck docs link works again. Modders who have REDdeck keep it until they uninstall it.
 
 ## 0.1.0
 
