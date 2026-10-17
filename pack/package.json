@@ -3,7 +3,7 @@
   "publisher": "edgemodders",
   "displayName": "EDGEkit",
   "description": "EDGEkit for Visual Studio Code: the EDGE tools for Cyberpunk 2077 modding in one install. REDcode, EDGEdeck, the REDnode HUD theme and more.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "MIT",
   "icon": "icon.png",
   "preview": true,
