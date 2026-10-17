@@ -3,12 +3,12 @@
   "marketplace": [
     "edgemodders.redcode-cyberpunk",
     "edgemodders.rednode-hud-theme",
-    "edgemodders.reddeck",
+    "edgemodders.edgedeck",
     "jac3km4.redscript-ide-vscode"
   ],
   "openvsx": [
     "edgemodders.redcode-cyberpunk",
     "edgemodders.rednode-hud-theme",
-    "edgemodders.reddeck"
+    "edgemodders.edgedeck"
   ]
 }
