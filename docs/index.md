@@ -18,7 +18,7 @@ As of 2026-10-13.
 | K1 Build | Under way. Code - OSS 1.140.0 built on the dev PC, unbranded and without Copilot: the app and its installer (2026-10-16). Next: the smoke test (starts, opens a folder, installs an extension from Open VSX) |
 | K2 Brand | Not started. Names, icons, default theme, welcome page. The branding overlay exists |
 | K3 Bundle | Not started. The released EDGE extensions as built-ins, updated from Open VSX through `builtInExtensionsEnabledWithAutoUpdates`. Unpacking REDcode's VSIX files works |
-| K4 Release | Started early. The daily watch and its status issue run (2026-10-15); the extension pack `edgemodders.edgekit` 0.1.0 is published on both registries as a preview (2026-10-16). The installer from GitHub Actions comes after K1 to K3. Full EDGEkit releases are rare: extensions update themselves |
+| K4 Release | Started early. The daily watch and its status issue run (2026-10-15); the extension pack `edgemodders.edgekit` is published on both registries as a preview (0.1.0 on 2026-10-16; 0.2.0, with EDGEdeck, on 2026-10-17). The installer from GitHub Actions comes after K1 to K3. Full EDGEkit releases are rare: extensions update themselves |
 | K5 Track upstream | Not started |
 
 Source code and issues: [github.com/Edgemodders/EDGEkit](https://github.com/Edgemodders/EDGEkit)
