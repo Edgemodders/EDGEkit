@@ -24,10 +24,11 @@ $vscode = & (Join-Path $PSScriptRoot 'checkout.ps1')
 if (-not $SkipFetch) { & (Join-Path $PSScriptRoot 'fetch-vscode.ps1') }
 if (-not (Test-Path $vscode)) { throw "No Code - OSS checkout in $vscode." }
 
-node (Join-Path $PSScriptRoot 'brand.mjs') (Join-Path $vscode 'product.json')
-if ($LASTEXITCODE) { throw 'Branding failed.' }
+# Bundle first: it lists the built-in EDGE extensions that branding adds to product.json.
 node (Join-Path $PSScriptRoot 'bundle.mjs')
 if ($LASTEXITCODE) { throw 'Bundling the extensions failed.' }
+node (Join-Path $PSScriptRoot 'brand.mjs') (Join-Path $vscode 'product.json')
+if ($LASTEXITCODE) { throw 'Branding failed.' }
 # No Copilot (design, K0 decisions). It changes the dependencies, so it comes before npm ci.
 node (Join-Path $PSScriptRoot 'remove-copilot.mjs')
 if ($LASTEXITCODE) { throw 'Removing Copilot failed.' }

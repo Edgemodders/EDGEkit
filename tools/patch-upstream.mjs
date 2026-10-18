@@ -52,6 +52,21 @@ const edits = [
     to: 'verifySignature = isBoolean(value) ? value : false;',
   },
   {
+    // K2: the REDnode HUD theme (built in by bundle.mjs) is the default colour theme, also when
+    // "follow the system's dark mode" is on. Upstream's "Dark 2026" stays its own default
+    // elsewhere (its theme migration and picker), so only the settings' defaults change.
+    name: 'Default theme: REDnode HUD',
+    file: 'src/vs/workbench/services/themes/common/themeConfiguration.ts',
+    from: 'default: isWeb ? ThemeSettingDefaults.COLOR_THEME_LIGHT : ThemeSettingDefaults.COLOR_THEME_DARK,',
+    to: "default: isWeb ? ThemeSettingDefaults.COLOR_THEME_LIGHT : 'REDnode HUD',",
+  },
+  {
+    name: 'Default dark theme: REDnode HUD',
+    file: 'src/vs/workbench/services/themes/common/themeConfiguration.ts',
+    from: "'Specifies the color theme when system color mode is dark and {0} is enabled.', formatSettingAsLink(ThemeSettings.DETECT_COLOR_SCHEME)),\n\tdefault: ThemeSettingDefaults.COLOR_THEME_DARK,",
+    to: "'Specifies the color theme when system color mode is dark and {0} is enabled.', formatSettingAsLink(ThemeSettings.DETECT_COLOR_SCHEME)),\n\tdefault: 'REDnode HUD',",
+  },
+  {
     // K2: EDGEkit.exe's own version details (Electron's packaging stamps the main executable).
     name: 'EDGEkit.exe details: Edgemodders',
     file: 'build/lib/electron.ts',

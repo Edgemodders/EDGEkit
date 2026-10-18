@@ -39,6 +39,11 @@ const ours = JSON.parse(readFileSync(join(root, 'product', 'product.json'), 'utf
 const { extensions } = JSON.parse(readFileSync(join(root, 'extensions.json'), 'utf8'));
 ours.builtInExtensionsEnabledWithAutoUpdates = extensions.filter((e) => e.from === 'sibling').map((e) => e.id);
 
+// The EDGE extensions built into the app (bundle.mjs writes the list), after upstream's own.
+const builtInFile = join(dirname(target), '.build', 'edgekit', 'builtInExtensions.json');
+const builtIns = existsSync(builtInFile) ? JSON.parse(readFileSync(builtInFile, 'utf8')) : [];
+ours.builtInExtensions = [...(upstream.builtInExtensions ?? []), ...builtIns];
+
 const branded = merge(upstream, ours);
 writeFileSync(target, `${JSON.stringify(branded, null, '\t')}\n`);
 

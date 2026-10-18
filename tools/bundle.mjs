@@ -4,15 +4,14 @@
 //   node tools/bundle.mjs            build each sibling extension with its own script, then unpack
 //   node tools/bundle.mjs --no-build unpack the VSIX files the sibling repos already have
 //
-// A VSIX is a zip: its extension/ folder is the extension.
-// How Code - OSS takes prebuilt extensions as built-ins is a K3 question; this step
-// only prepares them.
+// A VSIX is a zip: its extension/ folder is the extension. Those marked "builtIn": true also
+// go into the app, through upstream's builtInExtensions list (below). Run before brand.mjs.
 import { execSync } from 'node:child_process';
-import { existsSync, mkdirSync, readdirSync, readFileSync, renameSync, rmSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import { basename, dirname, join, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { checkout, root } from './checkout.mjs';
 
-const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const build = !process.argv.includes('--no-build');
 const out = join(root, 'build', 'extensions');
 const { extensions } = JSON.parse(readFileSync(join(root, 'extensions.json'), 'utf8'));
@@ -38,7 +37,32 @@ function newest(repo, pattern) {
 // Windows' own tar (bsdtar) reads zips; a GNU tar earlier on PATH (Git Bash) does not, and takes "E:" for a host.
 const TAR = process.platform === 'win32' ? join(process.env.SystemRoot ?? 'C:\\Windows', 'System32', 'tar.exe') : 'tar';
 
+// Built-in extensions ("builtIn": true) go into the app through upstream's own list, product.json's
+// builtInExtensions: each VSIX is copied into the checkout's .build/edgekit with its checksum and
+// its Open VSX identity (__metadata, which lets it update from Open VSX). brand.mjs adds them to the list.
+const builtInDir = join(checkout, '.build', 'edgekit');
+const builtIns = [];
+const gallery = JSON.parse(readFileSync(join(root, 'product', 'product.json'), 'utf8')).extensionsGallery.serviceUrl;
+async function openVsxMetadata(id) {
+  const res = await fetch(`${gallery}/extensionquery`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json;api-version=3.0-preview.1' },
+    body: JSON.stringify({ filters: [{ criteria: [{ filterType: 7, value: id }] }], flags: 1 }),
+  });
+  const found = (await res.json()).results?.[0]?.extensions?.[0];
+  if (!found) throw new Error(`${id} is not on Open VSX; a built-in extension must be, to update from there.`);
+  const { publisherId, publisherName, displayName } = found.publisher;
+  return { id: found.extensionId, publisherId: { publisherId, publisherName, displayName, flags: '' }, publisherDisplayName: displayName };
+}
+
 mkdirSync(out, { recursive: true });
+// Clear what is no longer listed (an extension renamed or dropped), so nothing stale ships.
+for (const name of readdirSync(out)) {
+  if (!extensions.some((e) => e.id === name)) {
+    rmSync(join(out, name), { recursive: true, force: true });
+    console.log(`clear ${name}: no longer in extensions.json`);
+  }
+}
 let failed = 0;
 for (const e of extensions) {
   if (e.from !== 'sibling' || !e.vsix) {
@@ -70,5 +94,23 @@ for (const e of extensions) {
   renameSync(join(tmp, 'extension'), dest);
   rmSync(tmp, { recursive: true, force: true });
   console.log(`ok    ${e.id}: ${basename(vsix)} -> build/extensions/${e.id}`);
+  if (e.builtIn) {
+    mkdirSync(builtInDir, { recursive: true });
+    copyFileSync(vsix, join(builtInDir, basename(vsix)));
+    const { version } = JSON.parse(readFileSync(join(dest, 'package.json'), 'utf8'));
+    builtIns.push({
+      name: e.id,
+      version,
+      repo: `https://github.com/Edgemodders/${basename(repo)}`,
+      vsix: `.build/edgekit/${basename(vsix)}`,
+      sha256: createHash('sha256').update(readFileSync(vsix)).digest('hex'),
+      metadata: await openVsxMetadata(e.id),
+    });
+    console.log(`      built in: ${e.id} ${version}`);
+  }
+}
+if (existsSync(checkout)) {
+  mkdirSync(builtInDir, { recursive: true });
+  writeFileSync(join(builtInDir, 'builtInExtensions.json'), `${JSON.stringify(builtIns, null, 2)}\n`);
 }
 process.exit(failed ? 1 : 0);

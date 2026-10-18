@@ -18,6 +18,7 @@
       "vsix": "dist/rednode-hud-theme-*.vsix",
       "status": "exists",
       "defaultTheme": true,
+      "builtIn": true,
       "version": null
     },
     {
