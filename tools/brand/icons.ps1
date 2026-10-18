@@ -10,6 +10,8 @@
 #   product/win32/inno-small-*.bmp           the installer's corner image, at 7 scales
 #   product/win32/code_150x150.png, code_70x70.png   Start menu tiles
 #   product/workbench/code-icon.svg          the logo in the title bar and elsewhere in the app
+#   product/editor/letterpress-*.svg         the empty-editor watermark, per theme kind
+#   product/startup/startup.png              the startup screen's mark (not copied: brand.mjs inlines it)
 # Each icon is drawn large (256 px) and simple (32 px); the sizes from 48 up come from the large
 # one and those from 32 down from the simple one, so the small sizes stay readable.
 
@@ -110,3 +112,22 @@ $b64 = [Convert]::ToBase64String([IO.File]::ReadAllBytes($logo))
 $svg = "<svg xmlns=`"http://www.w3.org/2000/svg`" xmlns:xlink=`"http://www.w3.org/1999/xlink`" viewBox=`"0 0 128 128`"><image width=`"128`" height=`"128`" xlink:href=`"data:image/png;base64,$b64`"/></svg>"
 [IO.File]::WriteAllText((Join-Path $workbench 'code-icon.svg'), $svg)
 Write-Output 'Wrote product\workbench\code-icon.svg'
+
+# The empty-editor watermark, one per theme kind, faint as upstream's (its opacities: dark .3, light .1).
+$editor = Join-Path $repo 'product\editor'
+New-Item -ItemType Directory -Force $editor | Out-Null
+foreach ($kind in @{ dark = '0.3'; light = '0.1'; hcDark = ''; hcLight = '' }.GetEnumerator()) {
+    $png = Render "letterpress=$($kind.Key)" "letterpress-$($kind.Key).png" 256 256 2
+    $b64 = [Convert]::ToBase64String([IO.File]::ReadAllBytes($png))
+    $opacity = if ($kind.Value) { " opacity=`"$($kind.Value)`"" } else { '' }
+    $svg = "<svg width=`"260`" height=`"260`" viewBox=`"0 0 260 260`"$opacity xmlns=`"http://www.w3.org/2000/svg`" xmlns:xlink=`"http://www.w3.org/1999/xlink`"><image x=`"2`" y=`"2`" width=`"256`" height=`"256`" xlink:href=`"data:image/png;base64,$b64`"/></svg>"
+    [IO.File]::WriteAllText((Join-Path $editor "letterpress-$($kind.Key).svg"), $svg)
+    Write-Output "Wrote product\editor\letterpress-$($kind.Key).svg"
+}
+
+# The startup screen's mark (tools/brand.mjs puts it in product.json as edgekitStartup.logo).
+$startup = Join-Path $repo 'product\startup'
+New-Item -ItemType Directory -Force $startup | Out-Null
+$png = Render 'startup' 'startup.png' 260 280 2
+Magick $png -trim +repage (Join-Path $startup 'startup.png')
+Write-Output 'Wrote product\startup\startup.png'

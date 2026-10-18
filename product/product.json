@@ -31,5 +31,9 @@
     "extensionUrlTemplate": "https://open-vsx.org/vscode/gallery/{publisher}/{name}/latest",
     "resourceUrlTemplate": "https://open-vsx.org/vscode/unpkg/{publisher}/{name}/{version}/{path}"
   },
-  "enableTelemetry": false
+  "enableTelemetry": false,
+  "//edgekitStartup": "The startup screen (K2): one or two short lines under the EDGEkit mark. The mark itself comes from tools/brand/icons.ps1.",
+  "edgekitStartup": {
+    "lines": []
+  }
 }
