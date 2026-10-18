@@ -37,7 +37,7 @@ Nothing from upstream is committed. The scripts fetch it, change it and build it
 | 4. No Copilot | `tools/remove-copilot.mjs` | Downloads VSCodium's two Copilot removal patches (MIT) from its release on the same Code - OSS version (`upstream.json` `vscodium`), adjusts the one line an earlier VSCodium patch changes, and applies them. Before `npm ci`, because they change the dependencies |
 | 5. Build | `tools/build.ps1` | Runs the steps above, installs upstream's dependencies and runs its Windows build and installer tasks |
 
-K1 runs the scripts and fixes what upstream's build needs. Fetch, brand, the Copilot removal and `npm ci` have run, and the app and installer built (2026-10-16). The app starts and opens a folder (2026-10-18). `build.ps1` ran end to end on 2026-10-18 (Dev setup), after two fixes: upstream's Windows 11 context-menu package turned off (in `tools/patch-upstream.mjs`, as VSCodium does), and the installer app ids written as `{{GUID}`.
+K1 runs the scripts and fixes what upstream's build needs. Fetch, brand, the Copilot removal and `npm ci` have run, and the app and installer built (2026-10-16). The app starts and opens a folder (2026-10-18). `build.ps1` ran end to end on 2026-10-18 (Dev setup), after two fixes: upstream's Windows 11 context-menu package turned off (in `tools/patch-upstream.mjs`, as VSCodium does), and the installer app ids written as `{% raw %}{{GUID}{% endraw %}`.
 
 ## Bundled extensions
 
