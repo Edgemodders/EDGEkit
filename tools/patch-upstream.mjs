@@ -52,17 +52,21 @@ const edits = [
     to: 'verifySignature = isBoolean(value) ? value : false;',
   },
   {
-    // K2: the version details upstream stamps on every Windows executable and DLL.
-    name: 'Windows file details: Edgemodders',
-    file: 'build/gulpfile.vscode.ts',
-    from: "'CompanyName': 'Microsoft Corporation',",
-    to: "'CompanyName': 'Edgemodders',",
+    // K2: EDGEkit.exe's own version details (Electron's packaging stamps the main executable).
+    name: 'EDGEkit.exe details: Edgemodders',
+    file: 'build/lib/electron.ts',
+    from: "companyName: 'Microsoft Corporation',\n\tcopyright: 'Copyright (C) 2026 Microsoft. All rights reserved',",
+    to: "companyName: 'Edgemodders',\n\tcopyright: `Copyright (C) ${new Date().getFullYear()} Edgemodders. MIT License`,",
   },
   {
-    name: 'Windows file details: copyright',
+    // Upstream strips the signatures of the native modules and helper programs it ships and
+    // stamps "Microsoft Corporation" on all of them, for Microsoft's own signing. EDGEkit leaves
+    // each one with the details its maker built in: they are Microsoft's (@vscode/*, the sign-in
+    // runtime, OpenConsole) or other projects' (kerberos, @parcel/watcher), not Edgemodders'.
+    name: 'Dependencies keep their own file details',
     file: 'build/gulpfile.vscode.ts',
-    from: "'LegalCopyright': 'Copyright (C) 2026 Microsoft. All rights reserved',",
-    to: "'LegalCopyright': `Copyright (C) ${new Date().getFullYear()} Edgemodders. MIT License`,",
+    from: "\treturn async () => {\n\t\tconst versionedResourcesFolder = util.getVersionedResourcesFolder('win32', commit!);\n\t\tconst deps = (await Promise.all([",
+    to: "\treturn async () => {\n\t\tif (/* EDGEkit: dependencies keep their own file details */ true) { return; }\n\t\tconst versionedResourcesFolder = util.getVersionedResourcesFolder('win32', commit!);\n\t\tconst deps = (await Promise.all([",
   },
   {
     // K2: the installer's publisher and links (Windows shows them in Installed apps).
