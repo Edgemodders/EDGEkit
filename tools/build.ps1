@@ -32,6 +32,10 @@ if ($LASTEXITCODE) { throw 'Bundling the extensions failed.' }
 node (Join-Path $PSScriptRoot 'remove-copilot.mjs')
 if ($LASTEXITCODE) { throw 'Removing Copilot failed.' }
 
+# Upstream's stable build packages a Windows 11 context-menu appx that needs Microsoft's files.
+node (Join-Path $PSScriptRoot 'disable-appx.mjs')
+if ($LASTEXITCODE) { throw 'Turning off the appx failed.' }
+
 # Code - OSS expects the Node version in its .nvmrc. Take it from nvm-windows for this
 # build only, without "nvm use", which would switch Node for every program on the PC.
 $want = (Get-Content (Join-Path $vscode '.nvmrc') -Raw).Trim()
