@@ -5,7 +5,10 @@
 // Safe to run again: an edit already made is skipped. When upstream moves, an edit whose
 // text is gone fails loudly, naming the edit to look at. Larger changes taken from VSCodium
 // (Copilot's removal) stay in their own scripts.
-import { readFileSync, writeFileSync } from 'node:fs';
+//
+// Each edit names a file, or a folder and a file name pattern (dir, match). It replaces the text once,
+// or every copy with all: true.
+import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { checkout } from './checkout.mjs';
 
@@ -48,20 +51,64 @@ const edits = [
     from: 'verifySignature = isBoolean(value) ? value : true;',
     to: 'verifySignature = isBoolean(value) ? value : false;',
   },
+  {
+    // K2: the version details upstream stamps on every Windows executable and DLL.
+    name: 'Windows file details: Edgemodders',
+    file: 'build/gulpfile.vscode.ts',
+    from: "'CompanyName': 'Microsoft Corporation',",
+    to: "'CompanyName': 'Edgemodders',",
+  },
+  {
+    name: 'Windows file details: copyright',
+    file: 'build/gulpfile.vscode.ts',
+    from: "'LegalCopyright': 'Copyright (C) 2026 Microsoft. All rights reserved',",
+    to: "'LegalCopyright': `Copyright (C) ${new Date().getFullYear()} Edgemodders. MIT License`,",
+  },
+  {
+    // K2: the installer's publisher and links (Windows shows them in Installed apps).
+    name: 'Installer: publisher and links',
+    file: 'build/win32/code.iss',
+    from: 'AppPublisher=Microsoft Corporation\nAppPublisherURL=https://code.visualstudio.com/\nAppSupportURL=https://code.visualstudio.com/\nAppUpdatesURL=https://code.visualstudio.com/',
+    to: 'AppPublisher=Edgemodders\nAppPublisherURL=https://edgemodders.ai/\nAppSupportURL=https://github.com/Edgemodders/EDGEkit/issues\nAppUpdatesURL=https://github.com/Edgemodders/EDGEkit/releases',
+  },
+  {
+    name: 'Installer: EDGEkitSetup.exe',
+    file: 'build/win32/code.iss',
+    from: 'OutputBaseFilename=VSCodeSetup',
+    to: 'OutputBaseFilename=EDGEkitSetup',
+  },
+  {
+    // EDGEkit has no system installer to send people to.
+    name: 'Installer: the administrator warning',
+    file: 'build/win32/code.iss',
+    from: "This User Installer is not meant to be run as an Administrator. If you would like to install VS Code for all users in this system, download the System Installer instead from https://code.visualstudio.com. Are you sure you want to continue?",
+    to: "This User Installer is not meant to be run as an Administrator. Are you sure you want to continue?",
+  },
+  {
+    // "Updating Visual Studio Code..." in every language, as VSCodium's branding patch does.
+    name: 'Installer messages: EDGEkit',
+    dir: 'build/win32/i18n',
+    match: /^messages\..+\.isl$/,
+    all: true,
+    from: 'Visual Studio Code',
+    to: 'EDGEkit',
+  },
 ];
 
-for (const { name, file, from, to } of edits) {
-  const path = join(checkout, file);
-  const raw = readFileSync(path, 'utf8');
-  const crlf = raw.includes('\r\n');
-  const text = raw.replace(/\r\n/g, '\n');
-  const count = (s) => text.split(s).length - 1;
-  if (count(to) === 1 && count(from) === 0) {
-    console.log(`${name}: already made.`);
-    continue;
+for (const { name, file, dir, match, all, from, to } of edits) {
+  const files = file ? [file] : readdirSync(join(checkout, dir)).filter((f) => match.test(f)).map((f) => `${dir}/${f}`);
+  let made = 0;
+  for (const f of files) {
+    const path = join(checkout, f);
+    const raw = readFileSync(path, 'utf8');
+    const crlf = raw.includes('\r\n');
+    const text = raw.replace(/\r\n/g, '\n');
+    const count = (s) => text.split(s).length - 1;
+    if (count(from) === 0 && count(to) > 0) continue;
+    if (all ? count(from) === 0 : count(from) !== 1) throw new Error(`${name}: expected the text ${all ? 'at least' : 'exactly'} once in ${f}, found it ${count(from)} times. Upstream has moved; check this edit.`);
+    const out = all ? text.split(from).join(to) : text.replace(from, to);
+    writeFileSync(path, crlf ? out.replace(/\n/g, '\r\n') : out);
+    made++;
   }
-  if (count(from) !== 1) throw new Error(`${name}: expected the text once in ${file}, found it ${count(from)} times. Upstream has moved; check this edit.`);
-  const out = text.replace(from, to);
-  writeFileSync(path, crlf ? out.replace(/\n/g, '\r\n') : out);
-  console.log(`${name}: made.`);
+  console.log(`${name}: ${made ? `made${files.length > 1 ? ` in ${made} files` : ''}` : 'already made'}.`);
 }
