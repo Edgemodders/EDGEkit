@@ -27,7 +27,7 @@ The first build on the dev PC (2026-10-16), Code - OSS 1.140.0 unbranded, step b
 | Step | Command (in the checkout) | Time | Result |
 |---|---|---|---|
 | Take Copilot out | `node tools/remove-copilot.mjs` (from the repo) | Seconds | 177 paths deleted, the build patch applied |
-| Turn off the appx | `node tools/disable-appx.mjs` (from the repo) | Seconds | Added 2026-10-18, needed once `product.json` sets `quality` to `stable` |
+| EDGEkit's edits | `node tools/patch-upstream.mjs` (from the repo) | Seconds | Added 2026-10-18: no Windows 11 context-menu appx (needed once `product.json` sets `quality` to `stable`), and the extension signature check off by default |
 | Install the dependencies | `npm ci` | 3 to 4 min | |
 | The app | `npm run gulp -- vscode-win32-x64-min` | 2 min | `VSCode-win32-x64` beside the checkout, 928 MB. `bin\code-oss.cmd --version` prints 1.140.0, x64 |
 | The update helper | `npm run gulp -- vscode-win32-x64-inno-updater` | Seconds | `inno_updater.exe` in the app's `tools` folder, which the installer needs |

@@ -32,9 +32,9 @@ if ($LASTEXITCODE) { throw 'Bundling the extensions failed.' }
 node (Join-Path $PSScriptRoot 'remove-copilot.mjs')
 if ($LASTEXITCODE) { throw 'Removing Copilot failed.' }
 
-# Upstream's stable build packages a Windows 11 context-menu appx that needs Microsoft's files.
-node (Join-Path $PSScriptRoot 'disable-appx.mjs')
-if ($LASTEXITCODE) { throw 'Turning off the appx failed.' }
+# EDGEkit's small edits to upstream: no appx, signature check off by default.
+node (Join-Path $PSScriptRoot 'patch-upstream.mjs')
+if ($LASTEXITCODE) { throw 'Patching upstream failed.' }
 
 # Code - OSS expects the Node version in its .nvmrc. Take it from nvm-windows for this
 # build only, without "nvm use", which would switch Node for every program on the PC.
