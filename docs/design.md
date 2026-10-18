@@ -2,7 +2,7 @@
 
 EDGEkit is the EDGEmodders editor: a build of Code - OSS, the open-source core of VS Code, with EDGEmodders branding and every EDGE tool built in. A modder installs one app and gets REDcode's editors, REDnode's views, the REDnode HUD theme, EDGEdeck's mod manager and REDagent, with no extension hunting.
 
-**Status: K0 decided (2026-10-15).** The repository, the plan and draft scripts exist; nothing has been built yet. Next: K1, the first build of Code - OSS on this PC.
+**Status: K1 under way (2026-10-18).** K0 was decided on 2026-10-15. Code - OSS 1.140.0 built on this PC, unbranded and without Copilot, on 2026-10-16, and the app passed its first smoke test on 2026-10-18. Next: `build.ps1` end to end.
 
 ## What EDGEkit is, and is not
 
@@ -37,7 +37,7 @@ Nothing from upstream is committed. The scripts fetch it, change it and build it
 | 4. No Copilot | `tools/remove-copilot.mjs` | Downloads VSCodium's two Copilot removal patches (MIT) from its release on the same Code - OSS version (`upstream.json` `vscodium`), adjusts the one line an earlier VSCodium patch changes, and applies them. Before `npm ci`, because they change the dependencies |
 | 5. Build | `tools/build.ps1` | Runs the steps above, installs upstream's dependencies and runs its Windows build and installer tasks |
 
-K1 runs the scripts and fixes what upstream's build needs. Fetch, brand, the Copilot removal and `npm ci` have run (2026-10-16); `build.ps1` has not run end to end.
+K1 runs the scripts and fixes what upstream's build needs. Fetch, brand, the Copilot removal and `npm ci` have run, and the app and installer built (2026-10-16). The app starts and opens a folder (2026-10-18). `build.ps1` has not run end to end.
 
 ## Bundled extensions
 
@@ -133,7 +133,7 @@ Phases are numbered K0 to K5, so they do not clash with the other repos' phases.
 | Phase | Builds | The test proves |
 |---|---|---|
 | **K0 Decide** | The K0 decisions below, answered with the user. The current Marketplace and trademark terms, read directly. Which upstream release to pin | The plan and `upstream.json` are agreed |
-| **K1 Build** | Code - OSS built from source on this PC, unbranded, with the drafts in `tools/` made to work. Exact tool versions in Dev setup | An unbranded build starts, opens a folder, and installs an extension from Open VSX |
+| **K1 Build** | Code - OSS built from source on this PC, unbranded, with the drafts in `tools/` made to work. Exact tool versions in Dev setup | An unbranded build starts, opens a folder, and installs an extension from Open VSX. Checked 2026-10-18: it starts, opens a folder and signs in to GitHub. Plain Code - OSS has no extension gallery, so the Open VSX install waits for EDGEkit's `product.json`, which `build.ps1` merges in; it is checked on that build |
 | **K2 Brand** | `product.json` branding, icons (app, installer, file types) made from `tools/brand`, the REDnode HUD theme as default, a welcome page. The startup screen: upstream's window first shows an outline of the layout in the last theme's colours while the workbench loads (`showSplash` in `src/vs/code/electron-browser/workbench/workbench.ts`); EDGEkit adds its mark in the centre of the editor area there, larger than the first mockup (2026-10-17), with one or two lines of text beneath it that the user will draft, and replaces the empty-editor watermark (`src/vs/workbench/browser/parts/editor/media/letterpress-*.svg`, the VS Code mark, which EDGEkit must not ship) with its own, in light, dark and high-contrast versions made from `tools/brand`. No separate splash window: it would need a patch in the main process and would only flash for the second or two the app takes to start. The version details upstream stamps on the Windows files: `build/gulpfile.vscode.ts` (`patchWin32DependenciesTask`) writes `CompanyName` "Microsoft Corporation" and a Microsoft copyright, which EDGEkit must replace (found in K1) | The installed app says EDGEkit everywhere and never VS Code, from the first frame of its startup screen; its data lives in its own folders, beside an installed VS Code without touching it |
 | **K3 Bundle** | The EDGE extensions shipped as built-in extensions, from their released VSIX files at pinned versions (upstream's `builtInExtensions` list, if it fits), Redscript IDE with its language server, and a third-party notices file with every bundled project's license | A fresh install has REDcode, the theme, EDGEdeck, Redscript IDE and the other published EDGE extensions, with no network; an older built-in EDGEdeck updates itself from Open VSX |
 | **K4 Release** | The release pipeline in GitHub Actions: the daily watch and its status issue (may start earlier), the extension pack published to both registries (may ship earlier), and a Windows installer built on a pinned upstream tag and pinned extension versions downloaded from each extension repo's GitHub releases. EDGEkit's version scheme; updates through GitHub releases and the update service | A tagged release produces an installer anyone can download and install, and an older install updates itself to it. A new EDGE extension in the organization shows in the status issue within a day |

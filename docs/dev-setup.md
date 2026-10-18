@@ -33,3 +33,11 @@ The first build on the dev PC (2026-10-16), Code - OSS 1.140.0 unbranded, step b
 | The installer | `npm run gulp -- vscode-win32-x64-user-setup` | 3 min | `.build\win32-x64\user-setup\VSCodeSetup.exe`, 200 MB. The name comes from upstream's `build/win32/code.iss`; K2 renames it |
 
 `tools/build.ps1` runs all of these; it has not yet run end to end in one go.
+
+## Running the app
+
+The app is `Code - OSS.exe` in `VSCode-win32-x64` beside the checkout (`E:ModdingEDGEkit-buildVSCode-win32-x64` on the dev PC). It keeps its settings in `%APPDATA%Code - OSS`, apart from an installed VS Code. The first smoke test (2026-10-18) passed: it starts, opens a folder and signs in to GitHub. It has no extension gallery until EDGEkit's `product.json` is merged in.
+
+| Problem | Cause | Fix |
+|---|---|---|
+| The app exits at once, or prints `bad option` | Started from a terminal inside VS Code, which sets `ELECTRON_RUN_AS_NODE=1`, so the app runs as plain Node (found 2026-10-18) | Start it from Explorer or the Start menu, or clear `ELECTRON_RUN_AS_NODE` and the `VSCODE_*` variables in that shell first |
