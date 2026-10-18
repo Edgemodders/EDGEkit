@@ -1,6 +1,6 @@
 # EDGE<span class="y">kit</span> design
 
-EDGEkit is the EDGEmodders editor: a build of Code - OSS, the open-source core of VS Code, with EDGEmodders branding and every EDGE tool built in. A modder installs one app and gets REDcode's editors, REDnode's views, the REDnode HUD theme, EDGEdeck's mod manager and REDagent, with no extension hunting.
+EDGEkit is the Edgemodders editor: a build of Code - OSS, the open-source core of VS Code, with Edgemodders branding and every EDGE tool built in. A modder installs one app and gets REDcode's editors, REDnode's views, the REDnode HUD theme, EDGEdeck's mod manager and REDagent, with no extension hunting.
 
 **Status: K1 done (2026-10-18).** K0 was decided on 2026-10-15. Code - OSS 1.140.0 built on this PC, unbranded and without Copilot, on 2026-10-16, and the app passed its first smoke test on 2026-10-18. `build.ps1` ran end to end on 2026-10-18, branded with EDGEkit's `product.json`. The branded app installed the REDnode HUD theme 0.3.1 from Open VSX, with `extensions.verifySignature` off in the dev build's settings (since decided: off by default, "Decided after K0"). Next: K2 Brand.
 

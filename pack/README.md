@@ -17,4 +17,4 @@ New EDGE extensions join the pack as they are published. Uninstalling the pack o
 
 **EDGEkit is also an editor:** a build of Code - OSS with all of this built in, for modders who want one app. See the [EDGEkit docs](https://edgemodders.github.io/EDGEkit/) and [repo](https://github.com/Edgemodders/EDGEkit).
 
-EDGEkit is made by EDGEmodders. It is not affiliated with Microsoft or CD Projekt RED.
+EDGEkit is made by Edgemodders. It is not affiliated with Microsoft or CD Projekt RED.

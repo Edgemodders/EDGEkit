@@ -1,6 +1,6 @@
 # EDGEkit: notes for Claude sessions
 
-EDGEkit is the EDGEmodders editor: Code - OSS with EDGEmodders branding and the EDGE extensions built in (the VSCodium pattern). Read [docs/design.md](docs/design.md) first. It takes over REDcode's planned phase C7 Brand.
+EDGEkit is the Edgemodders editor: Code - OSS with Edgemodders branding and the EDGE extensions built in (the VSCodium pattern). Read [docs/design.md](docs/design.md) first. It takes over REDcode's planned phase C7 Brand.
 
 ## Status and next step
 

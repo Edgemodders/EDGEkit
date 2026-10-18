@@ -1,6 +1,6 @@
 # EDGE<span class="y">kit</span> docs
 
-EDGEkit is the EDGEmodders editor: a build of Code - OSS, the open-source core of VS Code, with EDGEmodders branding and every EDGE tool built in, so a modder installs one app and starts modding Cyberpunk 2077.
+EDGEkit is the Edgemodders editor: a build of Code - OSS, the open-source core of VS Code, with Edgemodders branding and every EDGE tool built in, so a modder installs one app and starts modding Cyberpunk 2077.
 
 | Document | What it covers |
 |---|---|

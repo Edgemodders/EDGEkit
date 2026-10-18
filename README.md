@@ -10,7 +10,7 @@
   <a href="LICENSE"><img src="docs/assets/brand/badges/license.svg" alt="license: MIT"></a>
 </p>
 
-The EDGEmodders editor: a build of Code - OSS, the open-source core of VS Code, with EDGEmodders branding and every EDGE tool built in. Install one app and get [REDcode](https://github.com/Edgemodders/REDcode)'s editors, [REDnode](https://github.com/Edgemodders/REDnode)'s views and HUD theme, and [REDagent](https://github.com/Edgemodders/REDagent), with extensions from [Open VSX](https://open-vsx.org/).
+The Edgemodders editor: a build of Code - OSS, the open-source core of VS Code, with Edgemodders branding and every EDGE tool built in. Install one app and get [REDcode](https://github.com/Edgemodders/REDcode)'s editors, [REDnode](https://github.com/Edgemodders/REDnode)'s views and HUD theme, and [REDagent](https://github.com/Edgemodders/REDagent), with extensions from [Open VSX](https://open-vsx.org/).
 
 **[Read the docs](https://edgemodders.github.io/EDGEkit/)** &middot; [Design](docs/design.md) &middot; [Dev setup](docs/dev-setup.md)
 
