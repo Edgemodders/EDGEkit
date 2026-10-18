@@ -11,7 +11,7 @@ What a Windows PC needs to build EDGEkit. The versions below were checked on the
 | Disk | The checkout, its dependencies and the build | 290 GB free on E: | Measured in K1 |
 | A checkout folder with no spaces in its path | Upstream's install runs `node-gyp.cmd` through the shell with its path unquoted (`build/npm/preinstall.ts` at 1.140.0) | `E:\Modding\EDGEkit-build\vscode`, set in `local.json` | Found in K1, 2026-10-16: under `E:\Modding\Cyberpunk 2077\` `npm ci` stopped with `'E:\Modding\Cyberpunk' is not recognized`. `local.json` at the repo root (not committed) says where the checkout lives: `{ "vscode": "E:/Modding/EDGEkit-build/vscode" }`. Without it, the scripts use `build\vscode`. `tools/checkout.ps1` refuses a path with a space |
 | Outbound firewall rules | `npm ci` downloads packages, Electron and headers | The dev PC's firewall blocks outbound by default (`BlockOutbound`) and allows programs one by one | Each new `node.exe` needs its own rule, or `npm ci` fails with `EACCES` on the registry. The built app's own executable will need one too, to reach Open VSX. In an administrator PowerShell: `New-NetFirewallRule -DisplayName "Node.js JavaScript Runtime (node.exe)" -Direction Outbound -Action Allow -Program "$env:NVM_HOME\v24.18.0\node.exe"` |
-| The sibling repos beside this one | The bundled extensions, on the dev PC | `../REDcode`, and EDGEdeck's repo in `../REDdeck` (the folder keeps its old name on the dev PC; `repo` in `extensions.json`) | Release builds download released VSIX files instead (design, "Release pipeline") |
+| The sibling repos beside this one | The bundled extensions, on the dev PC | `../REDcode`, `../EDGEdeck` | Release builds download released VSIX files instead (design, "Release pipeline") |
 
 ## Building
 

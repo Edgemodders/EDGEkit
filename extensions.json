@@ -23,7 +23,7 @@
     {
       "id": "edgemodders.edgedeck",
       "from": "sibling",
-      "repo": "../REDdeck",
+      "repo": "../EDGEdeck",
       "build": "npm run package",
       "vsix": "dist/edgedeck-win32-x64-*.vsix",
       "status": "exists",
