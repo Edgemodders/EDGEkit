@@ -31,9 +31,9 @@ The first build on the dev PC (2026-10-16), Code - OSS 1.140.0 unbranded, step b
 | Install the dependencies | `npm ci` | 3 to 4 min | |
 | The app | `npm run gulp -- vscode-win32-x64-min` | 2 min | `VSCode-win32-x64` beside the checkout, 928 MB. `bin\code-oss.cmd --version` prints 1.140.0, x64 |
 | The update helper | `npm run gulp -- vscode-win32-x64-inno-updater` | Seconds | `inno_updater.exe` in the app's `tools` folder, which the installer needs |
-| The installer | `npm run gulp -- vscode-win32-x64-user-setup` | 3 min | `.build\win32-x64\user-setup\VSCodeSetup.exe`, 200 MB. The name comes from upstream's `build/win32/code.iss`; K2 renames it |
+| The installer | `npm run gulp -- vscode-win32-x64-user-setup` | 3 min | `.build\win32-x64\user-setup\VSCodeSetup.exe`, 200 MB (since 2026-10-18 `EDGEkitSetup.exe`, 192 MB) |
 
-`tools/build.ps1` runs all of these, after the brand and bundle steps. It first ran end to end on 2026-10-18 (`-SkipFetch`, about 10 minutes): the app is `EDGEkit.exe` (936 MB, 1.140.0, x64) with EDGEkit's names and Open VSX as its gallery; the installer is still called `VSCodeSetup.exe`. The bundle step packaged REDcode, the HUD theme and EDGEdeck in their repos, without changing their versions.
+`tools/build.ps1` runs all of these, after the brand and bundle steps. It first ran end to end on 2026-10-18 (`-SkipFetch`, about 10 minutes): the app is `EDGEkit.exe` (936 MB, 1.140.0, x64) with EDGEkit's names and Open VSX as its gallery; the installer was still called `VSCodeSetup.exe` (`EDGEkitSetup.exe` from the K2 rebuild the same day). The bundle step packaged REDcode, the HUD theme and EDGEdeck in their repos, without changing their versions.
 
 ## Running the app
 
