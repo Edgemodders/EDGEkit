@@ -48,6 +48,17 @@ Not tried yet; the steps follow from the dev PC's setup. The winget ids are unve
 | Build | `.\tools\build.ps1` (the first time without `-SkipFetch`: it clones Code - OSS). About 15 minutes on the dev PC, longer the first time |
 | Run | F5 in this repo, as below |
 
+The repos and the build, in a folder without spaces:
+
+```powershell
+mkdir C:\dev; cd C:\dev
+git clone https://github.com/Edgemodders/EDGEkit
+git clone https://github.com/Edgemodders/REDcode
+git clone https://github.com/Edgemodders/EDGEdeck
+cd REDcode; npm ci; cd ..\EDGEdeck; npm ci; cd ..\EDGEkit
+.\tools\build.ps1
+```
+
 ### Sharing a dev build
 
 `node tools/dev-release.mjs` uploads the last build's `EDGEkitSetup.exe` as a **draft** GitHub release, for testing on another PC: only the repo's collaborators see it, and it makes no tag until it is published. It names the draft after the build date (`edgekit-dev-2026-10-18`, then `-2` the same day) and writes the notes from the build: the commit, the Code - OSS release and the installer's SHA-256. `--dry` only prints them. It needs the GitHub CLI (`gh`) signed in. Delete the draft when testing is done. For Claude Code to run it, the user adds `"Bash(node tools/dev-release.mjs:*)"` to `permissions.allow` in `.claude/settings.local.json`; otherwise its permission check stops the upload (2026-10-18).
