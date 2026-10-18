@@ -45,13 +45,6 @@ const builtInFile = join(dirname(target), '.build', 'edgekit', 'builtInExtension
 const builtIns = existsSync(builtInFile) ? JSON.parse(readFileSync(builtInFile, 'utf8')) : [];
 ours.builtInExtensions = [...(upstream.builtInExtensions ?? []), ...builtIns];
 
-// The startup screen (patch-upstream.mjs draws it): the mark, inlined so it shows from the first
-// frame, and the text lines from product/product.json's edgekitStartup.lines.
-const startupLogo = join(root, 'product', 'startup', 'startup.png');
-if (existsSync(startupLogo)) {
-  ours.edgekitStartup = { ...ours.edgekitStartup, logo: `data:image/png;base64,${readFileSync(startupLogo).toString('base64')}` };
-}
-
 const branded = merge(upstream, ours);
 writeFileSync(target, `${JSON.stringify(branded, null, '\t')}\n`);
 

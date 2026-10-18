@@ -11,7 +11,6 @@
 #   product/win32/code_150x150.png, code_70x70.png   Start menu tiles
 #   product/workbench/code-icon.svg          the logo in the title bar and elsewhere in the app
 #   product/editor/letterpress-*.svg         the empty-editor watermark, per theme kind
-#   product/startup/startup.png              the startup screen's mark (not copied: brand.mjs inlines it)
 # Each icon is drawn large (256 px) and simple (32 px); the sizes from 48 up come from the large
 # one and those from 32 down from the simple one, so the small sizes stay readable.
 
@@ -124,10 +123,3 @@ foreach ($kind in @{ dark = '0.3'; light = '0.1'; hcDark = ''; hcLight = '' }.Ge
     [IO.File]::WriteAllText((Join-Path $editor "letterpress-$($kind.Key).svg"), $svg)
     Write-Output "Wrote product\editor\letterpress-$($kind.Key).svg"
 }
-
-# The startup screen's mark (tools/brand.mjs puts it in product.json as edgekitStartup.logo).
-$startup = Join-Path $repo 'product\startup'
-New-Item -ItemType Directory -Force $startup | Out-Null
-$png = Render 'startup' 'startup.png' 260 280 2
-Magick $png -trim +repage (Join-Path $startup 'startup.png')
-Write-Output 'Wrote product\startup\startup.png'

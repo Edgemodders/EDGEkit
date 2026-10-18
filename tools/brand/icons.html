@@ -6,7 +6,6 @@
        icons.html?wizard=big|small          the installer's side image (164 x 314) or corner image (55 x 55)
        icons.html?tile=150|70               a Start menu tile logo
        icons.html?letterpress=dark|light|hcDark|hcLight   the empty-editor watermark
-       icons.html?startup                   the startup screen's mark (260 x 280)
      Colours are the REDnode HUD theme's. -->
 <html lang="en">
 <head>
@@ -115,11 +114,6 @@ body.sheet .dark { background: #202124; padding: 14px; border-radius: 6px; }
 .mark .bar { position: absolute; left: 50%; transform: translateX(-50%); bottom: calc(var(--s) * .25); width: calc(var(--s) * .47); height: calc(var(--s) * .03); background: linear-gradient(90deg, var(--yellow) 0 30%, var(--cyan) 30%); }
 .mark.mono { --fg: var(--m); --yellow: var(--m); --cyan: var(--m); }
 
-/* The startup screen: the app icon, larger, with the wordmark beneath. */
-.startup { display: grid; justify-items: center; gap: 22px; padding: 4px; width: 252px; }
-.startup .app { --s: 176px; }
-.startup .word { font-family: "Chakra Petch", sans-serif; font-weight: 700; font-size: 34px; letter-spacing: .14em; color: var(--fg); }
-.startup .word span { color: var(--yellow); }
 </style>
 </head>
 <body>
@@ -158,7 +152,6 @@ else if (q.has('letterpress')) {
   const mono = { light: '#000', hcLight: '#000', hcDark: '#fff' }[q.get('letterpress')];
   html = `<div class="mark${mono ? ' mono' : ''}" style="${mono ? `--m:${mono}` : ''}"><div class="ek">E<span>K</span></div><div class="bar"></div></div>`;
 }
-else if (q.has('startup')) html = `<div class="startup">${app(176)}<div class="word">EDGE<span>kit</span></div></div>`;
 else if (q.has('tile')) { const t = +q.get('tile'); html = `<div class="tile" style="width:${t}px;height:${t}px">${app(Math.round(t * .66))}</div>`; }
 else {
   document.body.className = 'sheet';
