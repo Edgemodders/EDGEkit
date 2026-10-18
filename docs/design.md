@@ -161,6 +161,12 @@ Still open, to settle in K1:
 | How to leave Copilot out | Decided: no Copilot (K0 decisions). Checked 2026-10-15: upstream's build puts it in the app (`build/gulpfile.vscode.ts` compiles `extensions/copilot` and packs the `@github/copilot-sdk` runtime), so a plain Code - OSS build has it. VSCodium removes it with two patches: `52-ext-copilot-remove-it.json` (deletes `extensions/copilot` and Copilot's agent code) and `53-ext-copilot-remove-it.patch` (takes it out of the build, `package.json` and the lockfiles). EDGEkit takes both (MIT) from VSCodium's release built on 1.140.0 (`1.140.06880`) with `tools/remove-copilot.mjs`, which downloads them rather than committing them. They change the dependencies, so they apply before `npm ci`. **Moved into K1** (2026-10-16): plain upstream's local build stops at packaging, `[prepareBuiltInCopilotRipgrepShim] Copilot SDK directory not found` (upstream's CI builds Copilot separately), so K1 builds without Copilot. The patches also remove the Copilot and Claude agents in upstream's agent host (`src/vs/platform/agentHost/node/copilot` and `claude`); Claude Code comes from Open VSX instead |
 | User or system installer | Code - OSS can build both. The user installer needs no admin rights and is what VS Code offers first; it is the likely choice |
 
+Still open, for the user to decide in K2:
+
+| Question | Notes |
+|---|---|
+| Extension signature checks | Found in K1 (2026-10-18): installing from Open VSX fails with "Signature verification was not executed". Before installing, the app checks a gallery extension's signature with Microsoft's `vsce-sign`, which is closed source and not part of Code - OSS, so the check cannot run. VSCodium skips the check (`00-extension-disable-signature-verification.patch`); downloads still come from Open VSX over HTTPS, but nothing checks that an extension was not changed after its publisher uploaded it. The user's leaning (2026-10-18): follow the norm for Open VSX clients, if they all do the same (that other clients do is unverified). The other way is to keep a check without `vsce-sign` (no known way yet). For the K1 test, the dev build's user settings set `extensions.verifySignature` to `false` |
+
 ## The EDGEkit extension pack
 
 For modders who stay in VS Code or VSCodium: one extension, `edgemodders.edgekit` (display name EDGEkit), that installs every EDGE extension.
