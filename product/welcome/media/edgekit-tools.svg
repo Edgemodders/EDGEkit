@@ -1,0 +1,36 @@
+<svg viewBox="0 0 410 370" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="0.5" y="0.5" width="409" height="369" fill="var(--vscode-editor-background, #08090D)" stroke="var(--vscode-foreground, #E3E6EE)" stroke-opacity="0.12"/>
+<path d="M14 40 V14 H40" stroke="var(--vscode-focusBorder, #FCEE0A)" stroke-width="3"/>
+<path d="M396 330 V356 H370" stroke="var(--vscode-focusBorder, #FCEE0A)" stroke-width="3"/>
+<rect x="40" y="44" width="330" height="282" fill="var(--vscode-sideBar-background, #0C0E14)" stroke="var(--vscode-foreground, #E3E6EE)" stroke-opacity="0.2"/>
+<rect x="56" y="60" width="298" height="28" fill="var(--vscode-input-background, #08090D)" stroke="var(--vscode-focusBorder, #FCEE0A)"/>
+<text x="68" y="79" font-family="monospace" font-size="12" fill="var(--vscode-foreground, #E3E6EE)">edgemodders</text>
+<g>
+<rect x="56" y="104" width="298" height="62" fill="var(--vscode-list-hoverBackground, #10131B)"/>
+<rect x="68" y="116" width="38" height="38" fill="var(--vscode-focusBorder, #FCEE0A)"/>
+<text x="87" y="140" text-anchor="middle" font-family="monospace" font-size="12" font-weight="bold" fill="var(--vscode-editor-background, #08090D)">RC</text>
+<text x="118" y="132" font-family="monospace" font-size="13" fill="var(--vscode-foreground, #E3E6EE)">REDcode</text>
+<rect x="118" y="142" width="130" height="7" fill="var(--vscode-foreground, #E3E6EE)" fill-opacity="0.25"/>
+</g>
+<g>
+<rect x="56" y="176" width="298" height="62" fill="var(--vscode-list-hoverBackground, #10131B)"/>
+<rect x="68" y="188" width="38" height="38" stroke="var(--vscode-focusBorder, #FCEE0A)" stroke-width="2"/>
+<text x="87" y="212" text-anchor="middle" font-family="monospace" font-size="12" font-weight="bold" fill="var(--vscode-focusBorder, #FCEE0A)">ED</text>
+<text x="118" y="204" font-family="monospace" font-size="13" fill="var(--vscode-foreground, #E3E6EE)">EDGEdeck</text>
+<rect x="118" y="214" width="104" height="7" fill="var(--vscode-foreground, #E3E6EE)" fill-opacity="0.25"/>
+</g>
+<g>
+<rect x="56" y="248" width="298" height="62" fill="var(--vscode-list-hoverBackground, #10131B)"/>
+<rect x="68" y="260" width="38" height="38" fill="var(--vscode-editor-background, #08090D)" stroke="var(--vscode-foreground, #E3E6EE)" stroke-opacity="0.4"/>
+<rect x="74" y="268" width="26" height="4" fill="#FCEE0A"/>
+<rect x="74" y="277" width="18" height="4" fill="#19F3FF"/>
+<rect x="74" y="286" width="22" height="4" fill="#5DFFA1"/>
+<text x="118" y="276" font-family="monospace" font-size="13" fill="var(--vscode-foreground, #E3E6EE)">REDnode HUD</text>
+<rect x="118" y="286" width="118" height="7" fill="var(--vscode-foreground, #E3E6EE)" fill-opacity="0.25"/>
+</g>
+<rect x="282" y="122" width="60" height="24" fill="var(--vscode-button-background, #FCEE0A)"/>
+<text x="312" y="138" text-anchor="middle" font-family="monospace" font-size="10" fill="var(--vscode-button-foreground, #08090D)">INSTALL</text>
+<rect x="282" y="194" width="60" height="24" fill="var(--vscode-button-background, #FCEE0A)"/>
+<text x="312" y="210" text-anchor="middle" font-family="monospace" font-size="10" fill="var(--vscode-button-foreground, #08090D)">INSTALL</text>
+<text x="312" y="282" text-anchor="middle" font-family="monospace" font-size="10" fill="var(--vscode-foreground, #E3E6EE)" fill-opacity="0.6">BUILT IN</text>
+</svg>

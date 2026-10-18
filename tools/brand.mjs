@@ -7,7 +7,8 @@
 // Objects merge key by key; anything else in ours replaces upstream's. Keys that start
 // with "//" are notes and are left out. Upstream's original is kept beside it as
 // product.upstream.json, so branding again always starts from upstream. It then copies EDGEkit's
-// icons (product/win32, product/workbench, product/editor, product/auth) over upstream's.
+// icons (product/win32, product/workbench, product/editor, product/auth) over upstream's, and adds
+// its own files (product/welcome, product/onboarding).
 import { copyFileSync, existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { checkout, root } from './checkout.mjs';
@@ -89,3 +90,19 @@ for (const [from, to] of reused) {
   copied++;
 }
 console.log(`Copied ${copied} icons and images over upstream's.`);
+
+// EDGEkit's own files beside upstream's (K2): the Welcome page walkthrough and its images
+// (patch-upstream.mjs lists the walkthrough), and the onboarding's REDnode HUD theme card
+// (product.json onboardingThemes). Each goes into a folder upstream has.
+const welcome = join(root, 'product', 'welcome');
+const gettingStarted = join(dirname(target), 'src', 'vs', 'workbench', 'contrib', 'welcomeGettingStarted', 'common');
+const added = [
+  [join(welcome, 'edgekitWalkthrough.ts'), join(gettingStarted, 'edgekitWalkthrough.ts')],
+  ...readdirSync(join(welcome, 'media')).map((name) => [join(welcome, 'media', name), join(gettingStarted, 'media', name)]),
+  ...readdirSync(join(root, 'product', 'onboarding')).map((name) => [join(root, 'product', 'onboarding', name), join(dirname(target), 'src', 'vs', 'workbench', 'contrib', 'welcomeOnboarding', 'browser', 'media', name)]),
+];
+for (const [from, to] of added) {
+  if (!existsSync(dirname(to))) throw new Error(`Upstream has no folder ${dirname(to)}. Check tools/brand.mjs.`);
+  copyFileSync(from, to);
+}
+console.log(`Added ${added.length} EDGEkit files (the Welcome walkthrough and the onboarding's theme card).`);

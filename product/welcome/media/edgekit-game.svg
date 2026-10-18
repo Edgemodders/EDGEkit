@@ -1,0 +1,29 @@
+<svg viewBox="0 0 410 370" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="0.5" y="0.5" width="409" height="369" fill="var(--vscode-editor-background, #08090D)" stroke="var(--vscode-foreground, #E3E6EE)" stroke-opacity="0.12"/>
+<path d="M14 40 V14 H40" stroke="var(--vscode-focusBorder, #FCEE0A)" stroke-width="3"/>
+<path d="M396 330 V356 H370" stroke="var(--vscode-focusBorder, #FCEE0A)" stroke-width="3"/>
+<text x="40" y="78" font-family="monospace" font-size="12" fill="var(--vscode-foreground, #E3E6EE)" fill-opacity="0.6">GAME FOLDER</text>
+<rect x="40" y="90" width="330" height="40" fill="var(--vscode-input-background, #0C0E14)" stroke="var(--vscode-focusBorder, #FCEE0A)"/>
+<path d="M54 102 h10 l4 4 h16 v16 h-30 z" stroke="var(--vscode-focusBorder, #FCEE0A)" stroke-width="2"/>
+<text x="96" y="115" font-family="monospace" font-size="12" fill="var(--vscode-foreground, #E3E6EE)">...\Cyberpunk 2077</text>
+<circle cx="346" cy="110" r="11" fill="var(--vscode-button-background, #FCEE0A)"/>
+<path d="M340 110 l4 4 l8 -8" stroke="var(--vscode-button-foreground, #08090D)" stroke-width="2.5"/>
+<rect x="40" y="152" width="330" height="170" fill="var(--vscode-sideBar-background, #0C0E14)" stroke="var(--vscode-foreground, #E3E6EE)" stroke-opacity="0.2"/>
+<g font-family="monospace" font-size="12" fill="var(--vscode-foreground, #E3E6EE)">
+<path d="M58 172 l5 5 l-5 5" stroke="var(--vscode-foreground, #E3E6EE)" stroke-opacity="0.6" stroke-width="1.5"/>
+<text x="72" y="182">archive</text>
+<path d="M58 204 l5 5 l-5 5" stroke="var(--vscode-foreground, #E3E6EE)" stroke-opacity="0.6" stroke-width="1.5"/>
+<text x="72" y="214">bin</text>
+<path d="M58 236 l5 5 l-5 5" stroke="var(--vscode-foreground, #E3E6EE)" stroke-opacity="0.6" stroke-width="1.5"/>
+<text x="72" y="246">mods</text>
+<path d="M58 268 l5 5 l-5 5" stroke="var(--vscode-foreground, #E3E6EE)" stroke-opacity="0.6" stroke-width="1.5"/>
+<text x="72" y="278">r6</text>
+<path d="M58 300 l5 5 l-5 5" stroke="var(--vscode-foreground, #E3E6EE)" stroke-opacity="0.6" stroke-width="1.5"/>
+<text x="72" y="310">red4ext</text>
+</g>
+<rect x="190" y="174" width="150" height="7" fill="var(--vscode-foreground, #E3E6EE)" fill-opacity="0.15"/>
+<rect x="190" y="206" width="110" height="7" fill="var(--vscode-foreground, #E3E6EE)" fill-opacity="0.15"/>
+<rect x="190" y="238" width="130" height="7" fill="var(--vscode-foreground, #E3E6EE)" fill-opacity="0.15"/>
+<rect x="190" y="270" width="90" height="7" fill="var(--vscode-foreground, #E3E6EE)" fill-opacity="0.15"/>
+<rect x="190" y="302" width="120" height="7" fill="var(--vscode-foreground, #E3E6EE)" fill-opacity="0.15"/>
+</svg>

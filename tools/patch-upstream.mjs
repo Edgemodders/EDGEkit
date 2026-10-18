@@ -168,6 +168,92 @@ const edits = [
     from: /background-image: url\('data:image\/png;base64,[A-Za-z0-9+/=]+'\);/,
     to: "background-image: url('favicon.ico');",
   },
+  {
+    // K2, the Welcome page: EDGEkit's walkthrough (product/welcome/edgekitWalkthrough.ts, which
+    // brand.mjs copies in) comes first. Upstream's desktop setup walkthrough (Copilot, a theme
+    // picker, Microsoft's videos) is hidden, not deleted: its Copilot steps stay in use, so the
+    // build's unused-code check still passes.
+    name: 'Welcome: EDGEkit walkthrough (the import)',
+    file: 'src/vs/workbench/contrib/welcomeGettingStarted/common/gettingStartedContent.ts',
+    from: "import notebookProfileContent from './media/notebookProfile.js';\n",
+    to: "import notebookProfileContent from './media/notebookProfile.js';\nimport { edgekitWalkthrough } from './edgekitWalkthrough.js'; // EDGEkit\n",
+  },
+  {
+    name: 'Welcome: EDGEkit walkthrough first',
+    file: 'src/vs/workbench/contrib/welcomeGettingStarted/common/gettingStartedContent.ts',
+    from: "export const walkthroughs: GettingStartedWalkthroughContent = [\n\t{\n\t\tid: 'Setup',",
+    to: "export const walkthroughs: GettingStartedWalkthroughContent = [\n\tedgekitWalkthrough, // EDGEkit: its own setup walkthrough, first\n\t{\n\t\tid: 'Setup',",
+  },
+  {
+    name: "Welcome: upstream's setup walkthrough hidden",
+    file: 'src/vs/workbench/contrib/welcomeGettingStarted/common/gettingStartedContent.ts',
+    from: "\t\ticon: setupIcon,\n\t\twhen: '!isWeb',",
+    to: "\t\ticon: setupIcon,\n\t\twhen: 'false', // EDGEkit: replaced by EDGEkitSetup",
+  },
+  {
+    name: 'Welcome: no "Generate New Workspace" chat entry',
+    file: 'src/vs/workbench/contrib/welcomeGettingStarted/common/gettingStartedContent.ts',
+    from: "\t\twhen: '!isWeb && !chatSetupHidden && !chatSetupDisabledInWorkspace',\n\t\tcontent: {\n\t\t\ttype: 'startEntry',\n\t\t\tcommand: 'command:welcome.newWorkspaceChat',",
+    to: "\t\twhen: 'false', // EDGEkit: no Copilot\n\t\tcontent: {\n\t\t\ttype: 'startEntry',\n\t\t\tcommand: 'command:welcome.newWorkspaceChat',",
+  },
+  {
+    name: "Welcome: EDGEkit's subtitle",
+    file: 'src/vs/workbench/contrib/welcomeGettingStarted/browser/gettingStarted.ts',
+    from: "comment: ['Shown as subtitle on the Welcome page.'] }, \"Editing evolved\"))",
+    to: "comment: ['Shown as subtitle on the Welcome page.'] }, \"The Edgemodders editor for Cyberpunk 2077 mods\"))",
+  },
+  {
+    // K2, the onboarding's first step: a plain GitHub sign-in, not Copilot's (decided 2026-10-18).
+    // A GitHub account is what EDGEmods publishing needs. The Google, Apple and GitHub Enterprise
+    // buttons are built but never shown, and Copilot's terms are replaced with GitHub's.
+    name: 'Onboarding: why sign in',
+    file: 'src/vs/workbench/contrib/welcomeOnboarding/browser/onboardingVariationA.ts',
+    from: "localize('onboarding.signIn.heroSubtitle', \"Sign in to use GitHub Copilot.\")",
+    to: "localize('onboarding.signIn.heroSubtitle', \"Sign in with GitHub to publish your mods on EDGEmods and to work with your repositories.\")",
+  },
+  {
+    name: 'Onboarding: the footer sign-in button',
+    file: 'src/vs/workbench/contrib/welcomeOnboarding/browser/onboardingVariationA.ts',
+    from: "localize('onboarding.sessions.signInNudge', \"Sign in to use GitHub Copilot\")",
+    to: "localize('onboarding.sessions.signInNudge', \"Sign in with GitHub\")",
+  },
+  {
+    name: 'Onboarding: GitHub only (the start)',
+    file: 'src/vs/workbench/contrib/welcomeOnboarding/browser/onboardingVariationA.ts',
+    from: "\t\tconst googleBtn = this._registerStepFocusable(this._createSignInButton(actions, 'google',",
+    to: "\t\tif (/* EDGEkit: GitHub sign-in only */ (false as boolean)) {\n\t\tconst googleBtn = this._registerStepFocusable(this._createSignInButton(actions, 'google',",
+  },
+  {
+    name: 'Onboarding: GitHub only (the end)',
+    file: 'src/vs/workbench/contrib/welcomeOnboarding/browser/onboardingVariationA.ts',
+    from: "\t\t\tvoid this._handleEnterpriseSignIn();\n\t\t}));\n\t}",
+    to: "\t\t\tvoid this._handleEnterpriseSignIn();\n\t\t}));\n\t\t}\n\t}",
+  },
+  {
+    name: 'Onboarding: a plain GitHub sign-in',
+    file: 'src/vs/workbench/contrib/welcomeOnboarding/browser/onboardingVariationA.ts',
+    from: "\t\t\t\textraAuthorizeParameters: { get_started_with: 'copilot-vscode' },\n\t\t\t\tprovider: socialProvider,\n",
+    to: "\t\t\t\tprovider: socialProvider, // EDGEkit: not Copilot's sign-up\n",
+  },
+  {
+    name: 'Onboarding: no Copilot setup after signing in',
+    file: 'src/vs/workbench/contrib/welcomeOnboarding/browser/onboardingVariationA.ts',
+    from: "\t\t\t\t// Run chat setup in the background (sign-up, extension install, entitlement resolution)\n\t\t\t\tthis.commandService.executeCommand('workbench.action.chat.triggerSetup', undefined, {\n\t\t\t\t\tdisableChatViewReveal: true,\n\t\t\t\t\tsetupStrategy: ChatSetupStrategy.DefaultSetup,\n\t\t\t\t});\n",
+    to: "\t\t\t\t// EDGEkit: no Copilot setup after signing in\n",
+  },
+  {
+    name: "Onboarding: GitHub's terms, not Copilot's",
+    file: 'src/vs/workbench/contrib/welcomeOnboarding/browser/onboardingVariationA.ts',
+    from: "\t\t// GitHub Copilot disclaimer\n\t\tconst copilotDisclaimer = append(disclaimerCol, $('.onboarding-a-signin-disclaimer'));\n",
+    to: "\t\t// EDGEkit: GitHub's own terms. Copilot's disclaimer below is built but not shown.\n" +
+      "\t\tconst githubDisclaimer = append(disclaimerCol, $('.onboarding-a-signin-disclaimer'));\n" +
+      "\t\tgithubDisclaimer.append(localize('onboarding.signIn.edgekit.disclaimer.prefix', \"By signing in, you agree to GitHub's \"));\n" +
+      "\t\tthis._createInlineLink(githubDisclaimer, localize('onboarding.signIn.edgekit.disclaimer.terms', \"Terms of Service\"), 'https://docs.github.com/site-policy/github-terms/github-terms-of-service');\n" +
+      "\t\tgithubDisclaimer.append(localize('onboarding.signIn.edgekit.disclaimer.middle', \" and \"));\n" +
+      "\t\tthis._createInlineLink(githubDisclaimer, localize('onboarding.signIn.edgekit.disclaimer.privacy', \"Privacy Statement\"), 'https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement');\n" +
+      "\t\tgithubDisclaimer.append(localize('onboarding.signIn.edgekit.disclaimer.suffix', \". EDGEkit itself collects no data.\"));\n" +
+      "\t\tconst copilotDisclaimer = $('.onboarding-a-signin-disclaimer');\n",
+  },
 ];
 
 for (const { name, file, dir, match, all, from, to } of edits) {
@@ -179,7 +265,10 @@ for (const { name, file, dir, match, all, from, to } of edits) {
     const crlf = raw.includes('\r\n');
     const text = raw.replace(/\r\n/g, '\n');
     const count = (s) => (s instanceof RegExp ? (text.match(new RegExp(s.source, 'g')) ?? []).length : text.split(s).length - 1);
-    if (count(from) === 0 && count(to) > 0) continue;
+    // Made already: the new text is there and the old is not, or (when the new text contains the
+    // old, as for an insertion) every copy of the old is part of a copy of the new.
+    const within = typeof from === 'string' && to.includes(from);
+    if (count(to) > 0 && (count(from) === 0 || (within && count(from) === count(to)))) continue;
     if (all ? count(from) === 0 : count(from) !== 1) throw new Error(`${name}: expected the text ${all ? 'at least' : 'exactly'} once in ${f}, found it ${count(from)} times. Upstream has moved; check this edit.`);
     const out = all ? text.split(from).join(to) : text.replace(from, () => to);
     writeFileSync(path, crlf ? out.replace(/\n/g, '\r\n') : out);
