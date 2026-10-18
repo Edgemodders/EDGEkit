@@ -7,7 +7,7 @@
 // (Copilot's removal) stay in their own scripts.
 //
 // Each edit names a file, or a folder and a file name pattern (dir, match). It replaces the text once,
-// or every copy with all: true.
+// or every copy with all: true. The text to replace can be a pattern, for one too long to quote.
 import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { checkout } from './checkout.mjs';
@@ -125,6 +125,49 @@ const edits = [
     from: 'Visual Studio Code',
     to: 'EDGEkit',
   },
+  {
+    // K2, the trademark sweep: the icon font's VS Code logos ($(vscode), $(vscode-insiders)) show
+    // as the plain window glyph instead, wherever upstream or an extension uses them.
+    name: 'No VS Code logo glyph',
+    file: 'src/vs/base/common/codiconsLibrary.ts',
+    from: "\tvscode: register('vscode', 0xec29),\n\tvscodeInsiders: register('vscode-insiders', 0xec2a),",
+    to: "\tvscode: register('vscode', 0xeb7f), // EDGEkit: the window glyph, not upstream's logo\n\tvscodeInsiders: register('vscode-insiders', 0xeb7f),",
+  },
+  {
+    // Chat's working indicator draws upstream's logo (an experimental setting, off in stable builds);
+    // EDGEkit always uses the setting's own no-icon variant.
+    name: 'No VS Code logo in chat progress',
+    file: 'src/vs/workbench/contrib/chat/browser/widget/chatWorkingLogo.ts',
+    from: 'const noIcon = animation === ChatProgressAnimation.DrawMonochromeNoIcon;',
+    to: 'const noIcon = /* EDGEkit: never upstream\'s logo */ true;',
+  },
+  {
+    // The Agents window's easter egg swims fish shaped like upstream's logo; EDGEkit leaves it off.
+    name: 'No logo fish (the setting)',
+    file: 'src/vs/sessions/contrib/aquarium/browser/aquarium.contribution.ts',
+    from: "\t\t\ttype: 'boolean',\n\t\t\tdefault: true,\n\t\t\tdescription: localize('sessions.developerJoy.enabled',",
+    to: "\t\t\ttype: 'boolean',\n\t\t\tdefault: false,\n\t\t\tdescription: localize('sessions.developerJoy.enabled',",
+  },
+  {
+    name: 'No logo fish (the switch)',
+    file: 'src/vs/sessions/contrib/aquarium/browser/aquariumOverlay.ts',
+    from: '\t\treturn this.configurationService.getValue<boolean>(SESSIONS_DEVELOPER_JOY_ENABLED_SETTING) === true;',
+    to: '\t\treturn false; // EDGEkit: the fish are upstream\'s logo',
+  },
+  {
+    // The page the browser shows after a Microsoft account sign-in (brand.mjs copies EDGEkit's
+    // favicon.ico beside it).
+    name: 'Microsoft sign-in page: EDGEkit',
+    file: 'extensions/microsoft-authentication/media/index.html',
+    from: '\t<a class="branding" href="https://code.visualstudio.com/">\n\t\tVisual Studio Code\n\t</a>',
+    to: '\t<a class="branding" href="https://edgemodders.ai/">\n\t\tEDGEkit\n\t</a>',
+  },
+  {
+    name: 'Microsoft sign-in page: no inlined VS Code logo',
+    file: 'extensions/microsoft-authentication/media/auth.css',
+    from: /background-image: url\('data:image\/png;base64,[A-Za-z0-9+/=]+'\);/,
+    to: "background-image: url('favicon.ico');",
+  },
 ];
 
 for (const { name, file, dir, match, all, from, to } of edits) {
@@ -135,10 +178,10 @@ for (const { name, file, dir, match, all, from, to } of edits) {
     const raw = readFileSync(path, 'utf8');
     const crlf = raw.includes('\r\n');
     const text = raw.replace(/\r\n/g, '\n');
-    const count = (s) => text.split(s).length - 1;
+    const count = (s) => (s instanceof RegExp ? (text.match(new RegExp(s.source, 'g')) ?? []).length : text.split(s).length - 1);
     if (count(from) === 0 && count(to) > 0) continue;
     if (all ? count(from) === 0 : count(from) !== 1) throw new Error(`${name}: expected the text ${all ? 'at least' : 'exactly'} once in ${f}, found it ${count(from)} times. Upstream has moved; check this edit.`);
-    const out = all ? text.split(from).join(to) : text.replace(from, to);
+    const out = all ? text.split(from).join(to) : text.replace(from, () => to);
     writeFileSync(path, crlf ? out.replace(/\n/g, '\r\n') : out);
     made++;
   }

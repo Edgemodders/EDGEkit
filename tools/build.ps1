@@ -33,7 +33,11 @@ if ($LASTEXITCODE) { throw 'Branding failed.' }
 node (Join-Path $PSScriptRoot 'remove-copilot.mjs')
 if ($LASTEXITCODE) { throw 'Removing Copilot failed.' }
 
-# EDGEkit's small edits to upstream: no appx, signature check off by default.
+# EDGEkit's name for upstream's in the app's text (K2, the trademark sweep).
+node (Join-Path $PSScriptRoot 'remove-branding.mjs')
+if ($LASTEXITCODE) { throw 'Removing upstream branding failed.' }
+
+# EDGEkit's small edits to upstream: no appx, signature check off by default, and the rest.
 node (Join-Path $PSScriptRoot 'patch-upstream.mjs')
 if ($LASTEXITCODE) { throw 'Patching upstream failed.' }
 

@@ -27,13 +27,26 @@ The first build on the dev PC (2026-10-16), Code - OSS 1.140.0 unbranded, step b
 | Step | Command (in the checkout) | Time | Result |
 |---|---|---|---|
 | Take Copilot out | `node tools/remove-copilot.mjs` (from the repo) | Seconds | 177 paths deleted, the build patch applied |
-| EDGEkit's edits | `node tools/patch-upstream.mjs` (from the repo) | Seconds | Added 2026-10-18: no Windows 11 context-menu appx (needed once `product.json` sets `quality` to `stable`), and the extension signature check off by default |
+| Upstream's name out | `node tools/remove-branding.mjs` (from the repo) | Seconds | Added 2026-10-18: VSCodium's branding patch in 95 files, then 177 more message lines in 79 files. `--list` prints each message it renames |
+| EDGEkit's edits | `node tools/patch-upstream.mjs` (from the repo) | Seconds | Added 2026-10-18: no Windows 11 context-menu appx (needed once `product.json` sets `quality` to `stable`), and the extension signature check off by default; later the K2 edits (theme, file details, installer, logos) |
 | Install the dependencies | `npm ci` | 3 to 4 min | |
 | The app | `npm run gulp -- vscode-win32-x64-min` | 2 min | `VSCode-win32-x64` beside the checkout, 928 MB. `bin\code-oss.cmd --version` prints 1.140.0, x64 |
 | The update helper | `npm run gulp -- vscode-win32-x64-inno-updater` | Seconds | `inno_updater.exe` in the app's `tools` folder, which the installer needs |
 | The installer | `npm run gulp -- vscode-win32-x64-user-setup` | 3 min | `.build\win32-x64\user-setup\VSCodeSetup.exe`, 200 MB (since 2026-10-18 `EDGEkitSetup.exe`, 192 MB) |
 
 `tools/build.ps1` runs all of these, after the brand and bundle steps. It first ran end to end on 2026-10-18 (`-SkipFetch`, about 10 minutes): the app is `EDGEkit.exe` (936 MB, 1.140.0, x64) with EDGEkit's names and Open VSX as its gallery; the installer was still called `VSCodeSetup.exe` (`EDGEkitSetup.exe` from the K2 rebuild the same day). The bundle step packaged REDcode, the HUD theme and EDGEdeck in their repos, without changing their versions.
+
+### Building on another PC
+
+Not tried yet; the steps follow from the dev PC's setup.
+
+| Step | What |
+|---|---|
+| Tools | Those in the table above: Git, Node 24.18.0 (with nvm-windows), Python 3, Visual Studio 2022 Build Tools with the C++ x64 tools, the Windows SDK and the Spectre-mitigated libraries |
+| Repos | Clone EDGEkit and, beside it in the same folder, `REDcode` and `EDGEdeck` (github.com/Edgemodders), and run `npm ci` in each of those two: the bundle step runs their package scripts |
+| Checkout path | If the EDGEkit folder's path has a space, add `local.json` with a path that has none, as on the dev PC |
+| Build | `.\tools\build.ps1` (the first time without `-SkipFetch`: it clones Code - OSS) |
+| Run | F5 in this repo, as below |
 
 ## Running the app
 

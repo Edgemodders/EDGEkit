@@ -9,6 +9,7 @@
 #   product/win32/inno-big-*.bmp             the installer's side image, at 7 scales
 #   product/win32/inno-small-*.bmp           the installer's corner image, at 7 scales
 #   product/win32/code_150x150.png, code_70x70.png   Start menu tiles
+#   product/auth/favicon.ico                 the sign-in pages' favicon
 #   product/workbench/code-icon.svg          the logo in the title bar and elsewhere in the app
 #   product/editor/letterpress-*.svg         the empty-editor watermark, per theme kind
 # Each icon is drawn large (256 px) and simple (32 px); the sizes from 48 up come from the large
@@ -69,6 +70,12 @@ $appSimple = Render 'app=32' 'app-32.png' 32 32 4
 Ico $appLarge $appSimple 'code.ico' $appSizes
 Copy-Item (Join-Path $win32 'code.ico') (Join-Path $win32 'sessions.ico') -Force
 Write-Output 'Wrote product\win32\sessions.ico'
+
+# The sign-in pages' favicon (GitHub and Microsoft accounts), from the app icon's small sizes.
+$auth = Join-Path $repo 'product\auth'
+New-Item -ItemType Directory -Force $auth | Out-Null
+Magick @(16, 24, 32, 48 | ForEach-Object { Join-Path $work "code-$_.png" }) (Join-Path $auth 'favicon.ico')
+Write-Output 'Wrote product\auth\favicon.ico'
 
 # The file-type icons, one per upstream file icon (the labels are in icons.html).
 $files = [ordered]@{
