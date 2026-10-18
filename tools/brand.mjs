@@ -6,8 +6,9 @@
 //
 // Objects merge key by key; anything else in ours replaces upstream's. Keys that start
 // with "//" are notes and are left out. Upstream's original is kept beside it as
-// product.upstream.json, so branding again always starts from upstream.
-import { copyFileSync, existsSync, readFileSync, writeFileSync } from 'node:fs';
+// product.upstream.json, so branding again always starts from upstream. It then copies EDGEkit's
+// icons (product/win32, product/workbench) over upstream's.
+import { copyFileSync, existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { checkout, root } from './checkout.mjs';
 
@@ -51,3 +52,19 @@ const changed = Object.keys(ours).filter((k) => !k.startsWith('//'));
 const unknown = changed.filter((k) => !(k in upstream));
 console.log(`Branded ${target}: ${changed.length} keys.`);
 if (unknown.length) console.log(`Not in upstream's product.json (check they are still read): ${unknown.join(', ')}`);
+
+// EDGEkit's icons and installer images (tools/brand/icons.ps1 renders them) over upstream's.
+// Each one replaces a file upstream has, so a name upstream drops is caught here.
+const images = [
+  [join(root, 'product', 'win32'), join(dirname(target), 'resources', 'win32')],
+  [join(root, 'product', 'workbench'), join(dirname(target), 'src', 'vs', 'workbench', 'browser', 'media')],
+];
+let copied = 0;
+for (const [from, to] of images) {
+  for (const name of readdirSync(from)) {
+    if (!existsSync(join(to, name))) throw new Error(`Upstream has no ${name} in ${to} to replace. Check tools/brand/icons.ps1.`);
+    copyFileSync(join(from, name), join(to, name));
+    copied++;
+  }
+}
+console.log(`Copied ${copied} icons and images over upstream's.`);

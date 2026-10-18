@@ -1,0 +1,157 @@
+<!doctype html>
+<!-- Source for EDGEkit's Windows icons and installer images. Rendered by tools/brand/icons.ps1.
+       icons.html?sheet                     a preview of everything, for review
+       icons.html?app=256                   the app icon at that size (small sizes use the simple variant)
+       icons.html?file=JS&size=256          a file-type icon
+       icons.html?wizard=big|small          the installer's side image (164 x 314) or corner image (55 x 55)
+       icons.html?tile=150|70               a Start menu tile logo
+     Colours are the REDnode HUD theme's. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>EDGEkit icons</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&display=block" rel="stylesheet">
+<style>
+:root {
+  --bg: #08090d; --side: #0c0e14; --border: #262c3d;
+  --fg: #e3e6ee; --dim: #8a93a8; --yellow: #fcee0a; --cyan: #19f3ff;
+}
+html, body { margin: 0; background: transparent; }
+body.sheet { background: #f3f4f7; font: 13px/1.4 "Segoe UI", sans-serif; color: #333; padding: 24px; }
+body.sheet h2 { font-size: 15px; margin: 28px 0 10px; }
+body.sheet .row { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 18px; }
+body.sheet .cell { display: grid; justify-items: center; gap: 6px; }
+body.sheet .cell small { color: #777; }
+body.sheet .dark { background: #202124; padding: 14px; border-radius: 6px; }
+
+/* App icon: --s is its size in px. */
+.app {
+  --s: 256px; position: relative; width: var(--s); height: var(--s);
+  background:
+    linear-gradient(rgba(25,243,255,.08) 1px, transparent 1px) 0 0 / calc(var(--s) / 8) calc(var(--s) / 8),
+    linear-gradient(90deg, rgba(25,243,255,.08) 1px, transparent 1px) 0 0 / calc(var(--s) / 8) calc(var(--s) / 8),
+    var(--bg);
+  clip-path: polygon(0 0, calc(100% - var(--s) * .156) 0, 100% calc(var(--s) * .156), 100% 100%, calc(var(--s) * .156) 100%, 0 calc(100% - var(--s) * .156));
+  display: grid; place-items: center;
+}
+.app::before, .app::after { content: ""; position: absolute; width: calc(var(--s) * .133); height: calc(var(--s) * .133); border: calc(var(--s) * .0234) solid var(--yellow); }
+.app::before { top: calc(var(--s) * .07); left: calc(var(--s) * .07); border-right: 0; border-bottom: 0; }
+.app::after { bottom: calc(var(--s) * .07); right: calc(var(--s) * .07); border-left: 0; border-top: 0; }
+.app .ek { font-family: "Chakra Petch", sans-serif; font-weight: 700; font-size: calc(var(--s) * .4375); line-height: 1; color: var(--fg); letter-spacing: -.02em; }
+.ek span { color: var(--yellow); }
+.app .bar { position: absolute; left: 50%; transform: translateX(-50%); bottom: calc(var(--s) * .227); width: calc(var(--s) * .47); height: calc(var(--s) * .0234); background: linear-gradient(90deg, var(--yellow) 0 30%, var(--cyan) 30%); }
+/* Small sizes (32 px and under): no grid or bar, heavier brackets, a larger mark. */
+.app.simple { background: var(--bg); }
+.app.simple::before, .app.simple::after { width: calc(var(--s) * .22); height: calc(var(--s) * .22); border-width: max(1px, calc(var(--s) * .07)); }
+.app.simple::before { top: 0; left: 0; }
+.app.simple::after { bottom: 0; right: 0; }
+.app.simple .ek { font-size: calc(var(--s) * .6); letter-spacing: -.04em; }
+.app.simple .bar { display: none; }
+
+/* File-type icon: a page with the HUD's cut corner, its label, and the EK mark. */
+.file { --s: 256px; position: relative; width: var(--s); height: var(--s); }
+.file .page {
+  position: absolute; top: 0; bottom: 0; left: calc(var(--s) * .125); right: calc(var(--s) * .125);
+  background: var(--border);
+  clip-path: polygon(0 0, calc(100% - var(--s) * .22) 0, 100% calc(var(--s) * .22), 100% 100%, 0 100%);
+}
+.file .page::before {
+  content: ""; position: absolute; inset: max(1px, calc(var(--s) * .012));
+  background: var(--side);
+  clip-path: polygon(0 0, calc(100% - var(--s) * .21) 0, 100% calc(var(--s) * .21), 100% 100%, 0 100%);
+}
+.file .fold { position: absolute; top: 0; right: calc(var(--s) * .125); width: calc(var(--s) * .22); height: calc(var(--s) * .22); background: linear-gradient(225deg, transparent 50%, var(--yellow) 50%); }
+.file .label {
+  position: absolute; left: calc(var(--s) * .125); right: calc(var(--s) * .125); top: calc(var(--s) * .34);
+  text-align: center; font-family: "Chakra Petch", sans-serif; font-weight: 700; line-height: 1;
+  color: var(--fg); font-size: calc(var(--s) * var(--k, .3)); letter-spacing: -.01em; white-space: nowrap;
+}
+.file .stripe { position: absolute; left: calc(var(--s) * .28); width: calc(var(--s) * .44); top: calc(var(--s) * .72); height: max(1px, calc(var(--s) * .02)); background: linear-gradient(90deg, var(--yellow) 0 30%, var(--cyan) 30%); }
+.file .badge {
+  position: absolute; right: calc(var(--s) * .17); bottom: calc(var(--s) * .05);
+  font-family: "Chakra Petch", sans-serif; font-weight: 700; font-size: calc(var(--s) * .13); line-height: 1; color: var(--fg);
+}
+/* Small sizes: the label alone, larger, no badge or stripe. */
+.file.simple .label { top: calc(var(--s) * .3); font-size: calc(var(--s) * var(--ks, .42)); }
+.file.simple .badge, .file.simple .stripe { display: none; }
+.file.simple .fold { width: calc(var(--s) * .28); height: calc(var(--s) * .28); }
+.file.simple .page { clip-path: polygon(0 0, calc(100% - var(--s) * .28) 0, 100% calc(var(--s) * .28), 100% 100%, 0 100%); }
+
+/* The default file icon has lines instead of a label. */
+.file .lines { position: absolute; left: calc(var(--s) * .26); right: calc(var(--s) * .3); top: calc(var(--s) * .36); display: grid; gap: calc(var(--s) * .055); }
+.file .lines i { display: block; height: max(1px, calc(var(--s) * .035)); background: var(--dim); }
+.file .lines i:nth-child(2) { width: 70%; } .file .lines i:nth-child(4) { width: 55%; }
+
+/* Installer images. The side image fills the left of the welcome and finish pages. */
+.wizard-big {
+  position: relative; width: 164px; height: 314px; overflow: hidden;
+  background:
+    linear-gradient(rgba(25,243,255,.07) 1px, transparent 1px) 0 0 / 14px 14px,
+    linear-gradient(90deg, rgba(25,243,255,.07) 1px, transparent 1px) 0 0 / 14px 14px,
+    var(--bg);
+  display: grid; justify-items: center; align-content: center; gap: 18px;
+}
+.wizard-big .app { --s: 92px; }
+.wizard-big .word { font-family: "Chakra Petch", sans-serif; font-weight: 700; font-size: 22px; letter-spacing: .12em; color: var(--fg); }
+.wizard-big .word span { color: var(--yellow); }
+.wizard-big .tag { font-family: "Chakra Petch", sans-serif; font-weight: 600; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); text-align: center; line-height: 1.5; }
+.wizard-big::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: linear-gradient(90deg, var(--yellow) 0 30%, var(--cyan) 30%); }
+/* The corner image sits on the white header of the other installer pages. */
+.wizard-small { width: 55px; height: 55px; display: grid; place-items: center; background: #fff; }
+.wizard-small .app { --s: 48px; }
+.tile { display: grid; place-items: center; }
+</style>
+</head>
+<body>
+<script>
+const q = new URLSearchParams(location.search);
+// Label and size factors per upstream file icon (resources/win32/<name>.ico). Third-party logos
+// are replaced by text, so EDGEkit ships no other project's logo.
+const FILES = {
+  bower: 'BWR', c: 'C', config: 'CFG', cpp: 'C++', csharp: 'C#', css: 'CSS', default: '', go: 'GO',
+  html: 'HTML', jade: 'PUG', java: 'JAVA', javascript: 'JS', json: '{ }', less: 'LESS', markdown: 'MD',
+  php: 'PHP', powershell: 'PS', python: 'PY', react: 'JSX', ruby: 'RB', sass: 'SASS', shell: '>_',
+  sql: 'SQL', typescript: 'TS', vue: 'VUE', xml: 'XML', yaml: 'YML',
+};
+const k = (label) => ({ 1: .36, 2: .32, 3: .25, 4: .19 })[Math.max(1, [...label].length)] ?? .18;
+const ks = (label) => ({ 1: .6, 2: .46, 3: .34, 4: .26 })[Math.max(1, [...label].length)] ?? .22;
+
+function app(size) {
+  const simple = size <= 32;
+  return `<div class="app${simple ? ' simple' : ''}" style="--s:${size}px"><div class="ek">E<span>K</span></div><div class="bar"></div></div>`;
+}
+function file(label, size) {
+  const simple = size <= 32;
+  const body = label === '' ? '<div class="lines"><i></i><i></i><i></i><i></i></div>'
+    : `<div class="label" style="--k:${k(label)};--ks:${ks(label)}">${label.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>`;
+  return `<div class="file${simple ? ' simple' : ''}" style="--s:${size}px"><div class="page"></div><div class="fold"></div>${body}<div class="stripe"></div><div class="badge ek">E<span>K</span></div></div>`;
+}
+const wizardBig = () => `<div class="wizard-big">${app(92)}<div class="word">EDGE<span>kit</span></div><div class="tag">Cyberpunk 2077<br>modding</div></div>`;
+const wizardSmall = () => `<div class="wizard-small">${app(48)}</div>`;
+
+let html = '';
+if (q.has('app')) html = app(+q.get('app'));
+else if (q.has('file')) html = file(q.get('file'), +(q.get('size') ?? 256));
+else if (q.get('wizard') === 'big') html = wizardBig();
+else if (q.get('wizard') === 'small') html = wizardSmall();
+else if (q.has('tile')) { const t = +q.get('tile'); html = `<div class="tile" style="width:${t}px;height:${t}px">${app(Math.round(t * .66))}</div>`; }
+else {
+  document.body.className = 'sheet';
+  const sizes = [256, 128, 64, 48, 32, 24, 16];
+  html += '<h2>App icon (EDGEkit.exe, the installer, the taskbar)</h2><div class="row">'
+    + sizes.map((s) => `<div class="cell">${app(s)}<small>${s}</small></div>`).join('') + '</div>';
+  html += '<div class="row dark" style="margin-top:12px">' + sizes.map((s) => `<div class="cell">${app(s)}</div>`).join('') + '</div>';
+  html += '<h2>File-type icons, at 64 px (and JS at every size)</h2><div class="row">'
+    + Object.entries(FILES).map(([n, l]) => `<div class="cell">${file(l, 64)}<small>${n}</small></div>`).join('') + '</div>';
+  html += '<div class="row" style="margin-top:12px">' + sizes.map((s) => `<div class="cell">${file('JS', s)}<small>${s}</small></div>`).join('') + '</div>';
+  html += '<h2>Installer: side image (welcome and finish pages) and corner image (other pages)</h2><div class="row">'
+    + `<div class="cell">${wizardBig()}<small>164 × 314</small></div><div class="cell">${wizardSmall()}<small>55 × 55</small></div></div>`;
+  html += '<h2>Start menu tiles</h2><div class="row dark">'
+    + [150, 70].map((t) => `<div class="cell"><div class="tile" style="width:${t}px;height:${t}px;background:#08090d">${app(Math.round(t * .66))}</div></div>`).join('') + '</div>';
+}
+document.write(html);
+</script>
+</body>
+</html>

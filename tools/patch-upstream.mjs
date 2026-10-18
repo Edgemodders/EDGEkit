@@ -67,6 +67,19 @@ const edits = [
     to: "'Specifies the color theme when system color mode is dark and {0} is enabled.', formatSettingAsLink(ThemeSettings.DETECT_COLOR_SCHEME)),\n\tdefault: 'REDnode HUD',",
   },
   {
+    // K2: the Start menu tile (its logo is EDGEkit's, from tools/brand/icons.ps1).
+    name: 'Start menu tile: the HUD background',
+    file: 'resources/win32/VisualElementsManifest.xml',
+    from: 'BackgroundColor="#2D2D30"',
+    to: 'BackgroundColor="#08090D"',
+  },
+  {
+    name: 'Start menu tile: EDGEkit',
+    file: 'resources/win32/VisualElementsManifest.xml',
+    from: 'ShortDisplayName="Code - OSS"',
+    to: 'ShortDisplayName="EDGEkit"',
+  },
+  {
     // K2: EDGEkit.exe's own version details (Electron's packaging stamps the main executable).
     name: 'EDGEkit.exe details: Edgemodders',
     file: 'build/lib/electron.ts',
