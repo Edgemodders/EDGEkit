@@ -38,6 +38,8 @@ The first build on the dev PC (2026-10-16), Code - OSS 1.140.0 unbranded, step b
 
 The app is `Code - OSS.exe` in `VSCode-win32-x64` beside the checkout (`E:ModdingEDGEkit-buildVSCode-win32-x64` on the dev PC). It keeps its settings in `%APPDATA%Code - OSS`, apart from an installed VS Code. The first smoke test (2026-10-18) passed: it starts, opens a folder and signs in to GitHub. It has no extension gallery until EDGEkit's `product.json` is merged in.
 
+Start it with **F5** in this repo (`.vscode/launch.json`), or `node tools/run.mjs [folder]`. "Run EDGEkit (first launch)" (`--fresh`) starts it with a new, empty settings folder, so the one-time screens show again.
+
 | Problem | Cause | Fix |
 |---|---|---|
-| The app exits at once, or prints `bad option` | Started from a terminal inside VS Code, which sets `ELECTRON_RUN_AS_NODE=1`, so the app runs as plain Node (found 2026-10-18) | Start it from Explorer or the Start menu, or clear `ELECTRON_RUN_AS_NODE` and the `VSCODE_*` variables in that shell first |
+| The app exits at once, or prints `bad option` | Started from a terminal inside VS Code, which sets `ELECTRON_RUN_AS_NODE=1`, so the app runs as plain Node (found 2026-10-18) | Use F5 or `tools/run.mjs`, which remove them. Or start it from Explorer or the Start menu |

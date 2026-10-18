@@ -1,0 +1,21 @@
+{
+  // F5 starts the built EDGEkit app (tools/run.mjs). Build it first with tools/build.ps1.
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run EDGEkit",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/tools/run.mjs",
+      "console": "internalConsole"
+    },
+    {
+      "name": "Run EDGEkit (first launch)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/tools/run.mjs",
+      "args": ["--fresh"],
+      "console": "internalConsole"
+    }
+  ]
+}
