@@ -43,7 +43,7 @@ Not tried yet; the steps follow from the dev PC's setup. The winget ids are unve
 | Step | What |
 |---|---|
 | Tools | Those in the table above. With winget: `winget install Git.Git`, `winget install Python.Python.3.13`, `winget install CoreyButler.NVMforWindows`, then in a new terminal `nvm install 24.18.0`. Visual Studio 2022 Build Tools with the C++ tools, the Windows SDK and the Spectre-mitigated libraries: `winget install Microsoft.VisualStudio.2022.BuildTools --override "--wait --passive --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --add Microsoft.VisualStudio.Component.VC.Runtimes.x86.x64.Spectre"` |
-| Repos | Clone EDGEkit and, beside it in the same folder, `REDcode` and `EDGEdeck` (github.com/Edgemodders), and run `npm ci` in each of those two: the bundle step runs their package scripts |
+| Repos | Clone EDGEkit and, beside it in the same folder, `REDcode` and `EDGEdeck` (github.com/Edgemodders), and run `npm ci` in each of those two: the bundle step runs their package scripts. Clones that are already there need `git pull` in all three and `npm ci` again in REDcode and EDGEdeck (found on the laptop, 2026-10-18: an old REDcode lacked `opus-decoder`, an old EDGEkit still looked for `../REDdeck`) |
 | Checkout path | If the EDGEkit folder's path has a space, add `local.json` with a path that has none, as on the dev PC. A folder such as `C:\dev` needs none |
 | Build | `.\tools\build.ps1` (the first time without `-SkipFetch`: it clones Code - OSS). About 15 minutes on the dev PC, longer the first time |
 | Run | F5 in this repo, as below |
