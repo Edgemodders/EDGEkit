@@ -38,7 +38,7 @@ The first build on the dev PC (2026-10-16), Code - OSS 1.140.0 unbranded, step b
 
 ### Building on another PC
 
-Not tried yet; the steps follow from the dev PC's setup. The winget ids are unverified.
+Tried on a laptop on 2026-10-18 (existing clones, Python 3.14.6, Build Tools 17.14): the build ran end to end after the fixes noted below. The winget ids are unverified.
 
 | Step | What |
 |---|---|
