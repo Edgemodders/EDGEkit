@@ -36,7 +36,7 @@ export const edgekitWalkthrough: BuiltinGettingStartedCategory = {
 			{
 				id: 'edgekitTools',
 				title: localize('edgekit.walkthrough.tools.title', "Install the EDGE tools"),
-				description: localize('edgekit.walkthrough.tools.description', "The EDGEkit pack installs the EDGE extensions from Open VSX: REDcode, a modding workspace for the game's files, and EDGEdeck, a simple mod manager. New EDGE tools join the pack as they come out.\n{0}\n{1}", Button(localize('edgekit.walkthrough.tools.button', "Install the EDGEkit Pack"), 'command:workbench.extensions.installExtension?%5B%22edgemodders.edgekit%22%5D'), Button(localize('edgekit.walkthrough.tools.browse', "Browse EDGE Extensions"), 'command:workbench.extensions.search?%22edgemodders%22')),
+				description: localize('edgekit.walkthrough.tools.description', "The EDGEkit pack installs the EDGE extensions from Open VSX: REDcode, a modding workspace for the game's files; EDGEdeck, a simple mod manager; EDGEmat, a material editor; and EDGEwave, a sound studio. New EDGE tools join the pack as they come out.\n{0}\n{1}", Button(localize('edgekit.walkthrough.tools.button', "Install the EDGEkit Pack"), 'command:workbench.extensions.installExtension?%5B%22edgemodders.edgekit%22%5D'), Button(localize('edgekit.walkthrough.tools.browse', "Browse EDGE Extensions"), 'command:workbench.extensions.search?%22edgemodders%22')),
 				completionEvents: ['extensionInstalled:edgemodders.edgekit'],
 				media: { type: 'svg', altText: 'The EDGE extensions in the Extensions view.', path: 'edgekit-tools.svg' },
 			},

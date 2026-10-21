@@ -4,11 +4,15 @@
     "edgemodders.redcode-cyberpunk",
     "edgemodders.rednode-hud-theme",
     "edgemodders.edgedeck",
+    "edgemodders.edgemat",
+    "edgemodders.edgewave",
     "jac3km4.redscript-ide-vscode"
   ],
   "openvsx": [
     "edgemodders.redcode-cyberpunk",
     "edgemodders.rednode-hud-theme",
-    "edgemodders.edgedeck"
+    "edgemodders.edgedeck",
+    "edgemodders.edgemat",
+    "edgemodders.edgewave"
   ]
 }

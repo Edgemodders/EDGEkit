@@ -43,18 +43,18 @@
       "id": "edgemodders.edgemat",
       "from": "sibling",
       "repo": "../EDGEmat",
-      "build": null,
-      "vsix": null,
-      "status": "Planned extension, no code yet. Will live in EDGEmat's extensions/edgemat; the skeleton comes in M1. M0 (behavior spec) in progress, checked against the game 2026-10-14. Ships to both registries in M6",
+      "build": "npm run edgemat:package",
+      "vsix": "dist/edgemat-*.vsix",
+      "status": "exists",
       "version": null
     },
     {
       "id": "edgemodders.edgewave",
       "from": "sibling",
       "repo": "../EDGEwave",
-      "build": null,
-      "vsix": null,
-      "status": "EDGEwave in development (0.0.1), no package script yet",
+      "build": "npm run package",
+      "vsix": "edgewave-*.vsix",
+      "status": "exists",
       "version": null
     },
     {

@@ -7,8 +7,8 @@
 [line]
 
 [quote][size=4][b][color=#fcee0a]STATUS: IN DEVELOPMENT[/color][/b][/size]
-EDGEkit is being built in the open. The plan is decided and the first build of the editor works (phase K1). Next is its branding (phase K2). There is no installer yet: the first one comes with phase K4 (see the roadmap below).
-[b]You can use the tools today.[/b] The [b]EDGEkit extension pack[/b] installs REDcode, EDGEdeck, the REDnode HUD theme and REDscript IDE in VS Code or VSCodium in one go: get it from the [url=https://marketplace.visualstudio.com/items?itemName=edgemodders.edgekit]VS Code Marketplace[/url] or [url=https://open-vsx.org/extension/edgemodders/edgekit]Open VSX[/url]. It is a preview, and REDcode and EDGEdeck need Windows x64.
+EDGEkit is being built in the open. The plan is decided, the editor builds from source (phase K1), and its branding is nearly done (phase K2). There is no installer yet: the first one comes with phase K4 (see the roadmap below).
+[b]You can use the tools today.[/b] The [b]EDGEkit extension pack[/b] installs REDcode, EDGEdeck, EDGEmat, EDGEwave, the REDnode HUD theme and REDscript IDE in VS Code or VSCodium in one go: get it from the [url=https://marketplace.visualstudio.com/items?itemName=edgemodders.edgekit]VS Code Marketplace[/url] or [url=https://open-vsx.org/extension/edgemodders/edgekit]Open VSX[/url]. It is a preview, and REDcode, EDGEdeck and EDGEmat need Windows x64.
 [b]Track this page[/b] to hear when the EDGEkit installer lands.[/quote]
 
 [line]
@@ -51,6 +51,8 @@ Integrated EDGEdeck extension Mod Manager with separate "loadouts". Simple. Easy
 [list]
 [*][b][color=#00ffff]REDcode for Cyberpunk 2077[/color][/b], the modding workspace: browse the game's archives, add files to a WolvenKit project, edit CR2W files in a tree and property grid, view textures, meshes in 3D and sounds, browse and change the TweakDB, then pack, install and start the game. Built on WolvenKit's own engine, so it reads the files the way WolvenKit does.[/*]
 [*][b][color=#00ffff]EDGEdeck[/color][/b], the mod manager: one list of mods and four verbs (add, on/off, deploy, remove). Hardlink deploys you can undo, conflicts shown even inside archives, Nexus Mods sign-in and updates.[/*]
+[*][b][color=#00ffff]EDGEmat[/color][/b], the material editor: find a garment's materials by name, recolor its layers, make new materials from your words, and save them into your mod.[/*]
+[*][b][color=#00ffff]EDGEwave[/color][/b], the sound studio: find, play, edit, mix and re-voice the game's sounds, and put them into your mod.[/*]
 [*][b][color=#00ffff]REDscript IDE[/color][/b]: redscript support with its language server, built in, so code completion and errors work offline from the first start.[/*]
 [*][b]The REDnode HUD theme[/b] as the default look: dark, yellow and cyan, made to sit beside the game.[/*]
 [*][b][color=#00ffff]REDagent[/color][/b], the AI assistant, powered by Claude: it can write a REDnode mod with you, run it in the live game, read what went wrong, and fix it. [i](Its editor panel is still being built; the in-game assistant already works.)[/i] Claude Code also runs in EDGEkit: install it from the Extensions view.[/*]
@@ -58,8 +60,6 @@ Integrated EDGEdeck extension Mod Manager with separate "loadouts". Simple. Easy
 [*][b][color=#00ffff]Extensions from Open VSX[/color][/b], the open extension registry, so you can add the language tools and helpers you like.[/*]
 [*][b][color=#00ffff]Nothing to hunt for[/color].[/b] No list of extensions to install, no settings to copy from a guide. Install, open your mod folder, start.[/*]
 [/list]
-
-[b]Coming next:[/b] [b]EDGEmat[/b], a material editor (pick a garment, click a layer, choose a color, see it on the model), and [b]EDGEwave[/b], a sound studio for editing, mixing and re-voicing the game's sounds. Both join EDGEkit and the extension pack when they are released.
 
 [size=5][b][color=#fcee0a]Why one app[/color][/b][/size]
 
@@ -77,8 +77,8 @@ EDGEkit is the front door to the EDGE tools. Each one is also usable on its own:
 [*][b][url=https://github.com/Edgemodders/REDnode]REDnode[/url][/b]: write Cyberpunk mods in JavaScript and TypeScript, with web pages drawn over the game as windows and HUD widgets.[/*]
 [*][b][url=https://github.com/Edgemodders/REDagent]REDagent[/url][/b]: the AI assistant inside the game, powered by Claude.[/*]
 [*][b][url=https://github.com/Edgemodders/REDbridge]REDbridge[/url][/b]: the engine room. It runs WolvenKit's libraries as a separate program so the other tools can read and write the game's files.[/*]
-[*][b][url=https://github.com/Edgemodders/EDGEmat]EDGEmat[/url][/b]: the material editor. In development.[/*]
-[*][b][url=https://github.com/Edgemodders/EDGEwave]EDGEwave[/url][/b]: the sound studio. In development.[/*]
+[*][b][url=https://github.com/Edgemodders/EDGEmat]EDGEmat[/url][/b]: the material editor. In preview on the Marketplace and Open VSX.[/*]
+[*][b][url=https://github.com/Edgemodders/EDGEwave]EDGEwave[/url][/b]: the sound studio. In preview on the Marketplace and Open VSX.[/*]
 [*][b][url=https://github.com/Edgemodders/EDGEbuilder]EDGEbuilder[/url][/b]: a world builder that runs inside the game on REDnode: browse, drop, position, bake. In development.[/*]
 [/list]
 
@@ -88,8 +88,8 @@ EDGEkit is the front door to the EDGE tools. Each one is also usable on its own:
 [*][b]K0 Decide[/b]: the name, Windows x64 first, the Code - OSS release to build on (1.140.0), updates, no Copilot. Done.[/*]
 [*][b]Extension pack[/b]: the EDGE extensions in one install for VS Code and VSCodium. Published as a preview.[/*]
 [*][b]K1 Build[/b]: Code - OSS built from source, unbranded. Done.[/*]
-[*][b]K2 Brand[/b]: the EDGEkit name, icons and default theme everywhere. It never says VS Code, and it keeps its data apart from an installed VS Code. [color=#19f3ff]Next[/color][/*]
-[*][b]K3 Bundle[/b]: REDcode, EDGEdeck, the HUD theme, REDscript IDE and the other released EDGE extensions built in, working with no network, and updating themselves from Open VSX.[/*]
+[*][b]K2 Brand[/b]: the EDGEkit name, icons and default theme everywhere. It never says VS Code, and it keeps its data apart from an installed VS Code. [color=#19f3ff]Under way[/color][/*]
+[*][b]K3 Bundle[/b]: REDcode, EDGEdeck, EDGEmat, EDGEwave, the HUD theme, REDscript IDE and the other released EDGE extensions built in, working with no network, and updating themselves from Open VSX.[/*]
 [*][b]K4 Release[/b]: a Windows installer, published here and on GitHub. EDGEkit updates itself, too.[/*]
 [*][b]K5 Track upstream[/b]: newer Code - OSS releases picked up every month or so, sooner for security fixes.[/*]
 [/list]
