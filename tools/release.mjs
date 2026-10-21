@@ -39,6 +39,8 @@ const newer = (a, b) => {
   for (let i = 0; i < Math.max(x.length, y.length); i++) if ((x[i] ?? 0) !== (y[i] ?? 0)) return (x[i] ?? 0) > (y[i] ?? 0);
   return false;
 };
+// x.y.0 is what dev builds carry (version.json between releases); releases count from x.y.1 (design, "Updates").
+if (version.split('.')[2] === '0') problems.push(`${version} is the dev builds' version; releases start at .1. Raise version.json.`);
 if (current && !newer(version, current)) problems.push(`The manifest already names ${current}; ${version} is not newer. Raise version.json.`);
 const taken = JSON.parse(run('gh', ['release', 'list', '--repo', REPO, '--limit', '200', '--json', 'tagName'])).map((r) => r.tagName);
 if (taken.includes(tag)) problems.push(`The release ${tag} exists already.`);
