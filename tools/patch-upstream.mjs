@@ -254,6 +254,60 @@ const edits = [
       "\t\tgithubDisclaimer.append(localize('onboarding.signIn.edgekit.disclaimer.suffix', \". EDGEkit itself collects no data.\"));\n" +
       "\t\tconst copilotDisclaimer = $('.onboarding-a-signin-disclaimer');\n",
   },
+  {
+    // Updates (design, "Updates"): upstream asks Microsoft's server, {updateUrl}/api/update/{platform}/{quality}/{commit},
+    // which answers "nothing new" when the commit is current. EDGEkit's answer is a static file per platform on
+    // its docs site (tools/update-manifest.mjs writes it), so the app asks for that file and decides itself
+    // what is newer, by EDGEkit's version (version.json). As VSCodium's update patch, in outline.
+    name: 'Updates: a static manifest per platform',
+    file: 'src/vs/platform/update/electron-main/abstractUpdateService.ts',
+    from: "\tconst url = new URL(`${baseUpdateUrl}/api/update/${platform}/${quality}/${commit}`);\n\n\tif (options?.background) {\n\t\turl.searchParams.set('bg', 'true');\n\t}\n\n\turl.searchParams.set('u', options?.internalOrg ?? 'none');\n\n\treturn url.toString();\n}\n",
+    to: "\t// EDGEkit: a static manifest per platform (design, \"Updates\"); the app decides what is newer (isNewerVersion).\n" +
+      '\treturn `${baseUpdateUrl}/latest-${platform}.json`;\n}\n\n' +
+      '// EDGEkit: true when version a (such as 1.140.2) is newer than version b, comparing the numbers in turn.\n' +
+      'export function isNewerVersion(a: string, b: string): boolean {\n' +
+      '\tconst x = a.split(\'.\').map(n => parseInt(n, 10) || 0);\n' +
+      '\tconst y = b.split(\'.\').map(n => parseInt(n, 10) || 0);\n' +
+      '\tfor (let i = 0; i < Math.max(x.length, y.length); i++) {\n' +
+      '\t\tif ((x[i] ?? 0) !== (y[i] ?? 0)) {\n' +
+      '\t\t\treturn (x[i] ?? 0) > (y[i] ?? 0);\n' +
+      '\t\t}\n' +
+      '\t}\n' +
+      '\treturn false;\n' +
+      '}\n',
+  },
+  {
+    name: 'Updates: read the manifest before a restart (import)',
+    file: 'src/vs/platform/update/electron-main/abstractUpdateService.ts',
+    from: "import { IRequestService } from '../../request/common/request.js';",
+    to: "import { asJson, IRequestService } from '../../request/common/request.js';",
+  },
+  {
+    // Before installing on quit, and every 5 minutes while an update waits, upstream asks again and takes
+    // any answer but 204 as "a newer update exists": with a static file it would cancel the waiting update
+    // on every quit. The manifest is news only when it names a version newer than the waiting one.
+    name: 'Updates: read the manifest before a restart',
+    file: 'src/vs/platform/update/electron-main/abstractUpdateService.ts',
+    from: "\t\t\tconst statusCode = context.res.statusCode;\n\t\t\tthis.logService.trace('update#isLatestVersion() - response', { statusCode });\n\t\t\t// The update server replies with 204 (No Content) when no update is available.\n\t\t\treturn statusCode === 204;\n",
+    to: "\t\t\t// EDGEkit: the static manifest always names the newest release; it is news only when newer than the waiting update, or this app.\n" +
+      '\t\t\tconst latest = await asJson<IUpdate>(context);\n' +
+      '\t\t\tconst current = this.state.type === StateType.Ready ? this.state.update.productVersion ?? this.productService.version : this.productService.version;\n' +
+      "\t\t\tthis.logService.trace('update#isLatestVersion() - response', { latest: latest?.productVersion, current });\n" +
+      '\t\t\treturn !latest?.productVersion || !isNewerVersion(latest.productVersion, current);\n',
+  },
+  {
+    name: 'Updates: only a newer version is an update (import)',
+    file: 'src/vs/platform/update/electron-main/updateService.win32.ts',
+    from: "import { AbstractUpdateService, createUpdateURL, getUpdateRequestHeaders, IUpdateURLOptions, UpdateErrorClassification } from './abstractUpdateService.js';",
+    to: "import { AbstractUpdateService, createUpdateURL, getUpdateRequestHeaders, isNewerVersion, IUpdateURLOptions, UpdateErrorClassification } from './abstractUpdateService.js';",
+  },
+  {
+    name: 'Updates: only a newer version is an update',
+    file: 'src/vs/platform/update/electron-main/updateService.win32.ts',
+    from: '\t\t\t\tif (!update || !update.url || !update.version || !update.productVersion) {\n',
+    to: '\t\t\t\t// EDGEkit: the static manifest always names the newest release, so the app compares versions itself.\n' +
+      '\t\t\t\tif (!update || !update.url || !update.version || !update.productVersion || !isNewerVersion(update.productVersion, this.productService.version)) {\n',
+  },
 ];
 
 for (const { name, file, dir, match, all, from, to } of edits) {

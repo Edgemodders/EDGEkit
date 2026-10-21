@@ -1,0 +1,4 @@
+{
+  "//": "EDGEkit's version (design, \"Updates\"): the upstream release's major and minor, then EDGEkit's release number on it, counting from 1 (1.140.1, 1.140.2; 1.141.1 on the next upstream minor). tools/brand.mjs writes it into the app; the update check compares it. Raised when a release is prepared (dev-setup, \"Releasing\"). 1.140.0 is the dev builds before the first release.",
+  "version": "1.140.0"
+}

@@ -56,4 +56,4 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           notes=$(node -e "const s=require('fs').readFileSync('pack/CHANGELOG.md','utf8');const m=s.split(/^## /m).find(p=>p.startsWith(process.argv[1]+'\n'));console.log(m?m.split('\n').slice(1).join('\n').trim():'')" "${VERSION}")
-          gh release create "${GITHUB_REF_NAME}" build/pack/edgekit-${VERSION}-*.vsix --title "EDGEkit extension pack ${VERSION}" --notes "${notes}"
+          gh release create "${GITHUB_REF_NAME}" build/pack/edgekit-${VERSION}-*.vsix --title "EDGEkit extension pack ${VERSION}" --notes "${notes}" --latest=false

@@ -66,6 +66,10 @@ if (-not (Get-Command signtool.exe -ErrorAction SilentlyContinue)) {
     Write-Output "Using signtool from the Windows SDK $($signtool.Name) for this build."
 }
 
+# The app's commit (in About, and the key of its caches) is this repo's, not the upstream tag's,
+# which every EDGEkit release on one upstream shares. The build takes it from here (getVersion.ts).
+$env:BUILD_SOURCEVERSION = (git -C $root rev-parse HEAD).Trim()
+
 Push-Location $vscode
 try {
     npm ci

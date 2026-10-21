@@ -46,8 +46,24 @@ const builtInFile = join(dirname(target), '.build', 'edgekit', 'builtInExtension
 const builtIns = existsSync(builtInFile) ? JSON.parse(readFileSync(builtInFile, 'utf8')) : [];
 ours.builtInExtensions = [...(upstream.builtInExtensions ?? []), ...builtIns];
 
+// Updates (design, "Updates"): local.json may point a dev build at a test server (updateUrl) and give
+// it another version (version), to test an update between two local builds.
+const localFile = join(root, 'local.json');
+const local = existsSync(localFile) ? JSON.parse(readFileSync(localFile, 'utf8')) : {};
+if (local.updateUrl) ours.updateUrl = local.updateUrl;
+
 const branded = merge(upstream, ours);
 writeFileSync(target, `${JSON.stringify(branded, null, '\t')}\n`);
+
+// EDGEkit's version (version.json) in place of upstream's, in package.json: the build takes the app's
+// version, the installer's and the Windows file details from there.
+const version = local.version ?? JSON.parse(readFileSync(join(root, 'version.json'), 'utf8')).version;
+const packagePath = join(dirname(target), 'package.json');
+const packageText = readFileSync(packagePath, 'utf8');
+const versionLine = /^(\s+"version": ")[^"]*(")/m; // the first is the package's own
+if (!versionLine.test(packageText)) throw new Error(`No "version" line in ${packagePath}. Check tools/brand.mjs.`);
+writeFileSync(packagePath, packageText.replace(versionLine, `$1${version}$2`));
+console.log(`Version ${version}${local.version ? ' (from local.json)' : ''}; updates from ${branded.updateUrl}.`);
 
 const changed = Object.keys(ours).filter((k) => !k.startsWith('//'));
 const unknown = changed.filter((k) => !(k in upstream));
