@@ -9,15 +9,16 @@
 import { createHash } from 'node:crypto';
 import { createReadStream, readFileSync, statSync } from 'node:fs';
 import { createServer } from 'node:http';
-import { dirname, join } from 'node:path';
-import { checkout } from './checkout.mjs';
+import { join } from 'node:path';
+import { appResources, checkout } from './checkout.mjs';
 
 const PORT = 8123;
 const exe = join(checkout, '.build', 'win32-x64', 'user-setup', 'EDGEkitSetup.exe');
-const { version } = JSON.parse(readFileSync(join(dirname(checkout), 'VSCode-win32-x64', 'resources', 'app', 'package.json'), 'utf8'));
+const { version } = JSON.parse(readFileSync(join(appResources(), 'package.json'), 'utf8'));
+const { commit } = JSON.parse(readFileSync(join(appResources(), 'product.json'), 'utf8'));
 const manifest = {
   url: `http://127.0.0.1:${PORT}/EDGEkitSetup-${version}.exe`,
-  version,
+  version: commit, // as tools/release.mjs: the commit names the download; productVersion is compared
   productVersion: version,
   sha256hash: createHash('sha256').update(readFileSync(exe)).digest('hex'),
   timestamp: Date.now(),

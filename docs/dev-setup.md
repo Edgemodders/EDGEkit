@@ -67,6 +67,33 @@ cd EDGEkit
 
 `node tools/dev-release.mjs` uploads the last build's `EDGEkitSetup.exe` as a **draft** GitHub release, for testing on another PC: only the repo's collaborators see it, and it makes no tag until it is published. It names the draft after the build date (`edgekit-dev-2026-10-18`, then `-2` the same day) and writes the notes from the build: the commit, the Code - OSS release and the installer's SHA-256. `--dry` only prints them. It needs the GitHub CLI (`gh`) signed in. Delete the draft when testing is done. For Claude Code to run it, the user adds `"Bash(node tools/dev-release.mjs:*)"` to `permissions.allow` in `.claude/settings.local.json`; otherwise its permission check stops the upload (2026-10-18).
 
+### Testing an update
+
+The update check (design, "Updates") between two local builds, with no release. It needs an installed EDGEkit: the app run from the build folder (F5) is not an installer's, so it only offers a download.
+
+| Step | What |
+|---|---|
+| 1. The older build | In `local.json` add `"updateUrl": "http://127.0.0.1:8123"` and `"version": "1.140.1"`, then `.\tools\build.ps1 -SkipFetch` |
+| 2. Install it | Run `EDGEkitSetup.exe` from the checkout's `.build\win32-x64\user-setup`. **Help > About** says 1.140.1. Close it |
+| 3. The newer build | In `local.json`, `"version": "1.140.2"`, and build again |
+| 4. Serve it | `node tools/update-test.mjs`. It prints each request |
+| 5. Update | Start the installed EDGEkit. Within a minute it asks for the manifest, downloads the installer and installs it beside itself (the install folder's `_`); the gear at the bottom left shows **Restart to Update**. Choose it: EDGEkit closes, swaps in the new version and starts again. About says 1.140.2, and **Help > Check for Updates** says there is none. A plain quit does not apply it: the update waits, and the next start offers the restart again |
+| 6. Clean up | Take `updateUrl` and `version` out of `local.json`. Uninstall the test EDGEkit from Windows' Installed apps if you like |
+
+### Releasing
+
+A full EDGEkit release, from a local build, until K4's release workflow. Rare: only when the editor changes (design, "When EDGEkit releases"). Publishing is the user's call.
+
+| Step | What |
+|---|---|
+| 1. The version | Raise `version.json` (`1.140.1`, then `1.140.2`; design, "Updates") and add its `## <version>` section to `CHANGELOG.md`. Commit and push |
+| 2. Build | `.\tools\build.ps1 -SkipFetch`, with no `updateUrl` or `version` in `local.json` |
+| 3. Check | `node tools/release.mjs --dry`: the build must be the pushed commit at that version, newer than the manifest's. It prints the notes and the manifest |
+| 4. Release | `node tools/release.mjs`: the GitHub release `v<version>` with `EDGEkitSetup-<version>.exe`, marked Latest, and the manifest written to `docs/update/latest-win32-x64-user.json` |
+| 5. Switch the update on | Commit and push `docs/update/`. The docs site deploys it in a minute or two; installed EDGEkits find it at their next check (on start, then hourly) |
+
+To take an update back, put the previous release's manifest back (git history) and push: installed EDGEkits stop offering it. One that already updated stays on the new version.
+
 ## Running the app
 
 The app is `EDGEkit.exe` in `VSCode-win32-x64` beside the checkout (E:\Modding\EDGEkit-build\VSCode-win32-x64 on the dev PC); its command line is `bin\edgekit.cmd`. It keeps its settings in `%APPDATA%\EDGEkit` and its extensions in `%USERPROFILE%\.edgekit`, apart from an installed VS Code. The first smoke test (2026-10-18, the unbranded `Code - OSS.exe`) passed: it starts, opens a folder and signs in to GitHub.

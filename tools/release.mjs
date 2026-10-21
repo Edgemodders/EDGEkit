@@ -11,8 +11,8 @@
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { copyFileSync, existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
-import { checkout, root } from './checkout.mjs';
+import { join } from 'node:path';
+import { appResources, checkout, root } from './checkout.mjs';
 
 const REPO = 'Edgemodders/EDGEkit';
 const PLATFORM = 'win32-x64-user';
@@ -24,8 +24,8 @@ const problems = [];
 const { version } = json(root, 'version.json');
 const tag = `v${version}`;
 const exe = join(checkout, '.build', 'win32-x64', 'user-setup', 'EDGEkitSetup.exe');
-const app = join(dirname(checkout), 'VSCode-win32-x64', 'resources', 'app');
 if (!existsSync(exe)) throw new Error(`No installer at ${exe}. Run tools/build.ps1 first.`);
+const app = appResources();
 
 // The build is this commit at this version, pushed, and nothing is left uncommitted.
 const head = run('git', ['rev-parse', 'HEAD']);
@@ -78,8 +78,8 @@ const notes = `${(section ?? `${version}\n\n(notes to write)`).slice(version.len
 `;
 const manifest = {
   url: `https://github.com/${REPO}/releases/download/${tag}/${asset}`,
-  version,
-  productVersion: version,
+  version: head, // the build's commit, as upstream's server sends: the app names the download and its versioned folder by it
+  productVersion: version, // EDGEkit's version, which the app compares
   sha256hash: sha256,
   timestamp: Date.now(),
 };

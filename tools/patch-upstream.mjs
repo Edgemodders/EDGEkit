@@ -296,6 +296,15 @@ const edits = [
       '\t\t\treturn !latest?.productVersion || !isNewerVersion(latest.productVersion, current);\n',
   },
   {
+    // The downloaded installer and its flags live in a temp folder named vscode-<quality>-<target>-<arch>, the
+    // same as an installed VS Code's: EDGEkit's first update test (2026-10-21) tried to delete VS Code's
+    // waiting update there, stopped only because it was in use. EDGEkit's folder is named after the app.
+    name: "Updates: EDGEkit's own download folder",
+    file: 'src/vs/platform/update/electron-main/updateService.win32.ts',
+    from: '\t\treturn path.join(tmpdir(), `vscode-${this.productService.quality}-${this.productService.target}-${process.arch}`);\n',
+    to: '\t\treturn path.join(tmpdir(), `${this.productService.applicationName}-${this.productService.quality}-${this.productService.target}-${process.arch}`); // EDGEkit: not VS Code\'s folder\n',
+  },
+  {
     name: 'Updates: only a newer version is an update (import)',
     file: 'src/vs/platform/update/electron-main/updateService.win32.ts',
     from: "import { AbstractUpdateService, createUpdateURL, getUpdateRequestHeaders, IUpdateURLOptions, UpdateErrorClassification } from './abstractUpdateService.js';",
