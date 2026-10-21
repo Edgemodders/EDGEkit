@@ -25,6 +25,8 @@ Get-ChildItem $target -Force | Remove-Item -Recurse -Force
 # Upstream keeps only test caches in Git LFS (extensions/copilot/test/simulation/cache/*.sqlite
 # at 1.140.0); the build does not need them, so the clone leaves them as pointer files.
 $env:GIT_LFS_SKIP_SMUDGE = '1'
-git clone --depth 1 --branch $upstream.tag $upstream.repository $target
+# Quiet: Windows PowerShell takes git's "Cloning into" line on stderr for an error when the output is
+# redirected, and stops the script there (found 2026-10-21).
+git clone --quiet --depth 1 --branch $upstream.tag $upstream.repository $target
 if ($LASTEXITCODE) { throw "Cloning $($upstream.repository) at $($upstream.tag) failed." }
 Write-Output "Code - OSS $($upstream.tag) is in $target"

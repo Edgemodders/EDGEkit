@@ -1,13 +1,16 @@
-// Publishes an EDGEkit release from the last local build (until K4's release workflow): a GitHub
-// release with the installer, then the update manifest that tells installed EDGEkits about it
-// (design, "Updates"). Releases are rare: only when the editor changes (design, "When EDGEkit releases").
+// Publishes an EDGEkit release from the last build: a GitHub release with the installer, then the
+// update manifest that tells installed EDGEkits about it (design, "Updates"). Releases are rare: only
+// when the editor changes (design, "When EDGEkit releases"). The release workflow
+// (.github/workflows/release.yml) runs it; it also works on a PC after tools/build.ps1.
 //
-//   node tools/release.mjs --dry   check everything and print what it would do
-//   node tools/release.mjs         make the release v<version> (with gh) and write the manifest
+//   node tools/release.mjs --check   only check the version: its tag is free, it is newer than the
+//                                    manifest's, CHANGELOG.md has its section (no build needed)
+//   node tools/release.mjs --dry     check everything and print what it would do
+//   node tools/release.mjs           make the release v<version> (with gh) and write the manifest
 //
-// Before it: raise version.json, add the version's section to CHANGELOG.md, commit, push, then
-// build (tools/build.ps1). After it: commit and push docs/update/. That switches the update on for
-// every installed EDGEkit; until then the release is only a download. Steps: dev-setup, "Releasing".
+// Before it: raise version.json, add the version's section to CHANGELOG.md, commit, push. After it:
+// commit and push docs/update/ (the workflow does). That switches the update on for every installed
+// EDGEkit; until then the release is only a download. Steps: dev-setup, "Releasing".
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { copyFileSync, existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
@@ -17,28 +20,15 @@ import { appResources, checkout, root } from './checkout.mjs';
 const REPO = 'Edgemodders/EDGEkit';
 const PLATFORM = 'win32-x64-user';
 const dry = process.argv.includes('--dry');
+const onlyVersion = process.argv.includes('--check');
+const ci = process.env.GITHUB_ACTIONS === 'true';
 const run = (cmd, args) => execFileSync(cmd, args, { cwd: root, encoding: 'utf8' }).trim();
 const json = (...p) => JSON.parse(readFileSync(join(...p), 'utf8'));
 const problems = [];
 
 const { version } = json(root, 'version.json');
 const tag = `v${version}`;
-const exe = join(checkout, '.build', 'win32-x64', 'user-setup', 'EDGEkitSetup.exe');
-if (!existsSync(exe)) throw new Error(`No installer at ${exe}. Run tools/build.ps1 first.`);
-const app = appResources();
-
-// The build is this commit at this version, pushed, and nothing is left uncommitted.
 const head = run('git', ['rev-parse', 'HEAD']);
-const built = { version: json(app, 'package.json').version, commit: json(app, 'product.json').commit };
-if (built.version !== version) problems.push(`The build is version ${built.version}, version.json says ${version}. Build again.`);
-if (built.commit !== head) problems.push(`The build is from commit ${built.commit?.slice(0, 7)}, this repo is at ${head.slice(0, 7)}. Build again.`);
-if (statSync(exe).mtimeMs < statSync(join(app, 'package.json')).mtimeMs) problems.push('The installer is older than the app. Build again.');
-if (run('git', ['status', '--porcelain'])) problems.push('This repo has uncommitted changes. Commit them, then build again.');
-try {
-  if (run('git', ['rev-parse', '@{u}']) !== head) problems.push('This commit is not pushed. Push it.');
-} catch {
-  problems.push('This branch has no upstream to push to.');
-}
 
 // A new version, newer than the one the manifest names now, with its notes.
 const manifestPath = join(root, 'docs', 'update', `latest-${PLATFORM}.json`);
@@ -56,8 +46,37 @@ const changelog = readFileSync(join(root, 'CHANGELOG.md'), 'utf8').replace(/\r\n
 const section = changelog.split(/^## /m).find((s) => s.startsWith(`${version}\n`));
 if (!section) problems.push(`CHANGELOG.md has no "## ${version}" section.`);
 
+const report = () => console.error(`Not ready to release ${tag}:\n${problems.map((p) => `- ${p}`).join('\n')}`);
+if (onlyVersion) {
+  if (problems.length) {
+    report();
+    process.exit(1);
+  }
+  console.log(`${tag} is free to release.`);
+  process.exit(0);
+}
+
+const exe = join(checkout, '.build', 'win32-x64', 'user-setup', 'EDGEkitSetup.exe');
+if (!existsSync(exe)) throw new Error(`No installer at ${exe}. Run tools/build.ps1 first.`);
+const app = appResources();
+
+// The build is this commit at this version, pushed, and nothing is left uncommitted.
+const built = { version: json(app, 'package.json').version, commit: json(app, 'product.json').commit };
+if (built.version !== version) problems.push(`The build is version ${built.version}, version.json says ${version}. Build again.`);
+if (built.commit !== head) problems.push(`The build is from commit ${built.commit?.slice(0, 7)}, this repo is at ${head.slice(0, 7)}. Build again.`);
+if (statSync(exe).mtimeMs < statSync(join(app, 'package.json')).mtimeMs) problems.push('The installer is older than the app. Build again.');
+if (run('git', ['status', '--porcelain'])) problems.push('This repo has uncommitted changes. Commit them, then build again.');
+// The workflow builds a commit GitHub already has; on a PC, it must be pushed.
+if (!ci) {
+  try {
+    if (run('git', ['rev-parse', '@{u}']) !== head) problems.push('This commit is not pushed. Push it.');
+  } catch {
+    problems.push('This branch has no upstream to push to.');
+  }
+}
+
 if (problems.length) {
-  console.error(`Not ready to release ${tag}:\n${problems.map((p) => `- ${p}`).join('\n')}`);
+  report();
   if (!dry) process.exit(1);
 }
 

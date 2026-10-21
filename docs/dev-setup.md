@@ -77,15 +77,17 @@ The update check (design, "Updates") between two local builds, with no release. 
 
 ### Releasing
 
-A full EDGEkit release, from a local build, until K4's release workflow. Rare: only when the editor changes (design, "When EDGEkit releases"). Publishing is the user's call.
+A full EDGEkit release, through the release workflow (`.github/workflows/release.yml`), the same mechanism as REDnode's and the other repos' (the user, 2026-10-21). Rare: only when the editor changes (design, "When EDGEkit releases"). Publishing is the user's call.
 
 | Step | What |
 |---|---|
 | 1. The version | Raise `version.json` (`1.140.1`, then `1.140.2`; design, "Updates") and add its `## <version>` section to `CHANGELOG.md`. Raise the extension pins in `extensions.json` to the latest on Open VSX (the status issue shows them), so a fresh install has little to update. Commit and push |
-| 2. Build | `.\tools\build.ps1 -SkipFetch`, with no `updateUrl` or `version` in `local.json` |
-| 3. Check | `node tools/release.mjs --dry`: the build must be the pushed commit at that version, newer than the manifest's. It prints the notes and the manifest |
-| 4. Release | `node tools/release.mjs`: the GitHub release `v<version>` with `EDGEkitSetup-<version>.exe`, marked Latest, and the manifest written to `docs/update/latest-win32-x64-user.json` |
-| 5. Switch the update on | Commit and push `docs/update/`. The docs site deploys it in a minute or two; installed EDGEkits find it at their next check (on start, then hourly) |
+| 2. Build | Actions tab, **Release**, **Run workflow**, "Make a release" not ticked. It builds on a clean Windows runner (`tools/build.ps1`), checks the build (`tools/check-build.mjs`: the version, the commit, every pinned extension at its version, the notices, no Copilot) and keeps `EDGEkitSetup.exe` as the run's artifact for 30 days |
+| 3. Test | Download the artifact, install it, and check it (the K3 checklist: first start, extensions, onboarding, beside VS Code) |
+| 4. Release | **Run workflow** again with "Make a release" ticked. It first checks the version (`tools/release.mjs --check`: its tag is free, it is newer than the manifest's, CHANGELOG.md has its section), builds again, makes the GitHub release `v<version>` with `EDGEkitSetup-<version>.exe`, marked Latest, and commits `docs/update/latest-win32-x64-user.json` |
+| 5. The update is on | The workflow starts the docs site's deploy (a push with its token starts no workflow by itself); installed EDGEkits find the update at their next check (on start, then hourly). If the manifest push fails, the release stays made: commit the run's `update-manifest` artifact by hand |
+
+On a PC the same scripts work by hand: `.\tools\build.ps1 -SkipFetch`, `node tools/check-build.mjs`, `node tools/release.mjs --dry`, then `node tools/release.mjs`, and commit `docs/update/`.
 
 To take an update back, put the previous release's manifest back (git history) and push: installed EDGEkits stop offering it. One that already updated stays on the new version.
 

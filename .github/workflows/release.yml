@@ -1,0 +1,110 @@
+# Builds EDGEkit for Windows x64 on a clean runner: Code - OSS at upstream.json's tag, branded, with the
+# EDGE extensions at the versions extensions.json pins (tools/build.ps1), then checks the build
+# (tools/check-build.mjs). The same mechanism as REDnode's and the other repos' release workflows.
+#
+#   Run workflow (Actions tab)                  builds the app and EDGEkitSetup.exe and keeps the
+#                                               installer as the run's artifact
+#   Run workflow, "Make a release" ticked       also tags the commit v<version> (version.json), makes
+#                                               the GitHub release with EDGEkitSetup-<version>.exe and
+#                                               commits the update manifest (docs/update/), which offers
+#                                               the update to every installed EDGEkit; stops first if
+#                                               that tag exists, the version is not newer than the
+#                                               manifest's, or CHANGELOG.md has no section for it
+#                                               (tools/release.mjs)
+#
+# Release gate: make a release only after the run's installer has been installed and tested
+# (docs/dev-setup.md, "Releasing"). Releases are rare: only when the editor changes (design, "When
+# EDGEkit releases").
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: Make a release (tags this commit v<version> and offers the update to installed EDGEkits). Only after its installer has been tested
+        type: boolean
+        default: false
+
+permissions:
+  contents: write # the release, and the manifest commit
+  actions: write # starts the docs site's deploy: a push made with this workflow's token starts no workflow
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  build:
+    # VS 2022 and the Windows SDK, as on the dev PC (docs/dev-setup.md). GitHub's hosted Windows runners
+    # build VSCodium; EDGEkit's first run here checks time and disk (unverified until then).
+    runs-on: windows-2022
+    timeout-minutes: 240
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # the manifest commit rebases onto main if it moved during the build
+
+      - name: The version is not released yet
+        if: inputs.release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node tools/release.mjs --check
+
+      - name: Fetch Code - OSS
+        run: .\tools\fetch-vscode.ps1
+
+      # The Node version Code - OSS wants (its .nvmrc), so build.ps1 needs no nvm.
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: build/vscode/.nvmrc
+
+      - name: Build EDGEkit
+        env:
+          # Upstream's install downloads from GitHub (Electron, ripgrep); the token lifts the rate limit.
+          GITHUB_TOKEN: ${{ github.token }}
+        run: .\tools\build.ps1 -SkipFetch
+
+      - name: Check the build
+        run: node tools/check-build.mjs
+
+      - name: Disk used
+        if: always()
+        run: Get-PSDrive -PSProvider FileSystem | Format-Table Name, @{ n = 'Used (GB)'; e = { [math]::Round($_.Used / 1GB, 1) } }, @{ n = 'Free (GB)'; e = { [math]::Round($_.Free / 1GB, 1) } }
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: EDGEkitSetup
+          path: build/vscode/.build/win32-x64/user-setup/EDGEkitSetup.exe
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: GitHub release
+        if: inputs.release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node tools/release.mjs
+
+      - uses: actions/upload-artifact@v4
+        if: inputs.release
+        with:
+          name: update-manifest
+          path: docs/update/
+
+      # Committing the manifest is what offers the update; the docs site then serves it.
+      - name: Switch the update on
+        if: inputs.release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $version = (Get-Content version.json -Raw | ConvertFrom-Json).version
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/update
+          git commit -m "Update manifest: EDGEkit $version"
+          git pull --rebase origin main
+          git push origin HEAD:main
+          if ($LASTEXITCODE) { throw "Pushing the manifest failed. The release is made: commit the update-manifest artifact's file to docs/update/ by hand." }
+          gh workflow run pages.yml --ref main
