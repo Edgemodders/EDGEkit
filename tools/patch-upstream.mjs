@@ -305,6 +305,17 @@ const edits = [
     to: '\t\treturn path.join(tmpdir(), `${this.productService.applicationName}-${this.productService.quality}-${this.productService.target}-${process.arch}`); // EDGEkit: not VS Code\'s folder\n',
   },
   {
+    // A background update installs beside the running app, and inno_updater swaps it in on restart. In 1.140
+    // that only works in the versioned layout (win32VersionedUpdate), which needs Microsoft's own Electron
+    // build: stock Electron cannot find its files there (found 2026-10-21, design "Updates"). Without it the
+    // update waits forever. Off, Restart to Update quits and runs the installer over the closed app, as for
+    // a system install. The download still happens in the background.
+    name: 'Updates: no background install',
+    file: 'src/vs/platform/update/common/update.config.contribution.ts',
+    from: "\t\t'update.enableWindowsBackgroundUpdates': {\n\t\t\ttype: 'boolean',\n\t\t\tdefault: true,",
+    to: "\t\t'update.enableWindowsBackgroundUpdates': {\n\t\t\ttype: 'boolean',\n\t\t\tdefault: false, // EDGEkit: needs Microsoft's Electron (design, \"Updates\")",
+  },
+  {
     name: 'Updates: only a newer version is an update (import)',
     file: 'src/vs/platform/update/electron-main/updateService.win32.ts',
     from: "import { AbstractUpdateService, createUpdateURL, getUpdateRequestHeaders, IUpdateURLOptions, UpdateErrorClassification } from './abstractUpdateService.js';",

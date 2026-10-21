@@ -75,9 +75,9 @@ The update check (design, "Updates") between two local builds, with no release. 
 |---|---|
 | 1. The older build | In `local.json` add `"updateUrl": "http://127.0.0.1:8123"` and `"version": "1.140.1"`, then `.\tools\build.ps1 -SkipFetch` |
 | 2. Install it | Run `EDGEkitSetup.exe` from the checkout's `.build\win32-x64\user-setup`. **Help > About** says 1.140.1. Close it |
-| 3. The newer build | In `local.json`, `"version": "1.140.2"`, and build again |
+| 3. The newer build | In `local.json`, `"version": "1.140.2"`. Commit something first (a note will do): each build's files sit in a folder named after its commit, so two builds of one commit would share it. Build again |
 | 4. Serve it | `node tools/update-test.mjs`. It prints each request |
-| 5. Update | Start the installed EDGEkit. Within a minute it asks for the manifest, downloads the installer and installs it beside itself (the install folder's `_`); the gear at the bottom left shows **Restart to Update**. Choose it: EDGEkit closes, swaps in the new version and starts again. About says 1.140.2, and **Help > Check for Updates** says there is none. A plain quit does not apply it: the update waits, and the next start offers the restart again |
+| 5. Update | Start the installed EDGEkit. Within a minute it asks for the manifest, downloads the installer and installs it beside itself (a new commit-named folder and `new_EDGEkit.exe` in the install folder); the gear at the bottom left shows **Restart to Update**. Choose it: EDGEkit closes, swaps in the new version and starts again. About says 1.140.2, and **Help > Check for Updates** says there is none. A plain quit does not apply it: the update waits, and the next start offers the restart again |
 | 6. Clean up | Take `updateUrl` and `version` out of `local.json`. Uninstall the test EDGEkit from Windows' Installed apps if you like |
 
 ### Releasing
