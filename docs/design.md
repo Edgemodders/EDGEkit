@@ -53,25 +53,30 @@ The list is `extensions.json`. Sources are the sibling repos, built by their own
 | They ship without EDGEkit too | REDcode's extensions and the theme also go to Open VSX for VS Code and VSCodium users, with their own versions, releases and docs |
 | Build weight | EDGEkit's build pulls in all of Code - OSS; extension work stays quick without it |
 | Parallel work | Separate repos keep sessions working in different tools from tripping over each other |
-| Each extension has its own repo | REDcode's repo holds REDcode and the HUD theme; EDGEdeck, EDGEwave, EDGEmat and the other EDGE extensions live in their own repos. EDGEkit bundles each one from its repo's releases |
+| Each extension has its own repo | REDcode's repo holds REDcode and the HUD theme; EDGEdeck, EDGEwave, EDGEmat and the other EDGE extensions live in their own repos. EDGEkit takes each one's released VSIX, never its source |
 
 | Where EDGEkit gets them | How |
 |---|---|
-| On the dev PC | From the sibling folders: `tools/bundle.mjs` builds each extension with its own script and takes the newest VSIX |
-| In a release (K4) | Each extension repo attaches its VSIX to a GitHub release when it tags a version (REDcode and EDGEdeck, then REDdeck, already do, through their `publish.yml`, checked 2026-10-15). `extensions.json` pins the version EDGEkit ships (`version`), and CI downloads exactly that file, so every EDGEkit release says which extension versions it holds and can be rebuilt. The build depends on these released files only, never on the extensions' source |
-| Third-party (Redscript IDE) | Built from source at a pinned tag, or from Open VSX once it is there |
+| Every build (K3, 2026-10-21) | `tools/bundle.mjs` downloads the version pinned in `extensions.json` (`version`) from **Open VSX**: the Windows x64 file where an extension has one, else the universal one, checked against Open VSX's SHA-256 and kept in `build/downloads`. Open VSX is where the built-in extensions update from afterwards, so a release ships exactly what modders' updates bring; the extension repos' publish workflows put every release there. Each EDGEkit release says which versions it holds and can be rebuilt. Not GitHub releases, as first planned: REDcode's does not carry the theme's VSIX. Not the VS Code Marketplace: its terms limit its extensions to Microsoft's products (the user asked, 2026-10-21) |
+| Testing unreleased extension work | `tools/bundle.mjs --local` (or `"localExtensions": true` in `local.json`) builds each sibling repo with its own script and takes the newest VSIX, as K1 to K2 did |
+| Third-party (Redscript IDE) | Built from its source at a pinned commit (`"from": "source"`, `commit`), in `build/src`. Its repo's tags stop at 0.2.2, so the pin is the 0.3.4 commit; its lock file is out of step there, so `npm install` instead of `npm ci`. Open VSX can replace the build once it is there |
+| Claude Code | **Not shipped: installed from Open VSX on EDGEkit's first start.** Its license is Anthropic's own ("All rights reserved", checked on Open VSX 2026-10-21) and grants no right to redistribute, so EDGEkit may not put its files in the installer. `product.json`'s `edgekitFirstRunExtensions` lists it, and EDGEkit's own `product/extensions/edgekitFirstRun.ts` installs each listed extension once (the user, 2026-10-21; EDGEchat will need it). One the modder uninstalls stays uninstalled; offline, it tries again at the next start |
+| Licenses | `bundle.mjs` writes each built-in extension's license and third-party notices into `ThirdPartyNotices-EDGEkit.txt` in the checkout, and `patch-upstream.mjs` adds it to the files upstream's packaging ships beside its own `ThirdPartyNotices.txt`. Not in a `licenses/` folder: the installer takes that for Microsoft's license translations (`LICENSE-deu.rtf`), and its build failed (2026-10-21) |
 
 Git submodules would also pin exact commits, but every update takes commits in two repos; pinned release versions are simpler.
 
-| Extension | From | Status |
+| Extension | Pinned (2026-10-21) | Notes |
 |---|---|---|
-| REDcode for Cyberpunk 2077 (`edgemodders.redcode-cyberpunk`, renamed from `edgemodders.redcode` in 0.8.0: the Marketplace already had a "redcode") | REDcode, `npm run redcode:package` | Exists. On both registries from 0.8.2 |
-| REDnode HUD theme (`edgemodders.rednode-hud-theme`) | REDcode, `npm run theme:package` | Exists. The default theme |
-| EDGEdeck (`edgemodders.edgedeck`) | EDGEdeck, `npm run package` | Exists. The mod manager. Its VSIX is built for `win32-x64`. Renamed from REDdeck (`edgemodders.reddeck`) on 2026-10-17, with no old names kept. `edgemodders.edgedeck` 0.27.3 is on both registries (checked 2026-10-17); the old `edgemodders.reddeck` listing stays at 0.26.6 |
-| REDagent's editor view (id to be decided; `edgemodders.redagent` is a placeholder) | REDagent, phase C6 | Not started. REDagent today is a REDnode package that runs in the game (C5 passed in game). C6 adds a view in the editor's activity bar; whether that is its own extension or part of REDcode is REDagent's decision. The in-game part is not an editor extension, so EDGEkit does not bundle it |
-| EDGEmat (`edgemodders.edgemat`) | EDGEmat, `npm run edgemat:package` (the extension is in `extensions/edgemat`) | Exists. The material editor (`.mlsetup` first), with an MCP server (`packages/edgemat-mcp`) beside it. In 0.3.0 the server is a separate file in EDGEmat's GitHub release; the next release puts it inside the VSIX (being built, 2026-10-21), and EDGEkit then carries it with no change of its own. 0.3.0, a preview, is on both registries (released 2026-10-20). Its released VSIX is built for `win32-x64`; the local package script makes a universal one |
-| EDGEwave (`edgemodders.edgewave`) | EDGEwave, `npm run package` (the VSIX lands in the repo's root) | Exists. The sound studio. Needs REDcode (`extensionDependencies`). 0.1.0, a preview, is on both registries (released 2026-10-20) |
-| Redscript IDE (`jac3km4.redscript-ide-vscode`) | Built from its source (MIT) | To bundle in K3, with its notice. Its language server (`redscript-ide.exe`, MIT) ships beside it and `redscript.idePath` points at it, so it works offline. If it reaches Open VSX, that can replace the build |
+| REDcode for Cyberpunk 2077 (`edgemodders.redcode-cyberpunk`, renamed from `edgemodders.redcode` in 0.8.0: the Marketplace already had a "redcode") | 0.10.2, Windows x64 | Built in. Local: REDcode, `npm run redcode:package` |
+| REDnode HUD theme (`edgemodders.rednode-hud-theme`) | 0.3.1 | Built in, the default theme. Local: REDcode, `npm run theme:package` |
+| EDGEdeck (`edgemodders.edgedeck`) | 0.27.3, Windows x64 | Built in. The mod manager. Renamed from REDdeck (`edgemodders.reddeck`) on 2026-10-17, with no old names kept. Local: EDGEdeck, `npm run package` |
+| EDGEmat (`edgemodders.edgemat`) | 0.3.1, Windows x64 | Built in. The material editor, with its MCP server inside the VSIX from 0.3.1. Local: EDGEmat, `npm run edgemat:package` |
+| EDGEwave (`edgemodders.edgewave`) | 0.1.0 | Built in. The sound studio. Needs REDcode (`extensionDependencies`). Local: EDGEwave, `npm run package` (the VSIX lands in the repo's root) |
+| Redscript IDE (`jac3km4.redscript-ide-vscode`) | 0.3.4, commit `08684a0` | Built in, from its source (MIT). The extension downloads its language server (`redscript-ide.exe`, MIT) from GitHub on first use; shipping it beside the extension, with `redscript.idePath` pointing there, so it works offline, is left for later |
+| Claude Code (`anthropic.claude-code`) | Latest, at first start | Installed from Open VSX on the first start, not shipped (above) |
+| REDagent's editor view (id to be decided; `edgemodders.redagent` is a placeholder) | - | Not started. REDagent today is a REDnode package that runs in the game (C5 passed in game). C6 adds a view in the editor's activity bar; whether that is its own extension or part of REDcode is REDagent's decision. The in-game part is not an editor extension, so EDGEkit does not bundle it |
+
+**No Copilot chat or Agents window** (the user, 2026-10-21: EDGEkit uses the Claude Code extension). `patch-upstream.mjs` turns upstream's own switch, `chat.disableAIFeatures`, on by default: it hides the chat UI, inline suggestions and Copilot's sign-in, keeps the Agents window from opening (`chatSetupHidden` is in its precondition) and leaves the agent host off. It stays a setting.
 
 ## Release pipeline
 
@@ -84,7 +89,7 @@ Agreed with the user on 2026-10-15: watch the extension repos, pull released ext
 | | Built in (chosen) | The pack installed by the installer (fallback) |
 |---|---|---|
 | First start | Everything works, even offline | Needs the network during install; if Open VSX is down, the modder starts with a bare editor |
-| Redscript IDE | Included, with its language server | Missing: not on Open VSX, and its language server is not in the VSIX |
+| Redscript IDE | Included (its language server downloads on first use, for now) | Missing: not on Open VSX |
 | Updates | From Open VSX, automatically (below) | From Open VSX as each extension publishes |
 | Build | Downloads the pinned released VSIX files | Nothing to download |
 
@@ -96,7 +101,9 @@ Agreed with the user on 2026-10-15: watch the extension repos, pull released ext
 | Unless its id is in `product.json`'s `builtInExtensionsEnabledWithAutoUpdates`. Then it is checked and updated like any installed extension, following the modder's auto-update setting | Microsoft uses this for Copilot Chat in 1.140.0. `tools/brand.mjs` fills the list with every EDGE extension in `extensions.json`, replacing upstream's entry |
 | Code - OSS's own `product.json` sets no `quality` | `product/product.json` sets `quality` to `stable`; the update service needs it too |
 
-Redscript IDE stays off the list: it ships with its own language server, which a gallery update would not carry. It updates with EDGEkit releases. K3 confirms all this in the built app (an older EDGEdeck built in, a newer one on Open VSX), and the installer fallback stays unused unless that test fails.
+Redscript IDE stays off the list: it is not on Open VSX, so it updates with EDGEkit releases. K3 tested this in the built app on 2026-10-21: with EDGEmat 0.3.0 built in and 0.3.1 on Open VSX, a fresh profile updated it to 0.3.1 at start, with no prompt.
+
+On the first start, upstream asks before Claude Code installs: "Do you trust the publisher Anthropic?" (its first extension from that publisher; the EDGE extensions are built in, so they never ask). EDGEkit keeps the question: it is the modder's consent to a third-party extension. The dialog says Anthropic is "not verified" although Open VSX marks the extension verified (checked 2026-10-21); Open VSX's VS Code-style API seems not to pass that on (unverified).
 
 The extension pack (`edgemodders.edgekit`) is for modders in VS Code and VSCodium. EDGEkit itself does not need it.
 

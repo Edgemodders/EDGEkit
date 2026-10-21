@@ -316,6 +316,22 @@ const edits = [
     to: "\t\t'update.enableWindowsBackgroundUpdates': {\n\t\t\ttype: 'boolean',\n\t\t\tdefault: false, // EDGEkit: needs Microsoft's Electron (design, \"Updates\")",
   },
   {
+    // The build starts the app once with a temporary profile to make its Node.js compile cache, then deletes
+    // the profile at once. With EDGEkit's built-in extensions starting, Windows had not let go of the
+    // extension host's log yet: EBUSY, and the build failed after the cache was made (K3, 2026-10-21).
+    name: 'Compile cache: retry deleting the temporary profile',
+    file: 'build/lib/nodeCompileCache.ts',
+    from: '\t} finally {\n\t\tawait fs.promises.rm(portableDirectory, { recursive: true, force: true });\n\t}\n',
+    to: '\t} finally {\n\t\tawait fs.promises.rm(portableDirectory, { recursive: true, force: true, maxRetries: 10, retryDelay: 500 }); // EDGEkit: Windows lets go of log files late\n\t}\n',
+  },
+  {
+    // The built-in extensions' licenses and notices (bundle.mjs writes the file), shipped beside upstream's.
+    name: "The built-in extensions' notices in the app",
+    file: 'build/gulpfile.vscode.ts',
+    from: "gulp.src([product.licenseFileName, 'ThirdPartyNotices.txt', 'licenses/**']",
+    to: "gulp.src([product.licenseFileName, 'ThirdPartyNotices.txt', 'ThirdPartyNotices-EDGEkit.txt', 'licenses/**']",
+  },
+  {
     // EDGEkit's own first-start installs (product/extensions/edgekitFirstRun.ts, copied in by brand.mjs).
     name: 'First start: install Claude Code from Open VSX',
     file: 'src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts',

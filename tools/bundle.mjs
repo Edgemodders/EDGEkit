@@ -201,9 +201,9 @@ for (const e of extensions) {
 if (existsSync(checkout)) {
   mkdirSync(builtInDir, { recursive: true });
   writeFileSync(join(builtInDir, 'builtInExtensions.json'), `${JSON.stringify(builtIns, null, 2)}\n`);
-  // The built-in extensions' licenses, in the app beside upstream's (its packaging ships licenses/**).
-  mkdirSync(join(checkout, 'licenses'), { recursive: true });
-  writeFileSync(join(checkout, 'licenses', 'EDGEkit-extensions.txt'),
+  // The built-in extensions' licenses, in the app beside upstream's ThirdPartyNotices.txt (patch-upstream.mjs
+  // adds it to the packaging). Not in licenses/: the installer takes that folder for Microsoft's license translations.
+  writeFileSync(join(checkout, 'ThirdPartyNotices-EDGEkit.txt'),
     `The extensions built into EDGEkit, with their licenses and notices. Each also carries them in its own folder.\n\n${notices.join('\n')}`);
 }
 process.exit(failed ? 1 : 0);
