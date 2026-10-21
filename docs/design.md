@@ -182,13 +182,25 @@ For modders who stay in VS Code or VSCodium: one extension, `edgemodders.edgekit
 
 ## Updates
 
-Code - OSS has an update service built in, switched off because upstream's `product.json` has no `updateUrl`. EDGEkit switches it on and points it at its own releases. **Unverified:** from upstream's source and VSCodium as remembered, to check against the pinned upstream in K4.
+Code - OSS has an update service built in, switched off because upstream's `product.json` has no `updateUrl`. EDGEkit switches it on and points it at a static JSON manifest that links to the installer in the GitHub release (agreed with the user, 2026-10-21). Read in upstream's source at 1.140.0 on 2026-10-21 (`src/vs/platform/update`):
 
-| Part | What it does |
+| Part | Upstream, as read |
 |---|---|
-| `product.json` | `updateUrl` (where to ask), `quality` (`stable`), `downloadUrl` (the releases page) and `releaseNotesUrl` |
-| The check | The app asks `{updateUrl}/api/update/{platform}/{quality}/{commit}`, for example platform `win32-x64-user`. The answer is "nothing new" or a small JSON file: the installer's URL, its version, the upstream commit and its SHA-256 hash |
-| The install | On Windows the app downloads the installer, checks the hash, and runs it quietly when the user restarts |
-| EDGEkit's answer | GitHub releases cannot answer that URL, because it changes with every commit. VSCodium's way: a small patch makes the app ask a fixed path instead (`{updateUrl}/{quality}/{platform}/{arch}/latest.json`), and the release workflow writes that file. EDGEkit can publish it on its GitHub Pages site, pointing at the installer in the GitHub release |
+| `product.json` | `updateUrl` (where to ask) and `quality` (`stable`) switch it on; `downloadUrl` and `releaseNotesUrl` feed the notification's links |
+| The check | `createUpdateURL` asks `{updateUrl}/api/update/{platform}/{quality}/{commit}`, platform `win32-x64-user` for the user installer, plus `?bg=true&u=none` |
+| The answer | JSON with `url` (the installer), `version` (a build id, which also names the downloaded file), `productVersion` (shown to the user) and `sha256hash`; anything without `url`, `version` and `productVersion` means "nothing new" |
+| The install | `updateService.win32.ts` downloads the installer beside the app's data, checks the SHA-256, and runs it quietly on restart (or in the background, `update.enableWindowsBackgroundUpdates`), with `inno_updater.exe`, which the build already ships |
+| Deciding "newer" | **The app does not compare versions.** Microsoft's server answers "nothing new" when the commit in the URL is current. A static file always answers with the latest release, so without a check the app would offer the same version again and again |
+
+EDGEkit's way, VSCodium's in outline:
+
+| Part | What EDGEkit does |
+|---|---|
+| The manifest | One file per platform, `latest-win32-x64-user.json`, attached to each GitHub release: `{ "url": ".../EDGEkitSetup.exe", "version": "<EDGEkit version>", "productVersion": "<EDGEkit version>", "sha256hash": "...", "timestamp": ... }`. `updateUrl` is `https://github.com/Edgemodders/EDGEkit/releases/latest/download`, which GitHub redirects to the newest release that is not a draft or prerelease, so no separate site is needed (redirect handling by the app's request service: unverified) |
+| Patch 1, the URL | `createUpdateURL` asks `{updateUrl}/latest-{platform}.json` (`patch-upstream.mjs`) |
+| Patch 2, the check | The answer counts only when its `productVersion` is newer than the running app's EDGEkit version (`patch-upstream.mjs`) |
+| A version of its own | Every EDGEkit release on the same upstream has the same upstream commit and version (1.140.0), so neither can tell two EDGEkit releases apart. EDGEkit needs its own version in `product.json`, to decide in K4 (VSCodium: upstream version plus a build number, `1.140.06880`) |
+| The test (K4) | An older build updates itself to a newer one. Before a real release: a local web server with a manifest pointing at a newer installer |
+| Unsigned installers | SmartScreen may not stop a silent install the app runs, but whether it does is unverified until K4 |
 
 The other services in `product.json`: the extension gallery is Open VSX (set); telemetry is off (set); Settings Sync uses Microsoft's servers and stays off.
