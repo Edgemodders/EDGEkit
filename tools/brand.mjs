@@ -114,6 +114,8 @@ const welcome = join(root, 'product', 'welcome');
 const gettingStarted = join(dirname(target), 'src', 'vs', 'workbench', 'contrib', 'welcomeGettingStarted', 'common');
 const added = [
   [join(welcome, 'edgekitWalkthrough.ts'), join(gettingStarted, 'edgekitWalkthrough.ts')],
+  // The first-start installs (product.json edgekitFirstRunExtensions, such as Claude Code).
+  [join(root, 'product', 'extensions', 'edgekitFirstRun.ts'), join(dirname(target), 'src', 'vs', 'workbench', 'contrib', 'extensions', 'browser', 'edgekitFirstRun.ts')],
   ...readdirSync(join(welcome, 'media')).map((name) => [join(welcome, 'media', name), join(gettingStarted, 'media', name)]),
   ...readdirSync(join(root, 'product', 'onboarding')).map((name) => [join(root, 'product', 'onboarding', name), join(dirname(target), 'src', 'vs', 'workbench', 'contrib', 'welcomeOnboarding', 'browser', 'media', name)]),
 ];

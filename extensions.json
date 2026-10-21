@@ -1,5 +1,5 @@
 {
-  "//": "Extensions built into EDGEkit. On the dev PC, tools/bundle.mjs builds each sibling one with its own script and unpacks the newest VSIX. For a release (K4), \"version\" pins the one shipped, downloaded from the repo's GitHub release.",
+  "//": "Extensions built into EDGEkit (K3). tools/bundle.mjs downloads each EDGE extension's pinned \"version\" from Open VSX, where it updates from afterwards; with --local (or \"localExtensions\": true in local.json) it builds the sibling repo with \"build\" and takes the newest \"vsix\" instead. Raise the pins when a release is prepared (design, \"When EDGEkit releases\"). \"from\": \"source\" is a third-party extension built from its repo at \"commit\".",
   "extensions": [
     {
       "id": "edgemodders.redcode-cyberpunk",
@@ -8,7 +8,8 @@
       "build": "npm run redcode:package",
       "vsix": "dist/redcode-cyberpunk-*.vsix",
       "status": "exists",
-      "version": null
+      "builtIn": true,
+      "version": "0.10.2"
     },
     {
       "id": "edgemodders.rednode-hud-theme",
@@ -19,7 +20,7 @@
       "status": "exists",
       "defaultTheme": true,
       "builtIn": true,
-      "version": null
+      "version": "0.3.1"
     },
     {
       "id": "edgemodders.edgedeck",
@@ -28,7 +29,8 @@
       "build": "npm run package",
       "vsix": "dist/edgedeck-win32-x64-*.vsix",
       "status": "exists",
-      "version": null
+      "builtIn": true,
+      "version": "0.27.3"
     },
     {
       "id": "edgemodders.redagent",
@@ -46,7 +48,8 @@
       "build": "npm run edgemat:package",
       "vsix": "dist/edgemat-*.vsix",
       "status": "exists",
-      "version": null
+      "builtIn": true,
+      "version": "0.3.1"
     },
     {
       "id": "edgemodders.edgewave",
@@ -55,12 +58,17 @@
       "build": "npm run package",
       "vsix": "edgewave-*.vsix",
       "status": "exists",
-      "version": null
+      "builtIn": true,
+      "version": "0.1.0"
     },
     {
       "id": "jac3km4.redscript-ide-vscode",
       "from": "source",
       "repo": "https://github.com/jac3km4/redscript-ide-vscode",
+      "commit": "08684a0f245732251d048d7084fffac7935dde6c",
+      "//install": "Its package-lock.json is out of step with its package.json at this commit (npm ci refuses: esbuild's platform packages), so npm install",
+      "install": "npm install --no-audit --no-fund",
+      "build": "npm run package",
       "license": "MIT",
       "server": {
         "repo": "https://github.com/jac3km4/redscript-ide",
@@ -68,8 +76,9 @@
         "asset": "redscript-ide.exe",
         "setting": "redscript.idePath"
       },
-      "status": "K3: build from source and bundle with its notice; the author is being told and asked about Open VSX",
-      "version": null
+      "status": "Built from source at its 0.3.4 commit (not on Open VSX, and the Marketplace's terms rule out taking it from there). The extension downloads its language server from GitHub on first use. The author is being asked about Open VSX",
+      "builtIn": true,
+      "version": "0.3.4"
     }
   ]
 }

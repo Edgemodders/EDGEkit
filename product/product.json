@@ -38,6 +38,8 @@
     "resourceUrlTemplate": "https://open-vsx.org/vscode/unpkg/{publisher}/{name}/{version}/{path}"
   },
   "enableTelemetry": false,
+  "//edgekitFirstRunExtensions": "Installed from Open VSX on EDGEkit's first start, once (product/extensions/edgekitFirstRun.ts): extensions whose licenses do not let EDGEkit ship their files. Claude Code (Anthropic's license, the user's call 2026-10-21; EDGEchat will need it).",
+  "edgekitFirstRunExtensions": ["anthropic.claude-code"],
   "//onboardingThemes": "The theme cards of the one-time onboarding (K2): REDnode HUD first, which is the default, then upstream themes. Each id needs media/theme-preview-<id>.svg; brand.mjs copies EDGEkit's from product/onboarding.",
   "onboardingThemes": [
     {

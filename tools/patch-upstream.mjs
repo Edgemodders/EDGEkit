@@ -316,6 +316,23 @@ const edits = [
     to: "\t\t'update.enableWindowsBackgroundUpdates': {\n\t\t\ttype: 'boolean',\n\t\t\tdefault: false, // EDGEkit: needs Microsoft's Electron (design, \"Updates\")",
   },
   {
+    // EDGEkit's own first-start installs (product/extensions/edgekitFirstRun.ts, copied in by brand.mjs).
+    name: 'First start: install Claude Code from Open VSX',
+    file: 'src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts',
+    from: "import { IAction } from '../../../../base/common/actions.js';\n",
+    to: "import { IAction } from '../../../../base/common/actions.js';\nimport './edgekitFirstRun.js'; // EDGEkit\n",
+  },
+  {
+    // No Copilot chat, inline suggestions or Agents window (the user, 2026-10-21: EDGEkit uses the Claude
+    // Code extension instead). Upstream's own switch: it hides the chat UI and Copilot's sign-in, keeps the
+    // Agents window from opening (chatSetupHidden is in its precondition) and leaves the agent host off.
+    // Still a setting, so a modder can turn them back on.
+    name: 'No built-in AI features (chat, Agents window)',
+    file: 'src/vs/workbench/contrib/chat/browser/chat.shared.contribution.ts',
+    from: "including chat and inline suggestions.\"),\n\t\t\tdefault: false,",
+    to: "including chat and inline suggestions.\"),\n\t\t\tdefault: true, // EDGEkit: Claude Code instead",
+  },
+  {
     name: 'Updates: only a newer version is an update (import)',
     file: 'src/vs/platform/update/electron-main/updateService.win32.ts',
     from: "import { AbstractUpdateService, createUpdateURL, getUpdateRequestHeaders, IUpdateURLOptions, UpdateErrorClassification } from './abstractUpdateService.js';",
