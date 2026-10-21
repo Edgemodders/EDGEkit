@@ -76,7 +76,7 @@ Git submodules would also pin exact commits, but every update takes commits in t
 | Claude Code (`anthropic.claude-code`) | Latest, at first start | Installed from Open VSX on the first start, not shipped (above) |
 | REDagent's editor view (id to be decided; `edgemodders.redagent` is a placeholder) | - | Not started. REDagent today is a REDnode package that runs in the game (C5 passed in game). C6 adds a view in the editor's activity bar; whether that is its own extension or part of REDcode is REDagent's decision. The in-game part is not an editor extension, so EDGEkit does not bundle it |
 
-**No Copilot chat or Agents window** (the user, 2026-10-21: EDGEkit uses the Claude Code extension). `patch-upstream.mjs` turns upstream's own switch, `chat.disableAIFeatures`, on by default: it hides the chat UI, inline suggestions and Copilot's sign-in, keeps the Agents window from opening (`chatSetupHidden` is in its precondition) and leaves the agent host off. It stays a setting.
+**No Copilot chat or Agents window** (the user, 2026-10-21: EDGEkit uses the Claude Code extension). `patch-upstream.mjs` turns upstream's own switch, `chat.disableAIFeatures`, on by default: it hides the chat UI, inline suggestions and Copilot's sign-in, keeps the Agents window from opening (`chatSetupHidden` is in its precondition) and leaves the agent host off. It stays a setting. Upstream also skips its onboarding when AI features are hidden, so that took EDGEkit's onboarding away (found by the user, 2026-10-21); EDGEkit's has no AI step, so `patch-upstream.mjs` turns that check off.
 
 ## Release pipeline
 

@@ -349,6 +349,16 @@ const edits = [
     to: "including chat and inline suggestions.\"),\n\t\t\tdefault: true, // EDGEkit: Claude Code instead",
   },
   {
+    // Upstream skips its onboarding when AI features are hidden, so the edit above took EDGEkit's onboarding
+    // away too (found 2026-10-21: no onboarding on a first launch). EDGEkit's has no AI step left (a GitHub
+    // sign-in and the personalize step; the AI preference step is not in ONBOARDING_STEPS), so it shows anyway.
+    name: 'The onboarding shows with AI features hidden',
+    file: 'src/vs/workbench/contrib/welcomeGettingStarted/browser/startupPage.ts',
+    // The check stays, turned off, so the service it reads is still used (the build rejects an unused one).
+    from: '\t\tif (this.chatEntitlementService.sentiment.hidden) {',
+    to: '\t\tif (/* EDGEkit: its onboarding has no AI step */ false && this.chatEntitlementService.sentiment.hidden) {',
+  },
+  {
     name: 'Updates: only a newer version is an update (import)',
     file: 'src/vs/platform/update/electron-main/updateService.win32.ts',
     from: "import { AbstractUpdateService, createUpdateURL, getUpdateRequestHeaders, IUpdateURLOptions, UpdateErrorClassification } from './abstractUpdateService.js';",
