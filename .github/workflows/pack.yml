@@ -1,21 +1,38 @@
-# Publishes the EDGEkit extension pack (pack/, edgemodders.edgekit) when its version tag is pushed:
-#   git tag pack-v0.1.0 && git push origin pack-v0.1.0
-# Checks the tag against pack/package.json, builds one pack per registry with tools/pack.mjs (each
-# lists only the EDGE extensions published there), publishes them to the VS Code Marketplace
-# (VSCE_PAT) and Open VSX (OVSX_PAT), and makes the GitHub release with both VSIX files. The tokens
-# are Edgemodders organisation secrets, shared with REDcode's and EDGEdeck's workflows; the
-# organisation must make them available to this repo.
+# Builds the EDGEkit extension pack (pack/, edgemodders.edgekit): one VSIX per registry with
+# tools/pack.mjs, each listing only the EDGE extensions published there. The same workflow as
+# REDnode's release.yml and EDGEkit's own release.yml, so every Edgemodders tool releases the same way.
+#
+#   Run workflow (Actions tab)                  builds both packs and keeps them as the run's artifact;
+#                                               publishes nothing
+#   Run workflow, "Make a release" ticked       also publishes them to the VS Code Marketplace
+#                                               (VSCE_PAT) and Open VSX (OVSX_PAT) and makes the GitHub
+#                                               release, which tags the commit pack-v<version>. Stops
+#                                               first if that tag exists (raise pack/package.json's
+#                                               version), if it is not run on main, or if
+#                                               pack/CHANGELOG.md has no section for the version
+#   gh workflow run pack.yml -f release=true    the same as ticking the box, from a terminal
+#
+# The tokens are Edgemodders organisation secrets, shared with REDcode's and EDGEdeck's workflows. A pack
+# release never becomes the repository's Latest release, which stays the app's.
 name: Pack
 
 on:
-  push:
-    tags: ["pack-v*"]
+  workflow_dispatch:
+    inputs:
+      release:
+        description: Make a release (publishes both packs and tags this commit pack-v<version>)
+        type: boolean
+        default: false
 
 permissions:
   contents: write
 
+concurrency:
+  group: pack
+  cancel-in-progress: false
+
 jobs:
-  publish:
+  pack:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -24,36 +41,66 @@ jobs:
         with:
           node-version: 22
 
-      - name: The tag matches pack/package.json
+      - name: The version
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          version="${GITHUB_REF_NAME#pack-v}"
-          have=$(node -p "require('./pack/package.json').version")
-          if [ "${have}" != "${version}" ]; then
-            echo "::error::Tag ${GITHUB_REF_NAME} does not match pack/package.json version ${have}"
-            exit 1
-          fi
+          version=$(node -p "require('./pack/package.json').version")
           echo "VERSION=${version}" >> "$GITHUB_ENV"
+          if [ "${{ inputs.release }}" = "true" ]; then
+            if [ "${GITHUB_REF}" != "refs/heads/main" ]; then
+              echo "::error::Releases are made from main, not ${GITHUB_REF_NAME}"
+              exit 1
+            fi
+            if gh api "repos/${GITHUB_REPOSITORY}/git/ref/tags/pack-v${version}" --silent >/dev/null 2>&1; then
+              echo "::error::pack-v${version} is already released. Raise the version in pack/package.json."
+              exit 1
+            fi
+          fi
+
+      # Before anything is built: no pack/CHANGELOG.md section for the version stops a release here.
+      - name: Release notes from pack/CHANGELOG.md
+        if: inputs.release
+        run: |
+          node -e '
+            const [version, out] = process.argv.slice(1);
+            const lines = require("fs").readFileSync("pack/CHANGELOG.md", "utf8").split(/\r?\n/);
+            const start = lines.findIndex((l) => l === `## ${version}` || l.startsWith(`## ${version} `));
+            if (start < 0) { console.error(`pack/CHANGELOG.md has no section for ${version}`); process.exit(1); }
+            let end = lines.findIndex((l, i) => i > start && l.startsWith("## "));
+            if (end < 0) end = lines.length;
+            const notes = lines.slice(start + 1, end).join("\n").trim();
+            if (!notes) { console.error(`pack/CHANGELOG.md: the section for ${version} is empty`); process.exit(1); }
+            require("fs").writeFileSync(out, notes + "\n");
+          ' "${VERSION}" "${RUNNER_TEMP}/notes.md"
 
       - name: Build the packs
         id: package
         run: node tools/pack.mjs
 
+      - uses: actions/upload-artifact@v7
+        with:
+          name: EDGEkit-pack
+          path: build/pack/edgekit-*.vsix
+          if-no-files-found: error
+
       - name: VS Code Marketplace
+        if: inputs.release
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
-        run: npx --yes @vscode/vsce@4.0.0 publish --packagePath "build/pack/edgekit-${VERSION}-marketplace.vsix"
+        # --skip-duplicate: a re-run of a release that got partway does not fail on what is already out.
+        run: npx --yes @vscode/vsce@4.0.0 publish --packagePath "build/pack/edgekit-${VERSION}-marketplace.vsix" --skip-duplicate
 
       # Each registry is tried even when another one failed; the run still fails if any of them did.
       - name: Open VSX
-        if: ${{ !cancelled() && steps.package.outcome == 'success' }}
+        if: ${{ inputs.release && !cancelled() && steps.package.outcome == 'success' }}
         env:
           OVSX_PAT: ${{ secrets.OVSX_PAT }}
-        run: npx --yes ovsx@1.2.0 publish "build/pack/edgekit-${VERSION}-openvsx.vsix" --pat "${OVSX_PAT}"
+        run: npx --yes ovsx@1.2.0 publish "build/pack/edgekit-${VERSION}-openvsx.vsix" --pat "${OVSX_PAT}" --skip-duplicate
 
+      # Makes the tag too (--target: this commit).
       - name: GitHub release
-        if: ${{ !cancelled() && steps.package.outcome == 'success' }}
+        if: ${{ inputs.release && !cancelled() && steps.package.outcome == 'success' }}
         env:
           GH_TOKEN: ${{ github.token }}
-        run: |
-          notes=$(node -e "const s=require('fs').readFileSync('pack/CHANGELOG.md','utf8');const m=s.split(/^## /m).find(p=>p.startsWith(process.argv[1]+'\n'));console.log(m?m.split('\n').slice(1).join('\n').trim():'')" "${VERSION}")
-          gh release create "${GITHUB_REF_NAME}" build/pack/edgekit-${VERSION}-*.vsix --title "EDGEkit extension pack ${VERSION}" --notes "${notes}" --latest=false
+        run: gh release create "pack-v${VERSION}" build/pack/edgekit-${VERSION}-*.vsix --target "${GITHUB_SHA}" --title "EDGEkit extension pack ${VERSION}" --notes-file "${RUNNER_TEMP}/notes.md" --latest=false

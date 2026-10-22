@@ -8,7 +8,7 @@
 //   extensions.json     a new Edgemodders extension that is published on a registry
 //   pack/members.json   a member newly published on (or gone from) a registry
 //   pack/package.json   a new minor version, with its line in pack/CHANGELOG.md
-// It never publishes: merging the pull request and pushing a pack-v tag stay the user's.
+// It never publishes: merging the pull request and releasing the pack (Pack workflow, Make a release) stay the user's.
 import { appendFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
