@@ -67,7 +67,7 @@ Git submodules would also pin exact commits, but every update takes commits in t
 
 | Extension | Pinned (2026-10-21) | Notes |
 |---|---|---|
-| REDcode for Cyberpunk 2077 (`edgemodders.redcode-cyberpunk`, renamed from `edgemodders.redcode` in 0.8.0: the Marketplace already had a "redcode") | 0.10.2, Windows x64 | Built in. Local: REDcode, `npm run redcode:package` |
+| REDcode for Cyberpunk 2077 (`edgemodders.redcode-cyberpunk`, renamed from `edgemodders.redcode` in 0.8.0: the Marketplace already had a "redcode") | 0.10.3, Windows x64 | Built in. Local: REDcode, `npm run redcode:package` |
 | REDnode HUD theme (`edgemodders.rednode-hud-theme`) | 0.3.1 | Built in, the default theme. Local: REDcode, `npm run theme:package` |
 | EDGEdeck (`edgemodders.edgedeck`) | 0.27.3, Windows x64 | Built in. The mod manager. Renamed from REDdeck (`edgemodders.reddeck`) on 2026-10-17, with no old names kept. Local: EDGEdeck, `npm run package` |
 | EDGEmat (`edgemodders.edgemat`) | 0.3.1, Windows x64 | Built in. The material editor, with its MCP server inside the VSIX from 0.3.1. Local: EDGEmat, `npm run edgemat:package` |
