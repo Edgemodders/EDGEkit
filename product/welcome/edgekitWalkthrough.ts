@@ -41,6 +41,13 @@ export const edgekitWalkthrough: BuiltinGettingStartedCategory = {
 				media: { type: 'svg', altText: 'The EDGE extensions in the Extensions view.', path: 'edgekit-tools.svg' },
 			},
 			{
+				id: 'edgekitClaude',
+				title: localize('edgekit.walkthrough.claude.title', "Set up Claude Code for EDGE"),
+				description: localize('edgekit.walkthrough.claude.description', "EDGEkit installs Claude Code on its first start. EDGEchat, the Edgemodders plugin for Claude Code, makes it a Cyberpunk 2077 modding assistant: modding skills, and the EDGE tools' MCP servers so it can read the game's files and work with your mods. EDGEkit adds the plugin to your Claude Code settings; Claude Code fetches it in its next session.\n{0}", Button(localize('edgekit.walkthrough.claude.button', "Set Up Claude Code for EDGE"), 'command:edgekit.setUpClaudeCode')),
+				completionEvents: ['onCommand:edgekit.setUpClaudeCode'],
+				media: { type: 'svg', altText: 'The EDGE plugin in Claude Code, with its servers connected.', path: 'edgekit-claude.svg' },
+			},
+			{
 				id: 'edgekitGameFolder',
 				title: localize('edgekit.walkthrough.game.title', "Point REDcode at the game"),
 				description: localize('edgekit.walkthrough.game.description', "REDcode needs to know where Cyberpunk 2077 is installed, to read the game's files and to install your mods. Set it once; REDcode keeps it.\n{0}", Button(localize('edgekit.walkthrough.game.button', "Set Game Folder"), 'command:redcode.setGameFolder')),
