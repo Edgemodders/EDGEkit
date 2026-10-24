@@ -373,21 +373,13 @@ const edits = [
   },
   {
     // The onboarding's first page has the Edgemodders banner across the top (the user, 2026-10-23):
-    // product/onboarding/edgemodders.png, which brand.mjs copies into the onboarding's media folder.
-    // Upstream's build ships only that folder's SVG files, so its PNG files are added to each list.
-    name: 'Onboarding: ship its PNG images',
-    file: 'build/next/resources.ts',
-    all: true,
-    from: "\t'vs/workbench/contrib/welcomeOnboarding/browser/media/*.svg',\n",
-    to: "\t'vs/workbench/contrib/welcomeOnboarding/browser/media/*.svg',\n\t'vs/workbench/contrib/welcomeOnboarding/browser/media/*.png', // EDGEkit\n",
-  },
-  {
+    // product/onboarding/edgemodders.svg, which brand.mjs copies into the onboarding's media folder.
     name: 'Onboarding: the Edgemodders banner',
     file: 'src/vs/workbench/contrib/welcomeOnboarding/browser/onboardingVariationA.ts',
     from: "\t\tconst wrapper = append(container, $('.onboarding-a-signin'));\n",
-    to: "\t\t// EDGEkit: the Edgemodders banner across the top (product/onboarding/edgemodders.png).\n" +
+    to: "\t\t// EDGEkit: the Edgemodders banner across the top (product/onboarding/edgemodders.svg).\n" +
       "\t\tconst banner = append(container, $<HTMLImageElement>('img.onboarding-a-signin-banner'));\n" +
-      "\t\tbanner.src = FileAccess.asBrowserUri('vs/workbench/contrib/welcomeOnboarding/browser/media/edgemodders.png').toString(true);\n" +
+      "\t\tbanner.src = FileAccess.asBrowserUri('vs/workbench/contrib/welcomeOnboarding/browser/media/edgemodders.svg').toString(true);\n" +
       "\t\tbanner.alt = 'Edgemodders';\n" +
       "\t\tconst wrapper = append(container, $('.onboarding-a-signin'));\n",
   },

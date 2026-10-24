@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 120">
+  <defs>
+    <linearGradient id="barGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#004d1a" />
+      <stop offset="35%" stop-color="#22b14c" />
+      <stop offset="65%" stop-color="#a8e61d" />
+      <stop offset="100%" stop-color="#FCEE0A" />
+    </linearGradient>
+  </defs>
+
+  <path fill="url(#barGrad)" d="
+    M 50,85 L 90,25 L 91,25 L 51,85 Z
+    M 59,85 L 99,25 L 100.5,25 L 60.5,85 Z
+    M 68.5,85 L 108.5,25 L 110.5,25 L 70.5,85 Z
+    M 78.5,85 L 118.5,25 L 121,25 L 81,85 Z
+    M 89,85 L 129,25 L 132,25 L 92,85 Z
+    M 100,85 L 140,25 L 143.5,25 L 103.5,85 Z
+    M 111.5,85 L 151.5,25 L 155.5,25 L 115.5,85 Z
+    M 123.5,85 L 163.5,25 L 168,25 L 128,85 Z
+    M 136,85 L 176,25 L 181,25 L 141,85 Z
+    M 149,85 L 189,25 L 194.5,25 L 154.5,85 Z
+    M 162.5,85 L 202.5,25 L 208.5,25 L 168.5,85 Z
+    M 176.5,85 L 216.5,25 L 223,25 L 183,85 Z
+    M 191,85 L 231,25 L 238,25 L 198,85 Z
+    M 206,85 L 246,25 L 253.5,25 L 213.5,85 Z
+    M 221.5,85 L 261.5,25 L 269.5,25 L 229.5,85 Z
+    M 237.5,85 L 277.5,25 L 286,25 L 246,85 Z
+    M 254,85 L 294,25 L 303,25 L 263,85 Z
+    M 271,85 L 311,25 L 320.5,25 L 280.5,85 Z
+    M 288.5,85 L 328.5,25 L 338.5,25 L 298.5,85 Z
+    M 306.5,85 L 346.5,25 L 357,25 L 317,85 Z
+    M 325,85 L 365,25 L 376,25 L 336,85 Z
+    M 344,85 L 384,25 L 395.5,25 L 355.5,85 Z
+    M 363.5,85 L 403.5,25 L 415.5,25 L 375.5,85 Z
+    M 383.5,85 L 423.5,25 L 436,25 L 396,85 Z
+    M 404,85 L 444,25 L 457,25 L 417,85 Z
+    M 425,85 L 465,25 L 478.5,25 L 438.5,85 Z
+  " />
+
+  <polygon points="446.5,85 486.5,25 940,25 900,85" fill="#FCEE0A" />
+
+  <!-- Adjusted font-weight to 600 for slightly more thickness -->
+  <text x="707" y="71" transform="scale(0.7, 1)" font-family="Helvetica, Arial, sans-serif" font-size="46" font-weight="600" fill="#000000" letter-spacing="4.5">EDGEMODDERS</text>
+
+</svg>
