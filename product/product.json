@@ -27,7 +27,7 @@
   "licenseName": "MIT",
   "reportIssueUrl": "https://github.com/Edgemodders/EDGEkit/issues/new",
   "documentationUrl": "https://edgemodders.github.io/EDGEkit/",
-  "//updateUrl": "Updates (design, \"Updates\"): the app asks {updateUrl}/latest-win32-x64-user.json, a static file on the docs site that tools/update-manifest.mjs writes for each release (patch-upstream.mjs makes the app ask for it). The other two are the update notification's links.",
+  "//updateUrl": "Updates (design, \"Updates\"): the app asks {updateUrl}/latest-win32-x64-user.json, a static file on the docs site that tools/release.mjs writes for each release (patch-upstream.mjs makes the app ask for it). The other two are the update notification's links.",
   "updateUrl": "https://edgemodders.github.io/EDGEkit/update",
   "downloadUrl": "https://github.com/Edgemodders/EDGEkit/releases/latest",
   "releaseNotesUrl": "https://github.com/Edgemodders/EDGEkit/releases",
