@@ -257,7 +257,7 @@ const edits = [
   {
     // Updates (design, "Updates"): upstream asks Microsoft's server, {updateUrl}/api/update/{platform}/{quality}/{commit},
     // which answers "nothing new" when the commit is current. EDGEkit's answer is a static file per platform on
-    // its docs site (tools/update-manifest.mjs writes it), so the app asks for that file and decides itself
+    // its docs site (tools/release.mjs writes it), so the app asks for that file and decides itself
     // what is newer, by EDGEkit's version (version.json). As VSCodium's update patch, in outline.
     name: 'Updates: a static manifest per platform',
     file: 'src/vs/platform/update/electron-main/abstractUpdateService.ts',

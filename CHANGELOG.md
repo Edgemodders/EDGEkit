@@ -4,6 +4,8 @@ EDGEkit's releases: the editor itself. The EDGE extensions have their own change
 
 ## Unreleased
 
+**Welcome page.** The step about the EDGE tools says they are built in, instead of offering to install the EDGEkit pack, whose extensions EDGEkit already has. **Browse EDGE Extensions** stays.
+
 **Claude Code for EDGE.** Once Claude Code is installed, EDGEkit asks once whether to set up EDGEchat, the EDGE plugin for Claude Code: modding skills and the EDGE tools' MCP servers. On yes it adds the plugin to your Claude Code settings, keeping everything else in them, and Claude Code fetches it in its next session. The command **EDGEkit: Set Up Claude Code for EDGE** and a new Welcome page step do the same at any time.
 
 ## 1.140.1
