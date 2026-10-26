@@ -116,6 +116,18 @@ On the first start, upstream asks before Claude Code installs: "Do you trust the
 | What follows | Claude Code's next session clones the marketplace, fetches the plugin and says "Plugins changed. Run /reload-plugins to activate." The plugin's settings form (REDnode token, game folder and so on) may not open by itself; `/edge:setup` names each missing one |
 | Tested 2026-10-23 | In the built app, with a throwaway `CLAUDE_CONFIG_DIR` and profile: the question showed once Claude Code 2.1.309 had installed, and Set Up added both keys; the command merged them into a file with other keys and kept its layout; a file with a comment was left as it was, with the fallback shown. **Unverified:** that a signed-in Claude Code then fetches the plugin (the test's had no sign-in and stopped at "Not logged in" before fetching). Claude Code's docs say what the keys do, not that another program may write them |
 
+**Show me (where it lives decided 2026-10-26; not built).** EDGEchat asked in [#6](https://github.com/Edgemodders/EDGEkit/issues/6) (2026-10-26) for a local "show me" MCP server, so that Claude Code can open an EDGE tool's view, select an item, point at a button and run the tool's command while the modder watches. Claude Code's VS Code extension gives the model no tools for the editor's UI, so this needs something inside the editor. What the editor allows, read in upstream's API at 1.140.0 on 2026-10-26:
+
+| Tool | Who can do it | Note |
+|---|---|---|
+| `ui_open` | Any extension | Every view has a built-in `<view id>.focus` command (`edgedeck.mods.focus`, `redcode.project.focus`); EDGEdeck's page has `edgedeck.openPage`; files open with `vscode.open` |
+| `ui_select` | Only the extension that owns the view | A tree view's `reveal` is on the object its owner made; no command selects another extension's item. So each EDGE extension adds one small command, for example `edgedeck.ui.reveal({ id })` |
+| `ui_hint` | An extension: a notification, or inside its own webview. **EDGEkit's app:** an outline on any toolbar button | No extension API points at another view's button. EDGEkit's own workbench code can find a toolbar action by its command id and outline it with a hover note (EDGEkit only; elsewhere the hint falls back to a notification) |
+| `ui_run` | Any extension | `executeCommand` with the commands EDGE extensions already have (`redcode.packAndInstall`, `edgedeck.deploy`, `edgedeck.undo`, ...), from an allow-list; those that change files or the game folder ask first (`anthropic/requiresUserInteraction`) |
+| `ui_state` | Partly | Open editors and the active one are public; which view is visible and what is selected in it only its owner knows, so the same small command per extension answers it |
+
+The server itself is an HTTP server on `127.0.0.1`, which runs in the extension host (Node), not in the workbench. So it is **an extension** (the user, 2026-10-26), its name to be decided (`edgemodders.edge-guide` is a placeholder), in its own repo (extensions stay in their own repos), in the pack and built into EDGEkit, so it also works in VS Code. Plus, in each EDGE extension, a `ui.reveal`/`ui.state` command (asks of those repos), and in EDGEkit's app the button outline. The alternative, the server inside EDGEkit's app, would need EDGEkit's own patches to the main process and would not reach modders in VS Code. Its repo and name are the user's to create; EDGEchat's first release does not need it.
+
 The extension pack (`edgemodders.edgekit`) is for modders in VS Code and VSCodium. EDGEkit itself does not need it.
 
 ### When EDGEkit releases
