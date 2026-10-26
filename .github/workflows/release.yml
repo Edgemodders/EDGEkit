@@ -11,6 +11,19 @@
 #                                               that tag exists, the version is not newer than the
 #                                               manifest's, or CHANGELOG.md has no section for it
 #                                               (tools/release.mjs)
+#   ... and "Update Nexus Mods" ticked          also, after the update is on, uploads EDGEkit-<version>.zip
+#                                               (the installer and a README, tools/nexus-zip.mjs) to the
+#                                               Nexus page as the main file's new version (the old one
+#                                               archived), adds its changelog (tools/nexus-notes.mjs) and
+#                                               pushes nexus/description.bbcode (tools/nexus/nexus.mjs,
+#                                               copied from REDnode; the organization's NEXUS_KEY secret).
+#                                               It checks the page first and stops before building if the
+#                                               description changed on Nexus since the last pull
+#                                               (node tools/nexus/nexus.mjs pull, merge, commit, run
+#                                               again). If the upload fails after the release, run
+#                                               tools/nexus-zip.mjs and tools/nexus/nexus.mjs release on
+#                                               the dev PC with the release's installer: it skips what is
+#                                               already done (nexus/README.md)
 #
 # Release gate: make a release only after the run's installer has been installed and tested
 # (docs/dev-setup.md, "Releasing"). Releases are rare: only when the editor changes (design, "When
@@ -22,6 +35,10 @@ on:
     inputs:
       release:
         description: Make a release (tags this commit v<version> and offers the update to installed EDGEkits). Only after its installer has been tested
+        type: boolean
+        default: false
+      nexus:
+        description: Update Nexus Mods (with Make a release) - upload the installer, its changelog and the page's description
         type: boolean
         default: false
 
@@ -45,13 +62,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # the manifest commit rebases onto main if it moved during the build
+          fetch-depth: 0 # the manifest commit rebases onto main if it moved during the build; the Nexus check compares with the previous release's description
 
       - name: The version is not released yet
         if: inputs.release
         env:
           GH_TOKEN: ${{ github.token }}
         run: node tools/release.mjs --check
+
+      - name: Nexus Mods can take this release
+        if: inputs.release && inputs.nexus
+        env:
+          NEXUS_KEY: ${{ secrets.NEXUS_KEY }}
+        run: |
+          node tools/check-bbcode.mjs
+          if ($LASTEXITCODE) { exit 1 }
+          $version = (Get-Content version.json -Raw | ConvertFrom-Json).version
+          node tools/nexus/nexus.mjs check --version $version
 
       - name: Fetch Code - OSS
         run: .\tools\fetch-vscode.ps1
@@ -108,3 +135,16 @@ jobs:
           git push origin HEAD:main
           if ($LASTEXITCODE) { throw "Pushing the manifest failed. The release is made: commit the update-manifest artifact's file to docs/update/ by hand." }
           gh workflow run pages.yml --ref main
+
+      # Last, so that a Nexus failure leaves the release and the update as they are.
+      - name: Nexus Mods
+        if: inputs.release && inputs.nexus
+        env:
+          NEXUS_KEY: ${{ secrets.NEXUS_KEY }}
+        run: |
+          $version = (Get-Content version.json -Raw | ConvertFrom-Json).version
+          node tools/nexus-notes.mjs --out "$env:RUNNER_TEMP/nexus-notes.txt"
+          if ($LASTEXITCODE) { exit 1 }
+          node tools/nexus-zip.mjs
+          if ($LASTEXITCODE) { exit 1 }
+          node tools/nexus/nexus.mjs release --version $version --zip "build/release/EDGEkit-$version.zip" --notes "$env:RUNNER_TEMP/nexus-notes.txt"
