@@ -43,7 +43,7 @@ export const edgekitWalkthrough: BuiltinGettingStartedCategory = {
 			{
 				id: 'edgekitClaude',
 				title: localize('edgekit.walkthrough.claude.title', "Set up Claude Code for EDGE"),
-				description: localize('edgekit.walkthrough.claude.description', "EDGEkit installs Claude Code on its first start. EDGEchat, the Edgemodders plugin for Claude Code, makes it a Cyberpunk 2077 modding assistant: modding skills, and the EDGE tools' MCP servers so it can read the game's files and work with your mods. EDGEkit adds the plugin to your Claude Code settings; Claude Code fetches it in its next session.\n{0}", Button(localize('edgekit.walkthrough.claude.button', "Set Up Claude Code for EDGE"), 'command:edgekit.setUpClaudeCode')),
+				description: localize('edgekit.walkthrough.claude.description', "EDGEkit installs Claude Code on its first start. EDGEchat, the Edgemodders plugin for Claude Code, makes it a Cyberpunk 2077 modding assistant: modding skills, and the EDGE tools' MCP servers so it can read the game's files and work with your mods. Set Up opens Claude Code's plugin dialog on EDGEchat for you to install it, then a new Claude Code session with /edge:setup ready to send.\n{0}", Button(localize('edgekit.walkthrough.claude.button', "Set Up Claude Code for EDGE"), 'command:edgekit.setUpClaudeCode')),
 				completionEvents: ['onCommand:edgekit.setUpClaudeCode'],
 				media: { type: 'svg', altText: 'The EDGE plugin in Claude Code, with its servers connected.', path: 'edgekit-claude.svg' },
 			},
