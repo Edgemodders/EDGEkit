@@ -111,8 +111,11 @@ const edits = [
   },
   {
     // On the Select Additional Tasks page the checkboxes' left edge was cut off (the user, 1.140.2 on the dev PC,
-    // 2026-10-26): Windows 11 draws them wider than Inno Setup 6.4.1 leaves room for at that display scale. Moves
-    // the list a little to the right, scaled to the display. Upstream's script has no InitializeWizard of its own.
+    // 2026-10-26). Inno Setup 6.4.1's TNewCheckListBox leaves room for the old checkbox bitmap (13 px) and draws a
+    // wider themed checkbox (about 20 px at 150%) leftwards from there, so its left edge fell outside the list
+    // (NewCheckListBox.pas, DrawItem). Its Offset, the space beside each checkbox (default 4), makes the room.
+    // Moving the list did not help (the first try): the list clips its own items. Upstream's script has no
+    // InitializeWizard of its own.
     name: 'Installer: room for the task checkboxes',
     file: 'build/win32/code.iss',
     from: '[Code]\n',
@@ -120,8 +123,7 @@ const edits = [
       '// EDGEkit: room for the task checkboxes, whose left edge Windows 11 drew outside the list at some display scales.\n' +
       'procedure InitializeWizard();\n' +
       'begin\n' +
-      '  WizardForm.TasksList.Left := WizardForm.TasksList.Left + ScaleX(4);\n' +
-      '  WizardForm.TasksList.Width := WizardForm.TasksList.Width - ScaleX(4);\n' +
+      '  WizardForm.TasksList.Offset := ScaleX(8);\n' +
       'end;\n\n',
   },
   {
