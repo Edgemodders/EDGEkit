@@ -40,8 +40,8 @@
   "enableTelemetry": false,
   "//edgekitFirstRunExtensions": "Installed from Open VSX on EDGEkit's first start, once (product/extensions/edgekitFirstRun.ts): extensions whose licenses do not let EDGEkit ship their files. Claude Code (Anthropic's license, the user's call 2026-10-21; EDGEchat will need it).",
   "edgekitFirstRunExtensions": ["anthropic.claude-code"],
-  "//edgekitClaudePlugin": "Once Claude Code is installed, EDGEkit asks once whether to set up EDGEchat, the EDGE plugin for Claude Code, and on yes adds the marketplace and the plugin to Claude Code's user settings (product/extensions/edgekitFirstRun.ts; the user's call 2026-10-23, EDGEkit#5). The command EDGEkit: Set Up Claude Code for EDGE does the same.",
-  "edgekitClaudePlugin": { "extension": "anthropic.claude-code", "marketplace": "edgemodders", "repo": "Edgemodders/EDGEchat", "plugin": "edge" },
+  "//edgekitClaudePlugin": "Once Claude Code is installed, EDGEkit asks once whether to set up EDGEchat, the EDGE plugin for Claude Code, and on yes opens Claude Code's own install dialog for it, then a new Claude Code session with the plugin's setup command (product/extensions/edgekitFirstRun.ts; the user's call 2026-10-23, EDGEkit#5; changed 2026-10-26: writing enabledPlugins does not install a plugin). The command EDGEkit: Set Up Claude Code for EDGE does the same.",
+  "edgekitClaudePlugin": { "extension": "anthropic.claude-code", "marketplace": "edgemodders", "repo": "Edgemodders/EDGEchat", "plugin": "edge", "setup": "/edge:setup" },
   "//onboardingThemes": "The theme cards of the one-time onboarding (K2): REDnode HUD first, which is the default, then upstream themes. Each id needs media/theme-preview-<id>.svg; brand.mjs copies EDGEkit's from product/onboarding.",
   "onboardingThemes": [
     {

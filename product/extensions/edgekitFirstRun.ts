@@ -6,14 +6,13 @@
 // on EDGEkit's first start, for extensions whose licenses do not let EDGEkit ship their files, such as
 // Claude Code (design, "Bundled extensions"). Each is installed once: one the modder uninstalls stays
 // uninstalled. Offline, it tries again at the next start. Then, once Claude Code is there, it asks once
-// whether to set up EDGEchat, the EDGE plugin for Claude Code (product.json edgekitClaudePlugin; design,
+// whether to set up EDGEchat, the EDGE plugin for Claude Code, through Claude Code's own install dialog (product.json edgekitClaudePlugin; design,
 // "Claude Code for EDGE"). tools/brand.mjs copies this file in and tools/patch-upstream.mjs imports it
 // from extensions.contribution.ts.
 
-import { VSBuffer } from '../../../../base/common/buffer.js';
+import { timeout } from '../../../../base/common/async.js';
 import { Event } from '../../../../base/common/event.js';
 import { parse, ParseError } from '../../../../base/common/json.js';
-import { applyEdits, setProperty } from '../../../../base/common/jsonEdit.js';
 import { Disposable } from '../../../../base/common/lifecycle.js';
 import { env } from '../../../../base/common/process.js';
 import { joinPath } from '../../../../base/common/resources.js';
@@ -25,24 +24,26 @@ import { IClipboardService } from '../../../../platform/clipboard/common/clipboa
 import { ICommandService } from '../../../../platform/commands/common/commands.js';
 import { IExtensionGalleryService } from '../../../../platform/extensionManagement/common/extensionManagement.js';
 import { areSameExtensions } from '../../../../platform/extensionManagement/common/extensionManagementUtil.js';
-import { FileOperationResult, IFileService, toFileOperationResult } from '../../../../platform/files/common/files.js';
+import { IFileService } from '../../../../platform/files/common/files.js';
 import { ServicesAccessor } from '../../../../platform/instantiation/common/instantiation.js';
 import { ILogService } from '../../../../platform/log/common/log.js';
 import { INotificationService, Severity } from '../../../../platform/notification/common/notification.js';
 import { IProductService } from '../../../../platform/product/common/productService.js';
 import { ProgressLocation } from '../../../../platform/progress/common/progress.js';
 import { IStorageService, StorageScope, StorageTarget } from '../../../../platform/storage/common/storage.js';
+import { IURLService } from '../../../../platform/url/common/url.js';
 import { IWorkbenchContribution, registerWorkbenchContribution2, WorkbenchPhase } from '../../../common/contributions.js';
 import { IPathService } from '../../../services/path/common/pathService.js';
 import { IOnboardingService } from '../../welcomeOnboarding/common/onboardingService.js';
 import { IExtensionsWorkbenchService } from '../common/extensions.js';
 
-/** product.json's edgekitClaudePlugin: the Claude Code extension, and the plugin and the marketplace it comes from. */
+/** product.json's edgekitClaudePlugin: the Claude Code extension, the plugin and the marketplace it comes from, and the plugin's setup command. */
 interface ClaudePlugin {
 	readonly extension: string;
 	readonly marketplace: string;
 	readonly repo: string;
 	readonly plugin: string;
+	readonly setup: string;
 }
 
 const SET_UP_CLAUDE_PLUGIN = 'edgekit.setUpClaudeCode';
@@ -105,9 +106,9 @@ class EdgekitFirstRunContribution extends Disposable implements IWorkbenchContri
 		}
 	}
 
-	// Asks once, when Claude Code is installed, as for Claude Code's own install: the plugin adds a
-	// third-party plugin and its MCP servers to the modder's Claude Code. Any answer, or closing the
-	// question, counts as asked; the command stays in the Command Palette and on the Welcome page.
+	// Asks once, when Claude Code is installed and EDGEchat is not: the plugin adds a third-party
+	// plugin and its MCP servers to the modder's Claude Code. Any answer, or closing the question,
+	// counts as asked; the command stays in the Command Palette and on the Welcome page.
 	private async offerClaudePlugin(plugin: ClaudePlugin): Promise<void> {
 		if (this.storageService.getBoolean(CLAUDE_PLUGIN_ASKED, StorageScope.APPLICATION, false)) {
 			return;
@@ -117,14 +118,14 @@ class EdgekitFirstRunContribution extends Disposable implements IWorkbenchContri
 			return;
 		}
 		const asked = () => this.storageService.store(CLAUDE_PLUGIN_ASKED, true, StorageScope.APPLICATION, StorageTarget.MACHINE);
-		const settings = await readClaudeSettings(this.fileService, this.pathService);
-		if (settings.value?.enabledPlugins?.[pluginKey(plugin)] !== undefined) {
+		const configDir = await claudeConfigDir(this.pathService);
+		if (await isPluginInstalled(this.fileService, configDir, plugin) || await isPluginTurnedOff(this.fileService, configDir, plugin)) {
 			// Set up already, or turned off by the modder: nothing to ask.
 			asked();
 			return;
 		}
 		this.notificationService.prompt(Severity.Info,
-			localize('edgekit.claudePlugin.ask', "Set up Claude Code for EDGE? EDGEkit adds EDGEchat, the Edgemodders plugin for Claude Code, to your Claude Code settings: Cyberpunk 2077 modding skills and the EDGE tools' MCP servers, from github.com/{0}.", plugin.repo),
+			localize('edgekit.claudePlugin.ask', "Set up Claude Code for EDGE? Claude Code shows you EDGEchat, the Edgemodders plugin for Claude Code, to install: Cyberpunk 2077 modding skills and the EDGE tools' MCP servers, from github.com/{0}.", plugin.repo),
 			[
 				{ label: localize('edgekit.claudePlugin.setUp', "Set Up"), run: () => { asked(); this.commandService.executeCommand(SET_UP_CLAUDE_PLUGIN); } },
 				{ label: localize('edgekit.claudePlugin.no', "No, Thanks"), run: asked },
@@ -139,85 +140,82 @@ function pluginKey(plugin: ClaudePlugin): string {
 	return `${plugin.plugin}@${plugin.marketplace}`;
 }
 
-interface ClaudeSettings {
-	readonly file: URI;
-	readonly text: string;
-	/** The parsed settings, or undefined when the file is not a strict JSON object or cannot be read. */
-	readonly value: { extraKnownMarketplaces?: Record<string, unknown>; enabledPlugins?: Record<string, unknown> } | undefined;
-	readonly problem?: string;
+// Claude Code's folder: %CLAUDE_CONFIG_DIR% when that is set, else ~/.claude.
+async function claudeConfigDir(pathService: IPathService): Promise<URI> {
+	return env['CLAUDE_CONFIG_DIR'] ? URI.file(env['CLAUDE_CONFIG_DIR']) : joinPath(await pathService.userHome(), '.claude');
 }
 
-// Claude Code's user settings: %CLAUDE_CONFIG_DIR%\settings.json when that is set, else ~/.claude/settings.json.
-// They are strict JSON (no comments, no trailing commas), and Claude Code and other tools write to them.
-async function readClaudeSettings(fileService: IFileService, pathService: IPathService): Promise<ClaudeSettings> {
-	const configDir = env['CLAUDE_CONFIG_DIR'] ? URI.file(env['CLAUDE_CONFIG_DIR']) : joinPath(await pathService.userHome(), '.claude');
-	const file = joinPath(configDir, 'settings.json');
-	let text: string;
+async function readJson(fileService: IFileService, file: URI): Promise<Record<string, unknown> | undefined> {
 	try {
-		text = (await fileService.readFile(file)).value.toString();
-	} catch (error) {
-		if (toFileOperationResult(error) === FileOperationResult.FILE_NOT_FOUND) {
-			return { file, text: '{}', value: {} };
-		}
-		return { file, text: '', value: undefined, problem: String(error) };
+		const errors: ParseError[] = [];
+		const value = parse((await fileService.readFile(file)).value.toString(), errors);
+		return isObject(value) ? value as Record<string, unknown> : undefined;
+	} catch {
+		return undefined;
 	}
-	if (!text.trim()) {
-		return { file, text: '{}', value: {} };
-	}
-	const errors: ParseError[] = [];
-	const value = parse(text, errors, { disallowComments: true, allowTrailingComma: false });
-	if (errors.length || !isObject(value)) {
-		return { file, text, value: undefined, problem: localize('edgekit.claudePlugin.notJson', "it is not plain JSON") };
-	}
-	return { file, text, value: value as ClaudeSettings['value'] };
 }
 
-// Adds the marketplace and turns the plugin on, keeping every other key and the file's layout.
-// A marketplace of that name already declared (a modder's own checkout, say) is kept as it is.
-// Claude Code then fetches the plugin at its next session start (its plugin loading docs, read
-// 2026-10-23; they do not say another program may write these settings, so EDGEkit tests it).
+// Claude Code records installed plugins in plugins/installed_plugins.json ({ plugins: { "edge@edgemodders": [...] } },
+// read in Claude Code 2.1.310; the file is Claude Code's own, so this may change). enabledPlugins in settings.json
+// does not install a plugin: it turns on one that is installed (Claude Code's docs, "Choose an install scope";
+// found in the 1.140.2 test, 2026-10-26, when EDGEkit wrote it and Claude Code installed nothing).
+async function isPluginInstalled(fileService: IFileService, configDir: URI, plugin: ClaudePlugin): Promise<boolean> {
+	const installed = await readJson(fileService, joinPath(configDir, 'plugins', 'installed_plugins.json'));
+	const plugins = installed?.['plugins'];
+	return isObject(plugins) && Array.isArray((plugins as Record<string, unknown>)[pluginKey(plugin)]) && ((plugins as Record<string, unknown[]>)[pluginKey(plugin)]).length > 0;
+}
+
+async function isPluginTurnedOff(fileService: IFileService, configDir: URI, plugin: ClaudePlugin): Promise<boolean> {
+	const enabled = (await readJson(fileService, joinPath(configDir, 'settings.json')))?.['enabledPlugins'];
+	return isObject(enabled) && (enabled as Record<string, unknown>)[pluginKey(plugin)] === false;
+}
+
+// Claude Code installs the plugin itself: EDGEkit opens Claude Code's own install link, which shows its plugin
+// dialog on EDGEchat (adding the marketplace after the modder confirms it; the modder picks the scope and installs).
+// Once the plugin is installed, EDGEkit opens a new Claude Code session, which loads it, with the plugin's setup
+// command in the prompt box. Both links are Claude Code's URI handler (/install-plugin and /open, read in its
+// 2.1.310 extension); EDGEkit opens them as trusted, since the modder chose Set Up in EDGEkit.
 async function setUpClaudePlugin(accessor: ServicesAccessor): Promise<void> {
+	const urlService = accessor.get(IURLService);
 	const fileService = accessor.get(IFileService);
 	const pathService = accessor.get(IPathService);
 	const notificationService = accessor.get(INotificationService);
 	const clipboardService = accessor.get(IClipboardService);
 	const logService = accessor.get(ILogService);
-	const plugin = (accessor.get(IProductService) as { edgekitClaudePlugin?: ClaudePlugin }).edgekitClaudePlugin;
-	if (!plugin) {
+	const productService = accessor.get(IProductService);
+	const plugin = (productService as { edgekitClaudePlugin?: ClaudePlugin }).edgekitClaudePlugin;
+	if (!plugin || !productService.urlProtocol) {
 		return;
 	}
-	const commands = `/plugin marketplace add ${plugin.repo}\n/plugin install ${pluginKey(plugin)}`;
-	const fallback = (file: URI, problem: string) => {
-		logService.warn(`EDGEkit: did not change ${file.fsPath}: ${problem}`);
+	const link = (path: string, query: string) => URI.from({ scheme: productService.urlProtocol, authority: plugin.extension, path, query });
+	const openSetup = () => urlService.open(link('/open', `prompt=${plugin.setup}`), { trusted: true });
+	const configDir = await claudeConfigDir(pathService);
+
+	if (await isPluginInstalled(fileService, configDir, plugin)) {
+		await openSetup();
+		notificationService.info(localize('edgekit.claudePlugin.already', "EDGEchat is installed in Claude Code. Claude Code opened a new session with {0} in its prompt box: press Enter to check the EDGE tools.", plugin.setup));
+		return;
+	}
+	if (!await urlService.open(link('/install-plugin', `plugin=${plugin.plugin}&marketplace=${plugin.repo}`), { trusted: true })) {
+		const commands = `/plugin marketplace add ${plugin.repo}\n/plugin install ${pluginKey(plugin)}`;
+		logService.warn(`EDGEkit: Claude Code did not take its plugin install link`);
 		notificationService.prompt(Severity.Warning,
-			localize('edgekit.claudePlugin.fallback', "EDGEkit did not change {0}: {1}. Set up the plugin in Claude Code's chat instead, with these two commands: /plugin marketplace add {2}, then /plugin install {3}.", file.fsPath, problem, plugin.repo, pluginKey(plugin)),
+			localize('edgekit.claudePlugin.fallback', "Claude Code did not open its plugin dialog. Set up the plugin in Claude Code's chat instead, with these two commands: /plugin marketplace add {0}, then /plugin install {1}.", plugin.repo, pluginKey(plugin)),
 			[{ label: localize('edgekit.claudePlugin.copy', "Copy the Commands"), run: () => clipboardService.writeText(commands) }],
 			{ sticky: true });
-	};
-
-	const settings = await readClaudeSettings(fileService, pathService);
-	if (!settings.value) {
-		fallback(settings.file, settings.problem ?? '');
 		return;
 	}
-	let text = settings.text;
-	try {
-		const formatting = { tabSize: 2, insertSpaces: true, eol: text.includes('\r\n') ? '\r\n' : '\n' };
-		if (settings.value.extraKnownMarketplaces?.[plugin.marketplace] === undefined) {
-			text = applyEdits(text, setProperty(text, ['extraKnownMarketplaces', plugin.marketplace], { source: { source: 'github', repo: plugin.repo } }, formatting));
+	logService.info(`EDGEkit: opened Claude Code's install dialog for ${pluginKey(plugin)}`);
+	for (const end = Date.now() + 10 * 60 * 1000; Date.now() < end;) {
+		await timeout(2000);
+		if (await isPluginInstalled(fileService, configDir, plugin)) {
+			logService.info(`EDGEkit: ${pluginKey(plugin)} is installed; opening a Claude Code session with ${plugin.setup}`);
+			await openSetup();
+			notificationService.info(localize('edgekit.claudePlugin.done', "EDGEchat is installed. Claude Code opened a new session with {0} in its prompt box: press Enter to check the EDGE tools.", plugin.setup));
+			return;
 		}
-		if (settings.value.enabledPlugins?.[pluginKey(plugin)] !== true) {
-			text = applyEdits(text, setProperty(text, ['enabledPlugins', pluginKey(plugin)], true, formatting));
-		}
-		if (text !== settings.text) {
-			await fileService.writeFile(settings.file, VSBuffer.fromString(text));
-			logService.info(`EDGEkit: added ${pluginKey(plugin)} to ${settings.file.fsPath}`);
-		}
-	} catch (error) {
-		fallback(settings.file, String(error));
-		return;
 	}
-	notificationService.info(localize('edgekit.claudePlugin.done', "Claude Code is set up for EDGE. Its next session fetches the plugin: when it says \"Plugins changed\", run /reload-plugins, then /edge:setup."));
+	logService.info(`EDGEkit: ${pluginKey(plugin)} was not installed within 10 minutes`);
 }
 
 registerAction2(class extends Action2 {
