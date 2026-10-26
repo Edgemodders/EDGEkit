@@ -325,6 +325,22 @@ const edits = [
     to: '\t} finally {\n\t\tawait fs.promises.rm(portableDirectory, { recursive: true, force: true, maxRetries: 10, retryDelay: 500 }); // EDGEkit: Windows lets go of log files late\n\t}\n',
   },
   {
+    // The pty host sometimes stops before it finishes a cache write, which leaves the write's temporary file
+    // (<entry>.<6 random characters>, such as e8662407.UTZlN0) beside the entries, and upstream's check failed
+    // the build on it: three of four builds on the dev PC, 2026-10-23 and 2026-10-26. It is no cache entry,
+    // so it is removed before the check.
+    name: 'Compile cache: remove unfinished cache writes',
+    file: 'build/lib/nodeCompileCache.ts',
+    from: '\t\tconst cacheEntries = await fs.promises.readdir(cacheDirectory, { withFileTypes: true });\n',
+    to: '\t\tfor (const entry of await fs.promises.readdir(cacheDirectory, { withFileTypes: true })) { // EDGEkit: an unfinished write leaves its temporary file\n' +
+      '\t\t\tif (entry.isFile() && /^[0-9a-f]{8}\\.[A-Za-z0-9]{6}$/.test(entry.name)) {\n' +
+      '\t\t\t\tconsole.log(`Removed an unfinished ${kind} cache write: ${entry.name}.`);\n' +
+      '\t\t\t\tawait fs.promises.rm(path.join(cacheDirectory, entry.name));\n' +
+      '\t\t\t}\n' +
+      '\t\t}\n' +
+      '\t\tconst cacheEntries = await fs.promises.readdir(cacheDirectory, { withFileTypes: true });\n',
+  },
+  {
     // The built-in extensions' licenses and notices (bundle.mjs writes the file), shipped beside upstream's.
     name: "The built-in extensions' notices in the app",
     file: 'build/gulpfile.vscode.ts',
