@@ -110,6 +110,21 @@ const edits = [
     to: 'OutputBaseFilename=EDGEkitSetup',
   },
   {
+    // On the Select Additional Tasks page the checkboxes' left edge was cut off (the user, 1.140.2 on the dev PC,
+    // 2026-10-26): Windows 11 draws them wider than Inno Setup 6.4.1 leaves room for at that display scale. Moves
+    // the list a little to the right, scaled to the display. Upstream's script has no InitializeWizard of its own.
+    name: 'Installer: room for the task checkboxes',
+    file: 'build/win32/code.iss',
+    from: '[Code]\n',
+    to: '[Code]\n' +
+      '// EDGEkit: room for the task checkboxes, whose left edge Windows 11 drew outside the list at some display scales.\n' +
+      'procedure InitializeWizard();\n' +
+      'begin\n' +
+      '  WizardForm.TasksList.Left := WizardForm.TasksList.Left + ScaleX(4);\n' +
+      '  WizardForm.TasksList.Width := WizardForm.TasksList.Width - ScaleX(4);\n' +
+      'end;\n\n',
+  },
+  {
     // EDGEkit has no system installer to send people to.
     name: 'Installer: the administrator warning',
     file: 'build/win32/code.iss',

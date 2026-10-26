@@ -14,6 +14,8 @@ A preview, for Windows x64.
 
 **First start.** Claude Code installs after the onboarding closes. Before, its trust question could open behind the onboarding, and Escape there cancelled the install.
 
+**Installer.** The checkboxes on the Select Additional Tasks page are no longer cut off at the left at some display scales.
+
 ## 1.140.1
 
 The first release of EDGEkit, the Edgemodders editor for Cyberpunk 2077 mods. A preview, for Windows x64.
