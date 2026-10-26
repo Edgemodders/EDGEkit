@@ -65,11 +65,11 @@ The list is `extensions.json`. Sources are the sibling repos, built by their own
 
 Git submodules would also pin exact commits, but every update takes commits in two repos; pinned release versions are simpler.
 
-| Extension | Pinned (2026-10-21) | Notes |
+| Extension | Pinned (2026-10-26) | Notes |
 |---|---|---|
-| REDcode for Cyberpunk 2077 (`edgemodders.redcode-cyberpunk`, renamed from `edgemodders.redcode` in 0.8.0: the Marketplace already had a "redcode") | 0.10.3, Windows x64 | Built in. Local: REDcode, `npm run redcode:package` |
+| REDcode for Cyberpunk 2077 (`edgemodders.redcode-cyberpunk`, renamed from `edgemodders.redcode` in 0.8.0: the Marketplace already had a "redcode") | 0.10.4, Windows x64 | Built in. Local: REDcode, `npm run redcode:package` |
 | REDnode HUD theme (`edgemodders.rednode-hud-theme`) | 0.3.1 | Built in, the default theme. Local: REDcode, `npm run theme:package` |
-| EDGEdeck (`edgemodders.edgedeck`) | 0.27.3, Windows x64 | Built in. The mod manager. Renamed from REDdeck (`edgemodders.reddeck`) on 2026-10-17, with no old names kept. Local: EDGEdeck, `npm run package` |
+| EDGEdeck (`edgemodders.edgedeck`) | 0.29.0, Windows x64 | Built in. The mod manager. Renamed from REDdeck (`edgemodders.reddeck`) on 2026-10-17, with no old names kept. Local: EDGEdeck, `npm run package` |
 | EDGEmat (`edgemodders.edgemat`) | 0.3.1, Windows x64 | Built in. The material editor, with its MCP server inside the VSIX from 0.3.1. Local: EDGEmat, `npm run edgemat:package` |
 | EDGEwave (`edgemodders.edgewave`) | 0.1.0 | Built in. The sound studio. Needs REDcode (`extensionDependencies`). Local: EDGEwave, `npm run package` (the VSIX lands in the repo's root) |
 | Redscript IDE (`jac3km4.redscript-ide-vscode`) | 0.3.4, commit `08684a0` | Built in, from its source (MIT). The extension downloads its language server (`redscript-ide.exe`, MIT) from GitHub on first use; shipping it beside the extension, with `redscript.idePath` pointing there, so it works offline, is left for later |

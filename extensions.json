@@ -9,7 +9,7 @@
       "vsix": "dist/redcode-cyberpunk-*.vsix",
       "status": "exists",
       "builtIn": true,
-      "version": "0.10.3"
+      "version": "0.10.4"
     },
     {
       "id": "edgemodders.rednode-hud-theme",
@@ -30,7 +30,7 @@
       "vsix": "dist/edgedeck-win32-x64-*.vsix",
       "status": "exists",
       "builtIn": true,
-      "version": "0.27.3"
+      "version": "0.29.0"
     },
     {
       "id": "edgemodders.redagent",

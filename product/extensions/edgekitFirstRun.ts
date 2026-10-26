@@ -11,6 +11,7 @@
 // from extensions.contribution.ts.
 
 import { VSBuffer } from '../../../../base/common/buffer.js';
+import { Event } from '../../../../base/common/event.js';
 import { parse, ParseError } from '../../../../base/common/json.js';
 import { applyEdits, setProperty } from '../../../../base/common/jsonEdit.js';
 import { Disposable } from '../../../../base/common/lifecycle.js';
@@ -33,6 +34,7 @@ import { ProgressLocation } from '../../../../platform/progress/common/progress.
 import { IStorageService, StorageScope, StorageTarget } from '../../../../platform/storage/common/storage.js';
 import { IWorkbenchContribution, registerWorkbenchContribution2, WorkbenchPhase } from '../../../common/contributions.js';
 import { IPathService } from '../../../services/path/common/pathService.js';
+import { IOnboardingService } from '../../welcomeOnboarding/common/onboardingService.js';
 import { IExtensionsWorkbenchService } from '../common/extensions.js';
 
 /** product.json's edgekitClaudePlugin: the Claude Code extension, and the plugin and the marketplace it comes from. */
@@ -60,6 +62,7 @@ class EdgekitFirstRunContribution extends Disposable implements IWorkbenchContri
 		@IFileService private readonly fileService: IFileService,
 		@IPathService private readonly pathService: IPathService,
 		@ILogService private readonly logService: ILogService,
+		@IOnboardingService private readonly onboardingService: IOnboardingService,
 	) {
 		super();
 		const product = productService as { edgekitFirstRunExtensions?: string[]; edgekitClaudePlugin?: ClaudePlugin };
@@ -67,6 +70,12 @@ class EdgekitFirstRunContribution extends Disposable implements IWorkbenchContri
 	}
 
 	private async start(ids: string[], plugin: ClaudePlugin | undefined): Promise<void> {
+		// Waits for the onboarding to close: Claude Code's trust questions opened behind it and held the
+		// keyboard focus, so Escape cancelled the install (found 2026-10-23). The startup page shows the
+		// onboarding before this contribution runs (WorkbenchPhase.AfterRestored, then Eventually).
+		if ((this.onboardingService as { isShowing?: boolean }).isShowing) {
+			await Event.toPromise(this.onboardingService.onDidDismiss);
+		}
 		if (ids.length && this.galleryService.isEnabled()) {
 			await this.installOnce(ids);
 		}

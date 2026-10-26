@@ -2,11 +2,17 @@
 
 EDGEkit's releases: the editor itself. The EDGE extensions have their own changelogs and update themselves; the extension pack's is `pack/CHANGELOG.md`. `tools/release.mjs` takes each release's notes from its section here, `## <version>`.
 
-## Unreleased
+## 1.140.2
+
+A preview, for Windows x64.
+
+**Built-in extensions.** REDcode for Cyberpunk 2077 0.10.4 and EDGEdeck 0.29.0; the others as in 1.140.1.
 
 **Welcome page.** The step about the EDGE tools says they are built in, instead of offering to install the EDGEkit pack, whose extensions EDGEkit already has. **Browse EDGE Extensions** stays.
 
 **Claude Code for EDGE.** Once Claude Code is installed, EDGEkit asks once whether to set up EDGEchat, the EDGE plugin for Claude Code: modding skills and the EDGE tools' MCP servers. On yes it adds the plugin to your Claude Code settings, keeping everything else in them, and Claude Code fetches it in its next session. The command **EDGEkit: Set Up Claude Code for EDGE** and a new Welcome page step do the same at any time.
+
+**First start.** Claude Code installs after the onboarding closes. Before, its trust question could open behind the onboarding, and Escape there cancelled the install.
 
 ## 1.140.1
 
