@@ -55,6 +55,13 @@ export const edgekitWalkthrough: BuiltinGettingStartedCategory = {
 				media: { type: 'svg', altText: 'The Cyberpunk 2077 folder chosen for REDcode.', path: 'edgekit-game.svg' },
 			},
 			{
+				id: 'edgekitNexus',
+				title: localize('edgekit.walkthrough.nexus.title', "Get mods from Nexus Mods"),
+				description: localize('edgekit.walkthrough.nexus.description', "Let EDGEdeck, the mod manager, take the Mod manager download button on Nexus Mods: the file lands in your mod library, ready to deploy. Vortex and Mod Organizer take the button back when they start; press this again to return it to EDGEdeck.\n{0}", Button(localize('edgekit.walkthrough.nexus.button', "Use EDGEdeck for Nexus Downloads"), 'command:edgedeck.nexusHandleLinks')),
+				completionEvents: ['onCommand:edgedeck.nexusHandleLinks'],
+				media: { type: 'svg', altText: 'The Mod manager download button on Nexus Mods sending a mod to the EDGEdeck library.', path: 'edgekit-nexus.svg' },
+			},
+			{
 				id: 'edgekitTheme',
 				title: localize('edgekit.walkthrough.theme.title', "The REDnode HUD theme"),
 				description: localize('edgekit.walkthrough.theme.description', "EDGEkit starts in REDnode HUD, a dark theme in the colours of the game's interface. You can pick another one at any time.\n{0}", Button(localize('edgekit.walkthrough.theme.button', "Browse Color Themes"), 'command:workbench.action.selectTheme')),

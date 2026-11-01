@@ -2,6 +2,12 @@
 
 EDGEkit's releases: the editor itself. The EDGE extensions have their own changelogs and update themselves; the extension pack's is `pack/CHANGELOG.md`. `tools/release.mjs` takes each release's notes from its section here, `## <version>`.
 
+## Unreleased
+
+**Nexus Mods downloads.** The installer has a box, **Send Nexus Mods download links (Mod manager download) to EDGEdeck**, on a first install. With it ticked, the Mod manager download button on Nexus Mods sends the file to EDGEdeck's mod library. It starts unticked when Vortex or Mod Organizer has the links, so nothing is taken from them without asking. Updates leave the links wherever you put them. Uninstalling gives them up if they still go to EDGEkit.
+
+**Welcome page.** A new step, **Get mods from Nexus Mods**, does the same at any time, for instance after Vortex took the links back.
+
 ## 1.140.2
 
 A preview, for Windows x64.

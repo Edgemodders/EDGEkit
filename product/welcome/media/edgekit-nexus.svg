@@ -1,0 +1,26 @@
+<svg viewBox="0 0 410 370" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="0.5" y="0.5" width="409" height="369" fill="var(--vscode-editor-background, #08090D)" stroke="var(--vscode-foreground, #E3E6EE)" stroke-opacity="0.12"/>
+<path d="M14 40 V14 H40" stroke="var(--vscode-focusBorder, #FCEE0A)" stroke-width="3"/>
+<path d="M396 330 V356 H370" stroke="var(--vscode-focusBorder, #FCEE0A)" stroke-width="3"/>
+<text x="40" y="78" font-family="monospace" font-size="12" fill="var(--vscode-foreground, #E3E6EE)" fill-opacity="0.6">A MOD'S FILES PAGE</text>
+<rect x="40" y="90" width="330" height="64" fill="var(--vscode-input-background, #0C0E14)" stroke="var(--vscode-foreground, #E3E6EE)" stroke-opacity="0.2"/>
+<rect x="56" y="104" width="120" height="7" fill="var(--vscode-foreground, #E3E6EE)" fill-opacity="0.3"/>
+<rect x="56" y="122" width="80" height="7" fill="var(--vscode-foreground, #E3E6EE)" fill-opacity="0.15"/>
+<rect x="206" y="106" width="150" height="32" fill="var(--vscode-button-background, #FCEE0A)"/>
+<text x="281" y="126" text-anchor="middle" font-family="monospace" font-size="11" fill="var(--vscode-button-foreground, #08090D)">MOD MANAGER DOWNLOAD</text>
+<path d="M281 146 V188" stroke="var(--vscode-focusBorder, #FCEE0A)" stroke-width="2" stroke-dasharray="4 4"/>
+<path d="M273 182 l8 8 l8 -8" stroke="var(--vscode-focusBorder, #FCEE0A)" stroke-width="2"/>
+<text x="40" y="214" font-family="monospace" font-size="12" fill="var(--vscode-foreground, #E3E6EE)" fill-opacity="0.6">EDGEDECK LIBRARY</text>
+<rect x="40" y="226" width="330" height="96" fill="var(--vscode-sideBar-background, #0C0E14)" stroke="var(--vscode-focusBorder, #FCEE0A)"/>
+<g font-family="monospace" font-size="12" fill="var(--vscode-foreground, #E3E6EE)">
+<rect x="56" y="242" width="12" height="12" stroke="var(--vscode-foreground, #E3E6EE)" stroke-opacity="0.6"/>
+<text x="80" y="253">Codeware</text>
+<rect x="56" y="270" width="12" height="12" stroke="var(--vscode-foreground, #E3E6EE)" stroke-opacity="0.6"/>
+<text x="80" y="281">ArchiveXL</text>
+<rect x="56" y="298" width="12" height="12" fill="var(--vscode-button-background, #FCEE0A)"/>
+<text x="80" y="309" fill="var(--vscode-focusBorder, #FCEE0A)">The new mod</text>
+</g>
+<rect x="250" y="246" width="100" height="7" fill="var(--vscode-foreground, #E3E6EE)" fill-opacity="0.15"/>
+<rect x="250" y="274" width="80" height="7" fill="var(--vscode-foreground, #E3E6EE)" fill-opacity="0.15"/>
+<rect x="250" y="302" width="90" height="7" fill="var(--vscode-focusBorder, #FCEE0A)" fill-opacity="0.4"/>
+</svg>
