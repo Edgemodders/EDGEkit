@@ -8,7 +8,9 @@ A preview, for Windows x64.
 
 **Built-in extensions.** REDcode for Cyberpunk 2077 0.10.5, whose Install, Pack and Install and Pack and Play deploy only the project's mod, and whose sounds play again after a game patch. EDGEdeck 0.29.4, which sends Nexus Mods download links to EDGEkit itself (earlier versions sent them to `vscode://`, so Mod manager download never reached EDGEdeck in EDGEkit), adds the current REDnode release without an error, can deploy or undeploy one mod from its row, and shows the library where you look. The others as in 1.140.2.
 
-**Nexus Mods downloads.** The installer has a box, **Send Nexus Mods download links (Mod manager download) to EDGEdeck**, on a first install. With it ticked, the Mod manager download button on Nexus Mods sends the file to EDGEdeck's mod library. It starts unticked when Vortex or Mod Organizer has the links, so nothing is taken from them without asking. Updates leave the links wherever you put them. Uninstalling gives them up if they still go to EDGEkit.
+**Nexus Mods downloads.** The installer has a box, **Send Nexus Mods download links (Mod manager download) to EDGEdeck**, on a first install, and once when you update by hand from 1.140.2 or older. With it ticked, the Mod manager download button on Nexus Mods sends the file to EDGEdeck's mod library. It starts unticked when Vortex or Mod Organizer has the links, so nothing is taken from them without asking. After that, updates leave the links wherever you put them. Uninstalling gives them up if they still go to EDGEkit.
+
+**Installer.** The **Launch EDGEkit** box at the end of the install is no longer cut off at the left, as the task boxes before it.
 
 **Welcome page.** A new step, **Get mods from Nexus Mods**, does the same at any time, for instance after Vortex took the links back.
 

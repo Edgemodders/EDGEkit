@@ -115,26 +115,31 @@ const edits = [
     // wider themed checkbox (about 20 px at 150%) leftwards from there, so its left edge fell outside the list
     // (NewCheckListBox.pas, DrawItem). Its Offset, the space beside each checkbox (default 4), makes the room.
     // Moving the list did not help (the first try): the list clips its own items. Upstream's script has no
-    // InitializeWizard of its own.
+    // InitializeWizard of its own. The Finished page's "Launch EDGEkit" box is the same kind of list (RunList) and
+    // was cut off too (the user, 1.140.2, 2026-11-01).
     name: 'Installer: room for the task checkboxes',
     file: 'build/win32/code.iss',
     from: '[Code]\n',
     to: '[Code]\n' +
-      '// EDGEkit: room for the task checkboxes, whose left edge Windows 11 drew outside the list at some display scales.\n' +
+      '// EDGEkit: room for the checkboxes (the tasks, and Launch on the Finished page), whose left edge Windows 11 drew\n' +
+      '// outside the list at some display scales.\n' +
       'procedure InitializeWizard();\n' +
       'begin\n' +
       '  WizardForm.TasksList.Offset := ScaleX(8);\n' +
+      '  WizardForm.RunList.Offset := ScaleX(8);\n' +
       'end;\n\n',
   },
   {
     // A box on the Select Additional Tasks page hands Nexus Mods download links (the site's "Mod manager download"
-    // button, nxm://) to EDGEdeck (the user, 2026-11-01). Shown on a first install only: an update leaves the links
-    // wherever the user put them since. Unticked when another program (Vortex, Mod Organizer) has them.
+    // button, nxm://) to EDGEdeck (the user, 2026-11-01). Offered once per install: on a first install, and on the
+    // first update by hand from a version that never offered it (1.140.2 and older; the user, 2026-11-01). After
+    // that an update leaves the links wherever the user put them. Unticked when another program (Vortex, Mod
+    // Organizer) has them.
     name: 'Installer: the Nexus links task',
     file: 'build/win32/code.iss',
     from: 'Name: "addtopath"; Description: "{cm:AddToPath}"; GroupDescription: "{cm:Other}"\n',
     to: 'Name: "addtopath"; Description: "{cm:AddToPath}"; GroupDescription: "{cm:Other}"\n' +
-      'Name: "nexuslinks"; Description: "Send Nexus Mods download links (Mod manager download) to EDGEdeck"; GroupDescription: "{cm:Other}"; Check: IsFirstInstall\n',
+      'Name: "nexuslinks"; Description: "Send Nexus Mods download links (Mod manager download) to EDGEdeck"; GroupDescription: "{cm:Other}"; Check: OfferNexusLinks\n',
   },
   {
     // The command is EDGEdeck's forwarder (forwarderCommand in EDGEdeck's src/nxm.ts) for EDGEkit.exe and edgekit://,
@@ -157,6 +162,28 @@ const edits = [
       "    FirstInstall := not FileExists(AddBackslash(FirstInstallDir) + '{#ExeBasename}.exe');",
       '  end;',
       '  Result := FirstInstall;',
+      'end;',
+      '',
+      '// Whether this install offers the box: no install has offered it yet (recorded in the uninstall key by',
+      '// RegisterPreviousData), and this one is a first install or run by hand. A silent update (Restart to Update)',
+      '// offers nothing and records nothing, so the next update by hand still offers it. Kept: the answer must not',
+      '// change once this install records it.',
+      'var',
+      '  NexusOfferKnown, NexusOffer: Boolean;',
+      '',
+      'function OfferNexusLinks(): Boolean;',
+      'begin',
+      '  if not NexusOfferKnown then begin',
+      '    NexusOfferKnown := True;',
+      "    NexusOffer := (GetPreviousData('NexusLinksOffered', '') = '') and (IsFirstInstall() or not WizardSilent());",
+      '  end;',
+      '  Result := NexusOffer;',
+      'end;',
+      '',
+      'procedure RegisterPreviousData(PreviousDataKey: Integer);',
+      'begin',
+      "  if OfferNexusLinks() or (GetPreviousData('NexusLinksOffered', '') <> '') then",
+      "    SetPreviousData(PreviousDataKey, 'NexusLinksOffered', 'yes');",
       'end;',
       '',
       '// Another program (Vortex, Mod Organizer) has the links.',
