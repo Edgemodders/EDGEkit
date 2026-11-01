@@ -4,6 +4,8 @@ EDGEkit's releases: the editor itself. The EDGE extensions have their own change
 
 ## Unreleased
 
+**Built-in extensions.** EDGEdeck 0.29.4, which sends Nexus Mods download links to EDGEkit itself (earlier versions sent them to `vscode://`, so Mod manager download never reached EDGEdeck in EDGEkit), adds the current REDnode release without an error, can deploy or undeploy one mod from its row, and shows the library where you look; the others as in 1.140.2.
+
 **Nexus Mods downloads.** The installer has a box, **Send Nexus Mods download links (Mod manager download) to EDGEdeck**, on a first install. With it ticked, the Mod manager download button on Nexus Mods sends the file to EDGEdeck's mod library. It starts unticked when Vortex or Mod Organizer has the links, so nothing is taken from them without asking. Updates leave the links wherever you put them. Uninstalling gives them up if they still go to EDGEkit.
 
 **Welcome page.** A new step, **Get mods from Nexus Mods**, does the same at any time, for instance after Vortex took the links back.
