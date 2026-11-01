@@ -9,7 +9,7 @@
       "vsix": "dist/redcode-cyberpunk-*.vsix",
       "status": "exists",
       "builtIn": true,
-      "version": "0.10.4"
+      "version": "0.10.5"
     },
     {
       "id": "edgemodders.rednode-hud-theme",

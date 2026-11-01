@@ -65,9 +65,9 @@ The list is `extensions.json`. Sources are the sibling repos, built by their own
 
 Git submodules would also pin exact commits, but every update takes commits in two repos; pinned release versions are simpler.
 
-| Extension | Pinned (2026-10-26) | Notes |
+| Extension | Pinned (2026-11-01) | Notes |
 |---|---|---|
-| REDcode for Cyberpunk 2077 (`edgemodders.redcode-cyberpunk`, renamed from `edgemodders.redcode` in 0.8.0: the Marketplace already had a "redcode") | 0.10.4, Windows x64 | Built in. Local: REDcode, `npm run redcode:package` |
+| REDcode for Cyberpunk 2077 (`edgemodders.redcode-cyberpunk`, renamed from `edgemodders.redcode` in 0.8.0: the Marketplace already had a "redcode") | 0.10.5, Windows x64 | Built in. Local: REDcode, `npm run redcode:package` |
 | REDnode HUD theme (`edgemodders.rednode-hud-theme`) | 0.3.1 | Built in, the default theme. Local: REDcode, `npm run theme:package` |
 | EDGEdeck (`edgemodders.edgedeck`) | 0.29.4, Windows x64 | Built in. The mod manager. Renamed from REDdeck (`edgemodders.reddeck`) on 2026-10-17, with no old names kept. Local: EDGEdeck, `npm run package` |
 | EDGEmat (`edgemodders.edgemat`) | 0.3.1, Windows x64 | Built in. The material editor, with its MCP server inside the VSIX from 0.3.1. Local: EDGEmat, `npm run edgemat:package` |

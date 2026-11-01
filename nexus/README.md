@@ -13,7 +13,7 @@ The source of EDGEkit's Nexus Mods page lives here, so updates are edits in the 
 | Field | Value |
 |---|---|
 | Mod name | EDGEkit |
-| Version | The release version, from `version.json` (1.140.1 is the first, released on GitHub on 2026-10-22; 1.140.2 on 2026-10-26) |
+| Version | The release version, from `version.json` (1.140.1 is the first, released on GitHub on 2026-10-22; 1.140.2 on 2026-10-26; 1.140.3 on 2026-11-01) |
 | Category | Utilities, or Modders Resources and Tutorials (check the list for Cyberpunk 2077 when creating the page) |
 | Brief overview | One editor for Cyberpunk 2077 modding, with every EDGE tool built in and AI included. A build of Code - OSS with REDcode, EDGEdeck, EDGEmat, EDGEwave, REDscript IDE and the HUD theme inside, and Claude Code on first start. Track to hear when it releases. (255 characters at most; this is 254. Now that 1.140.1 is out, the last sentence needs new words before the page goes public) |
 | Author | Edgemodders |
