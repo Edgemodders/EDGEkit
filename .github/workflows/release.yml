@@ -10,7 +10,8 @@
 #                                               the update to every installed EDGEkit; stops first if
 #                                               that tag exists, the version is not newer than the
 #                                               manifest's, or CHANGELOG.md has no section for it
-#                                               (tools/release.mjs)
+#                                               (tools/release.mjs), or README.md's status line and
+#                                               badge do not name it (tools/release/readme-check.mjs)
 #   ... and "Update Nexus Mods" ticked          also, after the update is on, uploads EDGEkit-<version>.zip
 #                                               (the installer and a README, tools/nexus-zip.mjs) to the
 #                                               Nexus page as the main file's new version (the old one
@@ -69,6 +70,12 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: node tools/release.mjs --check
+
+      - name: The README says this release
+        if: inputs.release
+        run: |
+          $version = (Get-Content version.json -Raw | ConvertFrom-Json).version
+          node tools/release/readme-check.mjs --version $version
 
       - name: Nexus Mods can take this release
         if: inputs.release && inputs.nexus
