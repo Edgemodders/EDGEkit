@@ -11,8 +11,13 @@
 #                                               that tag exists, the version is not newer than the
 #                                               manifest's, or CHANGELOG.md has no section for it
 #                                               (tools/release.mjs), or README.md's status line and
-#                                               badge do not name it (tools/release/readme-check.mjs)
-#   ... and "Update Nexus Mods" ticked          also, after the update is on, uploads EDGEkit-<version>.zip
+#                                               badge do not name it (tools/release/readme-check.mjs).
+#                                               After the update is on, it also starts the Pack workflow
+#                                               with Make a release (pack.yml) when pack/package.json's
+#                                               version has no pack-v<version> tag yet, so the extension
+#                                               pack goes out with the app; a pack failure shows in that
+#                                               run and leaves the app's release as it is
+#   ... and "Update Nexus Mods" ticked         also, after the update is on, uploads EDGEkit-<version>.zip
 #                                               (the installer and a README, tools/nexus-zip.mjs) to the
 #                                               Nexus page as the main file's new version (the old one
 #                                               archived), adds its changelog (tools/nexus-notes.mjs) and
@@ -142,6 +147,23 @@ jobs:
           git push origin HEAD:main
           if ($LASTEXITCODE) { throw "Pushing the manifest failed. The release is made: commit the update-manifest artifact's file to docs/update/ by hand." }
           gh workflow run pages.yml --ref main
+
+      # The extension pack (pack/, edgemodders.edgekit) releases with the app. Its own workflow publishes
+      # it (pack.yml); a run started with this workflow's token still runs, as pages.yml does above.
+      - name: Extension pack
+        if: inputs.release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $pack = (Get-Content pack/package.json -Raw | ConvertFrom-Json).version
+          gh api "repos/$env:GITHUB_REPOSITORY/git/ref/tags/pack-v$pack" --silent 2>$null
+          if (-not $LASTEXITCODE) {
+            Write-Output "Extension pack $pack is already released (pack-v$pack)"
+            exit 0
+          }
+          gh workflow run pack.yml --ref main -f release=true
+          if ($LASTEXITCODE) { throw "Starting the Pack workflow failed. The app is released: run Pack with Make a release by hand." }
+          Write-Output "Started the Pack workflow for extension pack $pack (Actions tab, Pack)"
 
       # Last, so that a Nexus failure leaves the release and the update as they are.
       - name: Nexus Mods
