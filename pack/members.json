@@ -6,6 +6,7 @@
     "edgemodders.edgedeck",
     "edgemodders.edgemat",
     "edgemodders.edgewave",
+    "edgemodders.redsave",
     "jac3km4.redscript-ide-vscode"
   ],
   "openvsx": [
@@ -13,6 +14,7 @@
     "edgemodders.rednode-hud-theme",
     "edgemodders.edgedeck",
     "edgemodders.edgemat",
-    "edgemodders.edgewave"
+    "edgemodders.edgewave",
+    "edgemodders.redsave"
   ]
 }

@@ -2,6 +2,16 @@
 
 EDGEkit's releases: the editor itself. The EDGE extensions have their own changelogs and update themselves; the extension pack's is `pack/CHANGELOG.md`. `tools/release.mjs` takes each release's notes from its section here, `## <version>`.
 
+## 1.140.4
+
+A preview, for Windows x64.
+
+**REDsave, built in.** REDsave 0.1.0, the new save game manager for Cyberpunk 2077: search and filter your saves by title, date, lifepath and more, keep sets of saves outside the game and swap them in, and give saves titles of your own. It updates itself from Open VSX, like the other EDGE extensions.
+
+**Built-in extensions.** EDGEdeck 0.30.0, which keeps each file of a Nexus Mods page as a mod of its own (a second main file or an optional patch no longer replaces the first) and shows them under one row named after the page. The others as in 1.140.3.
+
+**Welcome page.** The step about the EDGE tools names REDsave.
+
 ## 1.140.3
 
 A preview, for Windows x64.

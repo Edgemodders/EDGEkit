@@ -4,18 +4,18 @@
 
 <p align="center">
   <a href="https://edgemodders.github.io/EDGEkit/"><img src="docs/assets/brand/badges/docs.svg" alt="docs: read the docs"></a>
-  <img src="docs/assets/brand/badges/status.svg" alt="status: 1.140.3 preview">
+  <img src="docs/assets/brand/badges/status.svg" alt="status: 1.140.4 preview">
   <img src="docs/assets/brand/badges/base.svg" alt="built on: Code - OSS">
   <img src="docs/assets/brand/badges/registry.svg" alt="extensions: Open VSX">
   <a href="LICENSE"><img src="docs/assets/brand/badges/license.svg" alt="license: MIT"></a>
 </p>
 
-The Edgemodders editor: a build of Code - OSS, the open-source core of VS Code, with Edgemodders branding and the EDGE extensions built in. Install one app and get [REDcode](https://github.com/Edgemodders/REDcode) (the game's files, WolvenKit projects, the TweakDB), [EDGEdeck](https://github.com/Edgemodders/EDGEdeck) (the mod manager), [EDGEmat](https://github.com/Edgemodders/EDGEmat) (materials), [EDGEwave](https://github.com/Edgemodders/EDGEwave) (sounds), Redscript IDE and the REDnode HUD theme, with more extensions from [Open VSX](https://open-vsx.org/). Claude Code installs on the first start.
+The Edgemodders editor: a build of Code - OSS, the open-source core of VS Code, with Edgemodders branding and the EDGE extensions built in. Install one app and get [REDcode](https://github.com/Edgemodders/REDcode) (the game's files, WolvenKit projects, the TweakDB), [EDGEdeck](https://github.com/Edgemodders/EDGEdeck) (the mod manager), [EDGEmat](https://github.com/Edgemodders/EDGEmat) (materials), [EDGEwave](https://github.com/Edgemodders/EDGEwave) (sounds), [REDsave](https://github.com/Edgemodders/REDsave) (saves), Redscript IDE and the REDnode HUD theme, with more extensions from [Open VSX](https://open-vsx.org/). Claude Code installs on the first start.
 
 **[Download EDGEkit](https://github.com/Edgemodders/EDGEkit/releases/latest)** &middot; **[Read the docs](https://edgemodders.github.io/EDGEkit/)** &middot; [Changelog](CHANGELOG.md) &middot; [Design](docs/design.md) &middot; [Dev setup](docs/dev-setup.md)
 
 > [!NOTE]
-> **Status: 1.140.3 preview, released on 2026-11-01.** EDGEkit 1.140.3 is out for Windows x64: `EDGEkitSetup-1.140.3.exe` on the [releases page](https://github.com/Edgemodders/EDGEkit/releases/latest). It has REDcode 0.10.5 and EDGEdeck 0.29.4 built in, and its installer can send Nexus Mods download links (Mod manager download) to EDGEdeck. Once Claude Code is installed, EDGEkit offers to set up EDGEchat, the EDGE plugin for Claude Code (since 1.140.2). The installer is not signed yet, so Windows SmartScreen may warn before it runs. EDGEkit installs beside VS Code without touching it, and updates itself (**Restart to Update** in the gear menu). What changed: [Changelog](CHANGELOG.md).
+> **Status: 1.140.4 preview, released on 2026-11-04.** EDGEkit 1.140.4 is out for Windows x64: `EDGEkitSetup-1.140.4.exe` on the [releases page](https://github.com/Edgemodders/EDGEkit/releases/latest). It adds REDsave 0.1.0, the save game manager, and EDGEdeck 0.30.0 to the built-in extensions. Its installer can send Nexus Mods download links (Mod manager download) to EDGEdeck. Once Claude Code is installed, EDGEkit offers to set up EDGEchat, the EDGE plugin for Claude Code (since 1.140.2). The installer is not signed yet, so Windows SmartScreen may warn before it runs. EDGEkit installs beside VS Code without touching it, and updates itself (**Restart to Update** in the gear menu). What changed: [Changelog](CHANGELOG.md).
 >
 > **In VS Code or VSCodium instead?** The **EDGEkit extension pack** installs the EDGE extensions there: [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=edgemodders.edgekit) or [Open VSX](https://open-vsx.org/extension/edgemodders/edgekit).
 >

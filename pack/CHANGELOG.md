@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.0
+
+- Adds REDsave (`edgemodders.redsave`), the save game manager, on the Marketplace and Open VSX. A preview.
+
 ## 0.3.0
 
 - Adds EDGEmat (`edgemodders.edgemat`), the material editor, and EDGEwave (`edgemodders.edgewave`), the sound studio, on the Marketplace and Open VSX. Both are previews. EDGEmat is Windows x64 only; EDGEwave builds on REDcode.
