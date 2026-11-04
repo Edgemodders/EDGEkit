@@ -2,6 +2,16 @@
 
 EDGEkit's releases: the editor itself. The EDGE extensions have their own changelogs and update themselves; the extension pack's is `pack/CHANGELOG.md`. `tools/release.mjs` takes each release's notes from its section here, `## <version>`.
 
+## 1.140.5
+
+A preview, for Windows x64.
+
+**EDGEquest, built in.** EDGEquest 0.1.0, the new quest maker for Cyberpunk 2077: read the game's quests in plain words, and write new ones as a story, with beats, scenes, choices, map markers, music and sound. It works with REDcode, which EDGEkit already has, and updates itself from Open VSX, like the other EDGE extensions.
+
+**Welcome page.** The step about the EDGE tools names EDGEquest.
+
+The other built-in extensions are as in 1.140.4.
+
 ## 1.140.4
 
 A preview, for Windows x64.

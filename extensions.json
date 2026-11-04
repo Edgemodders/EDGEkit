@@ -72,6 +72,16 @@
       "version": "0.1.0"
     },
     {
+      "id": "edgemodders.edgequest",
+      "from": "sibling",
+      "repo": "../EDGEquest",
+      "build": "npm run edgequest:package",
+      "vsix": "dist/edgequest-*.vsix",
+      "status": "exists",
+      "builtIn": true,
+      "version": "0.1.0"
+    },
+    {
       "id": "jac3km4.redscript-ide-vscode",
       "from": "source",
       "repo": "https://github.com/jac3km4/redscript-ide-vscode",

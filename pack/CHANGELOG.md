@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.0
+
+- Adds EDGEquest (`edgemodders.edgequest`), the quest maker, on the Marketplace and Open VSX. A preview. It works with REDcode.
+
 ## 0.4.0
 
 - Adds REDsave (`edgemodders.redsave`), the save game manager, on the Marketplace and Open VSX. A preview.
