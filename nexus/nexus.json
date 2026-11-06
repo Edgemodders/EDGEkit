@@ -3,7 +3,7 @@
   "upload": {
     "name": "EDGEkit",
     "category": "main",
-    "primary": false,
+    "primary": true,
     "modManager": false,
     "archivePrevious": true,
     "description": "EDGEkit {version}, the Edgemodders editor for Cyberpunk 2077 modding (Windows x64). Unzip and run EDGEkitSetup-{version}.exe; an installed EDGEkit also updates itself. Not a game mod: no Vortex or EDGEdeck."
