@@ -21,14 +21,15 @@
 #                                               (the installer and a README, tools/nexus-zip.mjs) to the
 #                                               Nexus page as the main file's new version (the old one
 #                                               archived), adds its changelog (tools/nexus-notes.mjs) and
-#                                               pushes nexus/description.bbcode (tools/nexus/nexus.mjs,
-#                                               copied from REDnode; the organization's NEXUS_KEY secret).
-#                                               It checks the page first and stops before building if the
-#                                               description changed on Nexus since the last pull
-#                                               (node tools/nexus/nexus.mjs pull, merge, commit, run
-#                                               again). If the upload fails after the release, run
-#                                               tools/nexus-zip.mjs and tools/nexus/nexus.mjs release on
-#                                               the dev PC with the release's installer: it skips what is
+#                                               pushes nexus/description.bbcode (the Nexus tool, from
+#                                               EDGErepo at the tag v1; the organization's NEXUS_KEY
+#                                               secret). It checks the page first and stops before
+#                                               building if the description changed on Nexus since the
+#                                               last pull (node ../EDGErepo/tools/nexus/nexus.mjs pull,
+#                                               merge, commit, run again). If the upload fails after the
+#                                               release, run tools/nexus-zip.mjs and
+#                                               node ../EDGErepo/tools/nexus/nexus.mjs release on the
+#                                               dev PC with the release's installer: it skips what is
 #                                               already done (nexus/README.md)
 #
 # Release gate: make a release only after the run's installer has been installed and tested
@@ -82,6 +83,12 @@ jobs:
           $version = (Get-Content version.json -Raw | ConvertFrom-Json).version
           node tools/release/readme-check.mjs --version $version
 
+      # The Nexus tool, shared by the Edgemodders repos at this tag (REDnode's docs/edgerepo.md). Outside
+      # the workspace, so nothing packs it.
+      - name: The Nexus tool
+        if: inputs.release && inputs.nexus
+        run: git -c advice.detachedHead=false clone --quiet --depth 1 --branch v1 https://github.com/Edgemodders/EDGErepo "$env:RUNNER_TEMP/EDGErepo"
+
       - name: Nexus Mods can take this release
         if: inputs.release && inputs.nexus
         env:
@@ -90,7 +97,7 @@ jobs:
           node tools/check-bbcode.mjs
           if ($LASTEXITCODE) { exit 1 }
           $version = (Get-Content version.json -Raw | ConvertFrom-Json).version
-          node tools/nexus/nexus.mjs check --version $version
+          node "$env:RUNNER_TEMP/EDGErepo/tools/nexus/nexus.mjs" check --version $version
 
       - name: Fetch Code - OSS
         run: .\tools\fetch-vscode.ps1
@@ -176,4 +183,4 @@ jobs:
           if ($LASTEXITCODE) { exit 1 }
           node tools/nexus-zip.mjs
           if ($LASTEXITCODE) { exit 1 }
-          node tools/nexus/nexus.mjs release --version $version --zip "build/release/EDGEkit-$version.zip" --notes "$env:RUNNER_TEMP/nexus-notes.txt"
+          node "$env:RUNNER_TEMP/EDGErepo/tools/nexus/nexus.mjs" release --version $version --zip "build/release/EDGEkit-$version.zip" --notes "$env:RUNNER_TEMP/nexus-notes.txt"

@@ -1,7 +1,7 @@
 // The file for EDGEkit's Nexus Mods page: build/release/EDGEkit-<version>.zip, holding
 // EDGEkitSetup-<version>.exe (which tools/release.mjs puts in build/release) and a README.txt on
 // installing. Nexus checks every upload as an archive, so the installer goes in a zip. The release
-// workflow uploads it with tools/nexus/nexus.mjs release (nexus/README.md).
+// workflow uploads it with the Nexus tool's release (EDGErepo's tools/nexus/nexus.mjs; nexus/README.md).
 //   node tools/nexus-zip.mjs
 
 import { spawnSync } from 'node:child_process';

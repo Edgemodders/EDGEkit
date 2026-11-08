@@ -1,6 +1,6 @@
 // The changelog for EDGEkit's Nexus Mods page: the section of CHANGELOG.md for version.json's version,
 // as plain lines (Nexus's changelog field takes no markdown; links become "text (url)"). The release
-// workflow passes it to tools/nexus/nexus.mjs release (nexus/README.md).
+// workflow passes it to the Nexus tool's release (EDGErepo's tools/nexus/nexus.mjs; nexus/README.md).
 //   node tools/nexus-notes.mjs [--out <file>]
 
 import { readFileSync, writeFileSync } from 'node:fs';

@@ -6,7 +6,7 @@ The source of EDGEkit's Nexus Mods page lives here, so updates are edits in the 
 |---|---|
 | `description.bbcode` | The page's description, in Nexus's BBCode. Paste the whole file into the description field (the editor's source mode, or switch to BBCode) |
 | `README.md` | This page: the other fields of the Nexus form, and how to update |
-| `nexus.json` | The page (35192), its internal mod id and main file, how a release uploads (`upload`), and the hash of the description last pulled. Made by `tools/nexus/nexus.mjs pull` |
+| `nexus.json` | The page (35192), its internal mod id and main file, how a release uploads (`upload`), and the hash of the description last pulled. Made by `node ../EDGErepo/tools/nexus/nexus.mjs pull` |
 
 ## The Nexus form
 
@@ -27,7 +27,7 @@ The page is a private draft on Nexus (owner's decision, 2026-10-13) and is publi
 
 ## Updating the page
 
-The release workflow keeps the page, as REDnode's does (the same `tools/nexus/nexus.mjs` and `api.mjs`, copied from REDnode, 2026-10-26). With **Make a release** and **Update Nexus Mods** ticked, after the GitHub release and the update manifest it:
+The release workflow keeps the page, as REDnode's does, with the Nexus tool shared in [EDGErepo](https://github.com/Edgemodders/EDGErepo): the workflow clones it at the tag `v1`, and the commands below need it checked out beside this repo (`../EDGErepo`). Change it there. With **Make a release** and **Update Nexus Mods** ticked, after the GitHub release and the update manifest it:
 
 | Step | What |
 |---|---|
@@ -37,16 +37,16 @@ The release workflow keeps the page, as REDnode's does (the same `tools/nexus/ne
 
 Before building, it checks the page and stops if the description was changed on Nexus since (pictures added by hand, say). Then:
 
-1. `node tools/nexus/nexus.mjs pull`: the live description into `description.bbcode`, and the ids and hash into `nexus.json`.
+1. `node ../EDGErepo/tools/nexus/nexus.mjs pull`: the live description into `description.bbcode`, and the ids and hash into `nexus.json`.
 2. Merge with `git diff`: keep what was added on Nexus, and the repo's newer text. Commit, push, and run the release again.
 
 | Command | What |
 |---|---|
-| `node tools/nexus/nexus.mjs status` | The page's version, the main file's versions, and whether the description changed on Nexus |
-| `node tools/nexus/nexus.mjs check --version <v>` | What a release would do, and whether it may. Read only |
-| `node tools/nexus/nexus.mjs release --version <v> --zip build/release/EDGEkit-<v>.zip --notes <file>` | What the workflow runs. If its Nexus step fails after the release: download the release's installer into `build/release`, run `node tools/nexus-zip.mjs` and `node tools/nexus-notes.mjs --out <file>`, then this. It skips what is already done |
+| `node ../EDGErepo/tools/nexus/nexus.mjs status` | The page's version, the main file's versions, and whether the description changed on Nexus |
+| `node ../EDGErepo/tools/nexus/nexus.mjs check --version <v>` | What a release would do, and whether it may. Read only |
+| `node ../EDGErepo/tools/nexus/nexus.mjs release --version <v> --zip build/release/EDGEkit-<v>.zip --notes <file>` | What the workflow runs. If its Nexus step fails after the release: download the release's installer into `build/release`, run `node tools/nexus-zip.mjs` and `node tools/nexus-notes.mjs --out <file>`, then this. It skips what is already done |
 
-The key: on the dev PC `%APPDATA%\Edgemodders\nexus-key.txt`, encrypted for the owner's Windows user (see `tools/nexus/api.mjs`); in CI the organization's `NEXUS_KEY` secret.
+The key: on the dev PC `%APPDATA%\Edgemodders\nexus-key.txt`, encrypted for the owner's Windows user (see EDGErepo's `tools/nexus/api.mjs`); in CI the organization's `NEXUS_KEY` secret.
 
 The first pull (2026-10-26) found the page at 1.140.1, its main file uploaded by hand, and screenshots added on Nexus; they are in `description.bbcode` now.
 
