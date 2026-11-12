@@ -95,9 +95,7 @@
       "id": "jac3km4.redscript-ide-vscode",
       "from": "source",
       "repo": "https://github.com/jac3km4/redscript-ide-vscode",
-      "commit": "08684a0f245732251d048d7084fffac7935dde6c",
-      "//install": "Its package-lock.json is out of step with its package.json at this commit (npm ci refuses: esbuild's platform packages), so npm install",
-      "install": "npm install --no-audit --no-fund",
+      "commit": "4d835f5f6578f688f5dd90d2897eb29c56341ff6",
       "build": "npm run package",
       "license": "MIT",
       "server": {
@@ -106,9 +104,9 @@
         "asset": "redscript-ide.exe",
         "setting": "redscript.idePath"
       },
-      "status": "Built from source at its 0.3.4 commit (not on Open VSX, and the Marketplace's terms rule out taking it from there). The extension downloads its language server from GitHub on first use. The author is being asked about Open VSX",
+      "status": "Built from source at its 0.4.0 commit (not on Open VSX, and the Marketplace's terms rule out taking it from there). From 0.4.0 its package-lock.json is in step, so the default npm ci builds it (0.3.4 needed npm install). The extension downloads its language server from GitHub on first use. The author is being asked about Open VSX",
       "builtIn": true,
-      "version": "0.3.4"
+      "version": "0.4.0"
     }
   ]
 }
