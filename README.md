@@ -4,18 +4,18 @@
 
 <p align="center">
   <a href="https://edgemodders.github.io/EDGEkit/"><img src="docs/assets/brand/badges/docs.svg" alt="docs: read the docs"></a>
-  <img src="docs/assets/brand/badges/status.svg" alt="status: 1.140.5 preview">
+  <img src="docs/assets/brand/badges/status.svg" alt="status: 1.140.6 preview">
   <img src="docs/assets/brand/badges/base.svg" alt="built on: Code - OSS">
   <img src="docs/assets/brand/badges/registry.svg" alt="extensions: Open VSX">
   <a href="LICENSE"><img src="docs/assets/brand/badges/license.svg" alt="license: MIT"></a>
 </p>
 
-The Edgemodders editor: a build of Code - OSS, the open-source core of VS Code, with Edgemodders branding and the EDGE extensions built in. Install one app and get [REDcode](https://github.com/Edgemodders/REDcode) (the game's files, WolvenKit projects, the TweakDB), [EDGEdeck](https://github.com/Edgemodders/EDGEdeck) (the mod manager), [EDGEmat](https://github.com/Edgemodders/EDGEmat) (materials), [EDGEwave](https://github.com/Edgemodders/EDGEwave) (sounds), [REDsave](https://github.com/Edgemodders/REDsave) (saves), [EDGEquest](https://github.com/Edgemodders/EDGEquest) (quests), Redscript IDE and the REDnode HUD theme, with more extensions from [Open VSX](https://open-vsx.org/). Claude Code installs on the first start.
+The Edgemodders editor: a build of Code - OSS, the open-source core of VS Code, with Edgemodders branding and the EDGE extensions built in. Install one app and get [REDcode](https://github.com/Edgemodders/REDcode) (the game's files, WolvenKit projects, the TweakDB), [EDGEdeck](https://github.com/Edgemodders/EDGEdeck) (the mod manager), [EDGEmat](https://github.com/Edgemodders/EDGEmat) (materials), [EDGEwave](https://github.com/Edgemodders/EDGEwave) (sounds), [REDsave](https://github.com/Edgemodders/REDsave) (saves), [EDGEquest](https://github.com/Edgemodders/EDGEquest) (quests), [EDGEhack](https://github.com/Edgemodders/EDGEhack) (quickhacks), Redscript IDE and the REDnode HUD theme, with more extensions from [Open VSX](https://open-vsx.org/). Claude Code installs on the first start.
 
 **[Download EDGEkit](https://github.com/Edgemodders/EDGEkit/releases/latest)** &middot; **[Read the docs](https://edgemodders.github.io/EDGEkit/)** &middot; [Changelog](CHANGELOG.md) &middot; [Design](docs/design.md) &middot; [Dev setup](docs/dev-setup.md)
 
 > [!NOTE]
-> **Status: 1.140.5 preview, released on 2026-11-04.** EDGEkit 1.140.5 is out for Windows x64: `EDGEkitSetup-1.140.5.exe` on the [releases page](https://github.com/Edgemodders/EDGEkit/releases/latest). It adds EDGEquest 0.1.0, the quest maker, to the built-in extensions, after REDsave 0.1.0, the save game manager, in 1.140.4. Its installer can send Nexus Mods download links (Mod manager download) to EDGEdeck. Once Claude Code is installed, EDGEkit offers to set up EDGEchat, the EDGE plugin for Claude Code (since 1.140.2). The installer is not signed yet, so Windows SmartScreen may warn before it runs. EDGEkit installs beside VS Code without touching it, and updates itself (**Restart to Update** in the gear menu). What changed: [Changelog](CHANGELOG.md).
+> **Status: 1.140.6 preview, released on 2026-11-12.** EDGEkit 1.140.6 is out for Windows x64: `EDGEkitSetup-1.140.6.exe` on the [releases page](https://github.com/Edgemodders/EDGEkit/releases/latest). It adds EDGEhack 0.1.2, the quickhack editor, to the built-in extensions, and brings REDcode, EDGEdeck, EDGEwave, REDsave and EDGEquest up to their latest releases. Its installer can send Nexus Mods download links (Mod manager download) to EDGEdeck. Once Claude Code is installed, EDGEkit offers to set up EDGEchat, the EDGE plugin for Claude Code (since 1.140.2). The installer is not signed yet, so Windows SmartScreen may warn before it runs. EDGEkit installs beside VS Code without touching it, and updates itself (**Restart to Update** in the gear menu). What changed: [Changelog](CHANGELOG.md).
 >
 > **In VS Code or VSCodium instead?** The **EDGEkit extension pack** installs the EDGE extensions there: [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=edgemodders.edgekit) or [Open VSX](https://open-vsx.org/extension/edgemodders/edgekit).
 >

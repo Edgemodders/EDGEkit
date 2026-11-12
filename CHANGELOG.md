@@ -2,6 +2,16 @@
 
 EDGEkit's releases: the editor itself. The EDGE extensions have their own changelogs and update themselves; the extension pack's is `pack/CHANGELOG.md`. `tools/release.mjs` takes each release's notes from its section here, `## <version>`.
 
+## 1.140.6
+
+A preview, for Windows x64.
+
+**EDGEhack, built in.** EDGEhack 0.1.2, the new mod editor for the game's quickhacks, the abilities V uses in the story: their names, icons, costs and effects. It writes TweakXL mod files, works with REDcode, which EDGEkit already has, and updates itself from Open VSX, like the other EDGE extensions.
+
+**Built-in extensions.** Brought up to their latest releases: REDcode for Cyberpunk 2077 0.10.8, EDGEdeck 0.31.0 (Nexus downloads one at a time with Cancel, speed and time left, a Columns button, and downloads over 2 GB), EDGEwave 0.2.0, REDsave 0.1.1 and EDGEquest 0.1.1. Each one's changelog has the details. The others as in 1.140.5.
+
+**Welcome page.** The step about the EDGE tools names EDGEhack.
+
 ## 1.140.5
 
 A preview, for Windows x64.

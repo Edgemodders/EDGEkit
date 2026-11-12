@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.0
+
+- Adds EDGEhack (`edgemodders.edgehack`), the mod editor for the game's quickhacks, on Open VSX. A preview. It works with REDcode. Not on the Marketplace yet: the Marketplace has not accepted EDGEhack, so the Marketplace pack lists the same extensions as 0.5.0 until it does.
+
 ## 0.5.0
 
 - Adds EDGEquest (`edgemodders.edgequest`), the quest maker, on the Marketplace and Open VSX. A preview. It works with REDcode.

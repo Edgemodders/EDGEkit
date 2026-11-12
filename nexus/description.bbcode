@@ -7,7 +7,7 @@
 [line]
 
 [quote][size=4][b][color=#fcee0a]STATUS: PREVIEW[/color][/b][/size]
-EDGEkit is being built in the open. The latest release, [b]1.140.5[/b] (2026-11-04), is a preview for Windows x64, with EDGEquest, the new quest maker, and REDsave, the save game manager, built in: download [b]EDGEkitSetup-1.140.5.exe[/b] from [url=https://github.com/Edgemodders/EDGEkit/releases/latest]GitHub[/url]. The installer is not signed yet, so Windows SmartScreen may warn: choose More info, then Run anyway.
+EDGEkit is being built in the open. The latest release, [b]1.140.6[/b] (2026-11-12), is a preview for Windows x64, with EDGEhack, the new quickhack editor, built in, beside EDGEquest and REDsave: download [b]EDGEkitSetup-1.140.6.exe[/b] from [url=https://github.com/Edgemodders/EDGEkit/releases/latest]GitHub[/url]. The installer is not signed yet, so Windows SmartScreen may warn: choose More info, then Run anyway.
 [b]Prefer VS Code?[/b] The [b]EDGEkit extension pack[/b] installs REDcode, EDGEdeck, EDGEmat, EDGEwave, REDsave, EDGEquest, the REDnode HUD theme and REDscript IDE in VS Code or VSCodium in one go: get it from the [url=https://marketplace.visualstudio.com/items?itemName=edgemodders.edgekit]VS Code Marketplace[/url] or [url=https://open-vsx.org/extension/edgemodders/edgekit]Open VSX[/url]. It is a preview, and REDcode, EDGEdeck and EDGEmat need Windows x64.
 [b]Track this page[/b] to hear about new releases.[/quote]
 [line]
@@ -32,6 +32,7 @@ EDGEkit is also in the VS Code marketplace as an extension bundle so you can jus
 [*]Feature complete Mod Manager with loadouts (EDGEdeck)[/*]
 [*]Search, sort and swap your save games, with titles of your own (REDsave)[/*]
 [*]Read the game's quests in plain words and write your own as a story (EDGEquest)[/*]
+[*]Edit the game's quickhacks: names, icons, costs and effects (EDGEhack)[/*]
 [*]Wolvenkit Compatible Mod Builder (REDcode)[/*]
 [*]Browse all Game Assets in friendly tree with search and filter[/*]
 [*]A Claude Code modding assistant that can make your mod for you[/*]
@@ -68,6 +69,7 @@ Material Editing
 [*][b][color=#00ffff]EDGEwave[/color][/b], the sound studio: find, play, edit, mix and re-voice the game's sounds, and put them into your mod.[/*]
 [*][b][color=#00ffff]REDsave[/color][/b], the save game manager: search and filter your saves by title, date, lifepath and more, keep sets of saves outside the game and swap them in, and give saves titles of your own. [i](From EDGEkit 1.140.4.)[/i][/*]
 [*][b][color=#00ffff]EDGEquest[/color][/b], the quest maker: read the game's quests in plain words, and write new ones as a story, with beats, scenes, choices, map markers, music and sound. [i](From EDGEkit 1.140.5.)[/i][/*]
+[*][b][color=#00ffff]EDGEhack[/color][/b], the quickhack editor: change the names, icons, costs and effects of the quickhacks V uses in the story, saved as TweakXL mod files. [i](From EDGEkit 1.140.6.)[/i][/*]
 [*][b][color=#00ffff]REDscript IDE[/color][/b]: redscript support, built in. Its language server, which gives code completion and errors, downloads from GitHub the first time you use it.[/*]
 [*][b]The REDnode HUD theme[/b] as the default look: dark, yellow and cyan, made to sit beside the game.[/*]
 [*][b][color=#00ffff]REDagent[/color][/b], the AI assistant, powered by Claude: it can write a REDnode mod with you, run it in the live game, read what went wrong, and fix it. [i](Not in EDGEkit yet: its editor panel is planned. The in-game assistant is out now, as a separate download for REDnode.)[/i][/*]
@@ -96,6 +98,7 @@ EDGEkit is the front door to the EDGE tools. Each one is also usable on its own:
 [*][b][url=https://github.com/Edgemodders/EDGEwave]EDGEwave[/url][/b]: the sound studio. In preview on the Marketplace and Open VSX.[/*]
 [*][b][url=https://github.com/Edgemodders/REDsave]REDsave[/url][/b]: the save game manager. In preview on the Marketplace and Open VSX.[/*]
 [*][b][url=https://github.com/Edgemodders/EDGEquest]EDGEquest[/url][/b]: the quest maker. In preview on the Marketplace and Open VSX.[/*]
+[*][b][url=https://github.com/Edgemodders/EDGEhack]EDGEhack[/url][/b]: the quickhack editor. In preview on Open VSX.[/*]
 [*][b][url=https://github.com/Edgemodders/EDGEbuilder]EDGEbuilder[/url][/b]: a world builder that runs inside the game on REDnode: browse, drop, position, bake. In development.[/*]
 [/list]
 [size=5][b][color=#fcee0a]Roadmap[/color][/b][/size]
@@ -105,8 +108,8 @@ EDGEkit is the front door to the EDGE tools. Each one is also usable on its own:
 [*][b]Extension pack[/b]: the EDGE extensions in one install for VS Code and VSCodium. Published as a preview.[/*]
 [*][b]K1 Build[/b]: Code - OSS built from source, unbranded. Done.[/*]
 [*][b]K2 Brand[/b]: the EDGEkit name, icons and default theme everywhere. It never says VS Code, and it keeps its data apart from an installed VS Code. Nearly done: the onboarding and Welcome page wait for a last review.[/*]
-[*][b]K3 Bundle[/b]: REDcode, EDGEdeck, EDGEmat, EDGEwave, REDsave (from 1.140.4), EDGEquest (from 1.140.5), the HUD theme and REDscript IDE built in, working with no network, and updating themselves from Open VSX. Claude Code installs on the first start. Done.[/*]
-[*][b]K4 Release[/b]: a Windows installer, built on GitHub and published here and on GitHub. EDGEkit updates itself, too. The first release, 1.140.1, came out on GitHub on 2026-10-22, 1.140.2 on 2026-10-26, 1.140.3 on 2026-11-01, and 1.140.4 and 1.140.5 on 2026-11-04. [color=#19f3ff]Under way[/color][/*]
+[*][b]K3 Bundle[/b]: REDcode, EDGEdeck, EDGEmat, EDGEwave, REDsave (from 1.140.4), EDGEquest (from 1.140.5), EDGEhack (from 1.140.6), the HUD theme and REDscript IDE built in, working with no network, and updating themselves from Open VSX. Claude Code installs on the first start. Done.[/*]
+[*][b]K4 Release[/b]: a Windows installer, built on GitHub and published here and on GitHub. EDGEkit updates itself, too. The first release, 1.140.1, came out on GitHub on 2026-10-22, 1.140.2 on 2026-10-26, 1.140.3 on 2026-11-01, 1.140.4 and 1.140.5 on 2026-11-04, and 1.140.6 on 2026-11-12. [color=#19f3ff]Under way[/color][/*]
 [*][b]K5 Track upstream[/b]: newer Code - OSS releases picked up every month or so, sooner for security fixes.[/*]
 [/list]
 The plan in full: [url=https://edgemodders.github.io/EDGEkit/design.html]EDGEkit design[/url].
