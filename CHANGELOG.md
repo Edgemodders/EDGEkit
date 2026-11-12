@@ -2,6 +2,10 @@
 
 EDGEkit's releases: the editor itself. The EDGE extensions have their own changelogs and update themselves; the extension pack's is `pack/CHANGELOG.md`. `tools/release.mjs` takes each release's notes from its section here, `## <version>`.
 
+## Unreleased
+
+**Onboarding.** Signing in with GitHub no longer hides its one-time code: while the sign-in runs, the onboarding drops behind the notification that shows the code, the GitHub link and Cancel. EDGEkit signs in with a code that you paste on GitHub (the Copy & Continue to Browser button puts it on the clipboard).
+
 ## 1.140.6
 
 A preview, for Windows x64.

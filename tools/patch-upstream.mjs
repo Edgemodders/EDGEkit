@@ -550,6 +550,29 @@ const edits = [
       '.onboarding-a-signin-banner {\n\tdisplay: block;\n\twidth: min(100%, 640px);\n\theight: auto;\n\tmargin: 4px auto 0;\n}\n\n' +
       '/* Sign-In step */\n.onboarding-a-signin {\n',
   },
+  {
+    // EDGEkit's GitHub sign-in uses a one-time code: upstream's GitHub sign-in only redirects back to
+    // vscode:// and its siblings (extensions/github-authentication/src/common/env.ts), so for edgekit://
+    // it falls back to the device code flow. Its progress toast (the code, the link, Cancel) sits at
+    // z-index 2545, under the onboarding's 10000, so it was hidden behind the onboarding (found on the
+    // laptop, 1.140.6, 2026-11-12). While a sign-in runs, the onboarding drops to 2540: under toasts
+    // (2545), quick input (2550) and dialogs (2575), still over the workbench.
+    name: 'Onboarding: under the sign-in toast while signing in',
+    file: 'src/vs/workbench/contrib/welcomeOnboarding/browser/onboardingVariationA.ts',
+    from: "\t\t\tconst account = await this.defaultAccountService.signIn({\n\t\t\t\tprovider: socialProvider, // EDGEkit: not Copilot's sign-up\n\t\t\t});\n",
+    to: "\t\t\t// EDGEkit: under the sign-in's toast (its one-time code) while signing in\n" +
+      "\t\t\tthis.overlay?.classList.add('edgekit-signing-in');\n" +
+      "\t\t\tconst account = await this.defaultAccountService.signIn({\n\t\t\t\tprovider: socialProvider, // EDGEkit: not Copilot's sign-up\n" +
+      "\t\t\t}).finally(() => this.overlay?.classList.remove('edgekit-signing-in'));\n",
+  },
+  {
+    name: 'Onboarding: under the sign-in toast while signing in (style)',
+    file: 'src/vs/workbench/contrib/welcomeOnboarding/browser/media/variationA.css',
+    from: '.onboarding-a-overlay {\n\tposition: fixed;\n\tinset: 0;\n\tz-index: 10000;\n',
+    to: '/* EDGEkit: while signing in, under notification toasts (2545), quick input (2550) and dialogs (2575) */\n' +
+      '.onboarding-a-overlay.edgekit-signing-in {\n\tz-index: 2540;\n}\n\n' +
+      '.onboarding-a-overlay {\n\tposition: fixed;\n\tinset: 0;\n\tz-index: 10000;\n',
+  },
 ];
 
 for (const { name, file, dir, match, all, from, to } of edits) {
