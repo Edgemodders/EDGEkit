@@ -1,4 +1,5 @@
-// Where the Code - OSS checkout lives: "vscode" in local.json (this PC's settings, not
+// Where the Code - OSS checkout lives: the EDGEKIT_VSCODE environment variable (a second checkout,
+// such as a newer upstream being tried for K5), else "vscode" in local.json (this PC's settings, not
 // committed), else build/vscode. The same rule as tools/checkout.ps1.
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
@@ -6,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 
 export const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const local = join(root, 'local.json');
-export const checkout = resolve((existsSync(local) && JSON.parse(readFileSync(local, 'utf8')).vscode) || join(root, 'build', 'vscode'));
+export const checkout = resolve(process.env.EDGEKIT_VSCODE || (existsSync(local) && JSON.parse(readFileSync(local, 'utf8')).vscode) || join(root, 'build', 'vscode'));
 
 // The built app, beside the checkout.
 export const builtApp = join(dirname(checkout), 'VSCode-win32-x64');

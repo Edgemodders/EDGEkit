@@ -249,8 +249,10 @@ const edits = [
   {
     name: 'Installer: the Nexus links, removed on uninstall',
     file: 'build/win32/code.iss',
-    from: '  RemoveAppxPackage();\n#endif\n  if not RegQueryStringValue({#EnvironmentRootKey}',
-    to: '  RemoveAppxPackage();\n#endif\n  RemoveNexusLinks(); // EDGEkit\n  if not RegQueryStringValue({#EnvironmentRootKey}',
+    // Upstream 1.143 put its Copilot shim's uninstall here; EDGEkit's build has no shim (it comes only from
+    // Microsoft's pipeline, build/azure-pipelines/copilot-shim), so CopilotShim is never defined.
+    from: '#ifdef CopilotShim\n  CopilotUninstall();\n#endif\n  if not RegQueryStringValue({#EnvironmentRootKey}',
+    to: '#ifdef CopilotShim\n  CopilotUninstall();\n#endif\n  RemoveNexusLinks(); // EDGEkit\n  if not RegQueryStringValue({#EnvironmentRootKey}',
   },
   {
     // EDGEkit has no system installer to send people to.
