@@ -32,7 +32,7 @@ The release workflow keeps the page, as REDnode's does, with the Nexus tool shar
 | Step | What |
 |---|---|
 | The file | Zips `EDGEkitSetup-<version>.exe` with a README.txt into `EDGEkit-<version>.zip` (`tools/nexus-zip.mjs`; Nexus checks every upload as an archive) and uploads it as the main file's new version, the old one archived. Mod manager download off: EDGEkit is not a game mod |
-| The changelog | The version's section of `CHANGELOG.md` as plain lines (`tools/nexus-notes.mjs`) |
+| The changelog | The short summary in the `<!-- nexus` comment under the version's heading in `CHANGELOG.md` (one change a line, `New:`, `Changed:`, `Fixed:` ..., at most 120 characters), then a Full changelog link (`tools/nexus-notes.mjs`; EDGErepo's README, "Nexus changelogs") |
 | The description | Pushes `description.bbcode`, only when the live one is the one last pulled or the one the previous release pushed |
 
 Before building, it checks the page and stops if the description was changed on Nexus since (pictures added by hand, say). Then:
