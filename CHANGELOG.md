@@ -1,8 +1,16 @@
 # Changelog
 
-EDGEkit's releases: the editor itself. The EDGE extensions have their own changelogs and update themselves; the extension pack's is `pack/CHANGELOG.md`. `tools/release.mjs` takes each release's notes from its section here, `## <version>`.
+EDGEkit's releases: the editor itself. The EDGE extensions have their own changelogs and update themselves; the extension pack's is `pack/CHANGELOG.md`. `tools/release.mjs` takes each release's notes from its section here, `## <version>`. From 1.143.1 each section also has a short summary for the Nexus page in a `<!-- nexus` comment, which GitHub hides (`tools/nexus-notes.mjs`; EDGErepo's README, "Nexus changelogs").
 
 ## 1.143.1
+
+<!-- nexus
+New: EDGEfab 0.1.0 built in, the asset maker: a textured 3D model to a prop for the game
+Changed: Built on Code - OSS 1.143.1 (was 1.140.0)
+Changed: REDcode 0.10.13, EDGEdeck 0.32.0 and EDGEmat 0.3.3 built in
+Changed: The Welcome page's step about the EDGE tools names EDGEfab
+Fixed: Notifications hid behind the first start's onboarding (GitHub's sign-in code, REDcode's REDbridge offer)
+-->
 
 A preview, for Windows x64.
 

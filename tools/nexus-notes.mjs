@@ -1,7 +1,22 @@
-// The changelog for EDGEkit's Nexus Mods page: the section of CHANGELOG.md for version.json's version,
-// as plain lines (Nexus's changelog field takes no markdown; links become "text (url)"). The release
+// The changelog for EDGEkit's Nexus Mods page: the short summary in the CHANGELOG.md section for
+// version.json's version, then a "Full changelog" line with the GitHub release's link. The release
 // workflow passes it to the Nexus tool's release (EDGErepo's tools/nexus/nexus.mjs; nexus/README.md).
 //   node tools/nexus-notes.mjs [--out <file>]
+//
+// Nexus shows each line of a version's changelog as one entry, as plain text in a small field, and
+// cannot edit it once posted, so the Nexus tool takes only a short summary (EDGErepo's README, "Nexus
+// changelogs"): one change a line, each starting with New:, Changed:, Fixed:, Removed:, Other: or
+// Needs:, at most 120 characters, no markdown. It is written by hand under the version's heading in
+// an HTML comment, which GitHub and the docs site hide, as REDnode does:
+//
+//   ## 1.143.1
+//
+//   <!-- nexus
+//   New: EDGEfab 0.1.0 built in, the asset maker
+//   -->
+//
+// This script prints those lines and the link; it stops when the section has none. The Nexus tool
+// checks the rules before it uploads anything.
 
 import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -17,24 +32,22 @@ if (start < 0) {
 }
 let end = lines.findIndex((line, i) => i > start && line.startsWith('## '));
 if (end < 0) end = lines.length;
+const section = lines.slice(start + 1, end);
 
-const plain = (text) => text
-  .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1 ($2)')
-  .replace(/\*\*([^*]+?)\.?\*\*\s*/g, (m, heading, offset) => (offset === 0 ? `${heading}: ` : heading + ' '))
-  .replace(/`([^`]+)`/g, '$1')
-  .trim();
-const result = [];
-for (const line of lines.slice(start + 1, end)) {
-  if (!line.trim() || /^\|[\s|:-]*\|$/.test(line)) continue; // blank, or a table's separator row
-  if (line.startsWith('|')) {
-    const cells = line.split('|').slice(1, -1).map((c) => plain(c));
-    if (cells.every((c) => c === '' || /^(Extension|Version|What it does)$/.test(c))) continue; // a header row
-    result.push(cells.filter(Boolean).join(', '));
-  } else {
-    result.push(plain(line.replace(/^- /, '')));
-  }
+const open = section.findIndex((line) => line.trim() === '<!-- nexus');
+const close = open < 0 ? -1 : section.findIndex((line, i) => i > open && line.trim() === '-->');
+if (open < 0 || close < 0) {
+  console.error(`CHANGELOG.md's "## ${version}" section has no Nexus summary: add a "<!-- nexus" comment under its heading, one short line a change, closed by "-->" (see this script's header).`);
+  process.exit(1);
 }
-const text = result.join('\n') + '\n';
+const summary = section.slice(open + 1, close).map((line) => line.trim()).filter(Boolean);
+if (summary.length === 0) {
+  console.error(`CHANGELOG.md's "## ${version}" Nexus summary is empty.`);
+  process.exit(1);
+}
+summary.push(`Full changelog: https://github.com/Edgemodders/EDGEkit/releases/tag/v${version}`);
+
+const text = summary.join('\n') + '\n';
 const out = process.argv.indexOf('--out');
 if (out >= 0) writeFileSync(process.argv[out + 1], text);
 else process.stdout.write(text);
