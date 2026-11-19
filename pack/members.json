@@ -8,6 +8,7 @@
     "edgemodders.edgewave",
     "edgemodders.redsave",
     "edgemodders.edgequest",
+    "edgemodders.edgefab",
     "jac3km4.redscript-ide-vscode"
   ],
   "openvsx": [
@@ -18,6 +19,7 @@
     "edgemodders.edgewave",
     "edgemodders.redsave",
     "edgemodders.edgequest",
-    "edgemodders.edgehack"
+    "edgemodders.edgehack",
+    "edgemodders.edgefab"
   ]
 }

@@ -4,6 +4,12 @@ EDGEkit's releases: the editor itself. The EDGE extensions have their own change
 
 ## Unreleased
 
+**EDGEfab, built in.** EDGEfab 0.1.0, the new asset maker: bring a textured 3D model, your own or one Tripo makes from your words, and EDGEfab turns it into a prop the game can use, with its materials, levels of detail and files, ready to add to a project and try in the game. It works with REDcode and EDGEmat, which EDGEkit already has, and updates itself from Open VSX, like the other EDGE extensions. Making a model or a picture from words uses your own Tripo or OpenAI key.
+
+**Built-in extensions.** Brought up to their latest releases: REDcode for Cyberpunk 2077 0.10.13, EDGEdeck 0.32.0 and EDGEmat 0.3.3. Each one's changelog has the details. The others as in 1.140.6.
+
+**Welcome page.** The step about the EDGE tools names EDGEfab.
+
 **Code - OSS 1.143.1.** EDGEkit moves from upstream 1.140.0 to 1.143.1, the release VSCodium 1.143.17232 is built on: three upstream releases of fixes and features. EDGEkit's changes carry over; no Copilot, no Microsoft sign-in.
 
 **Onboarding.** Signing in with GitHub no longer hides its one-time code: while the sign-in runs, the onboarding drops behind the notification that shows the code, the GitHub link and Cancel. EDGEkit signs in with a code that you paste on GitHub (the Copy & Continue to Browser button puts it on the clipboard).
