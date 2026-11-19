@@ -2,7 +2,9 @@
 
 EDGEkit's releases: the editor itself. The EDGE extensions have their own changelogs and update themselves; the extension pack's is `pack/CHANGELOG.md`. `tools/release.mjs` takes each release's notes from its section here, `## <version>`.
 
-## Unreleased
+## 1.143.1
+
+A preview, for Windows x64.
 
 **EDGEfab, built in.** EDGEfab 0.1.0, the new asset maker: bring a textured 3D model, your own or one Tripo makes from your words, and EDGEfab turns it into a prop the game can use, with its materials, levels of detail and files, ready to add to a project and try in the game. It works with REDcode and EDGEmat, which EDGEkit already has, and updates itself from Open VSX, like the other EDGE extensions. Making a model or a picture from words uses your own Tripo or OpenAI key.
 
