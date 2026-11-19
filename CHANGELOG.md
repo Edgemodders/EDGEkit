@@ -12,7 +12,7 @@ EDGEkit's releases: the editor itself. The EDGE extensions have their own change
 
 **Code - OSS 1.143.1.** EDGEkit moves from upstream 1.140.0 to 1.143.1, the release VSCodium 1.143.17232 is built on: three upstream releases of fixes and features. EDGEkit's changes carry over; no Copilot, no Microsoft sign-in.
 
-**Onboarding.** Signing in with GitHub no longer hides its one-time code: while the sign-in runs, the onboarding drops behind the notification that shows the code, the GitHub link and Cancel. EDGEkit signs in with a code that you paste on GitHub (the Copy & Continue to Browser button puts it on the clipboard).
+**Onboarding.** Notifications show in front of the first start's onboarding, no longer hidden behind it. That covers the GitHub sign-in's one-time code, with the GitHub link and Cancel (EDGEkit signs in with a code that you paste on GitHub; the Copy & Continue to Browser button puts it on the clipboard), and the built-in extensions' first questions, such as REDcode's offer to install REDbridge and then to use the game folder it found.
 
 ## 1.140.6
 

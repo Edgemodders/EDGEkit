@@ -557,23 +557,16 @@ const edits = [
     // vscode:// and its siblings (extensions/github-authentication/src/common/env.ts), so for edgekit://
     // it falls back to the device code flow. Its progress toast (the code, the link, Cancel) sits at
     // z-index 2545, under the onboarding's 10000, so it was hidden behind the onboarding (found on the
-    // laptop, 1.140.6, 2026-11-12). While a sign-in runs, the onboarding drops to 2540: under toasts
-    // (2545), quick input (2550) and dialogs (2575), still over the workbench.
-    name: 'Onboarding: under the sign-in toast while signing in',
-    file: 'src/vs/workbench/contrib/welcomeOnboarding/browser/onboardingVariationA.ts',
-    from: "\t\t\tconst account = await this.defaultAccountService.signIn({\n\t\t\t\tprovider: socialProvider, // EDGEkit: not Copilot's sign-up\n\t\t\t});\n",
-    to: "\t\t\t// EDGEkit: under the sign-in's toast (its one-time code) while signing in\n" +
-      "\t\t\tthis.overlay?.classList.add('edgekit-signing-in');\n" +
-      "\t\t\tconst account = await this.defaultAccountService.signIn({\n\t\t\t\tprovider: socialProvider, // EDGEkit: not Copilot's sign-up\n" +
-      "\t\t\t}).finally(() => this.overlay?.classList.remove('edgekit-signing-in'));\n",
-  },
-  {
-    name: 'Onboarding: under the sign-in toast while signing in (style)',
+    // laptop, 1.140.6, 2026-11-12). The first fix dropped the onboarding only while a sign-in ran; the
+    // 1.143.1 test (2026-11-19) found extensions' first-run toasts hidden the same way (REDcode's "REDcode
+    // needs REDbridge ... Install the latest release?", then its game folder question), so REDcode never
+    // found the game. The onboarding now always sits at 2540: under toasts (2545), quick input (2550) and
+    // dialogs (2575), still over the workbench (its parts are at 2500 and below).
+    name: 'Onboarding: under toasts, quick input and dialogs',
     file: 'src/vs/workbench/contrib/welcomeOnboarding/browser/media/variationA.css',
     from: '.onboarding-a-overlay {\n\tposition: fixed;\n\tinset: 0;\n\tz-index: 10000;\n',
-    to: '/* EDGEkit: while signing in, under notification toasts (2545), quick input (2550) and dialogs (2575) */\n' +
-      '.onboarding-a-overlay.edgekit-signing-in {\n\tz-index: 2540;\n}\n\n' +
-      '.onboarding-a-overlay {\n\tposition: fixed;\n\tinset: 0;\n\tz-index: 10000;\n',
+    to: '.onboarding-a-overlay {\n\tposition: fixed;\n\tinset: 0;\n' +
+      '\tz-index: 2540; /* EDGEkit: under notification toasts (2545), quick input (2550) and dialogs (2575) */\n',
   },
 ];
 
