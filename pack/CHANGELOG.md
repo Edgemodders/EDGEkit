@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.1
+
+- EDGEhack (`edgemodders.edgehack`), the quickhack editor, joins the Marketplace pack too, now that the Marketplace has it. The Open VSX pack is unchanged.
+
 ## 0.7.0
 
 - Adds EDGEfab (`edgemodders.edgefab`), the asset maker: a textured 3D model to a prop the game can use. On the Marketplace and Open VSX. A preview. It works with REDcode and EDGEmat. EDGEhack is still on Open VSX only.
