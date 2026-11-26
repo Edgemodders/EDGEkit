@@ -142,9 +142,12 @@ const edits = [
       'Name: "nexuslinks"; Description: "Send Nexus Mods download links (Mod manager download) to EDGEdeck"; GroupDescription: "{cm:Other}"; Check: OfferNexusLinks\n',
   },
   {
-    // The command is EDGEdeck's forwarder (forwarderCommand in EDGEdeck's src/nxm.ts) for EDGEkit.exe and edgekit://,
-    // product.json's urlProtocol. EDGEdeck rewrites it when it starts if the two ever differ, and leaves it alone
-    // while they match. EDGEkit itself registers edgekit:// when it starts; the installer never has.
+    // The command is EDGEdeck's (forwarderCommand in EDGEdeck's src/nxm.ts, its linkCommand since 0.33.0) for
+    // EDGEkit.exe and edgekit://, product.json's urlProtocol: the exe with --open-url, the link one quoted argument.
+    // EDGEdeck compares the exact string when it starts and rewrites it if the two differ. EDGEkit 1.140.3 to
+    // 1.143.1 wrote EDGEdeck's old PowerShell forwarder, which a crafted link could break out of to run its own
+    // code (EDGEdeck 0.33.0's security fix, 2026-11-21); every install, silent ones included, now replaces that one
+    // when it names this EDGEkit. EDGEkit itself registers edgekit:// when it starts; the installer never has.
     name: 'Installer: the Nexus links code',
     file: 'build/win32/code.iss',
     from: 'procedure CurStepChanged(CurStep: TSetupStep);\n',
@@ -194,13 +197,23 @@ const edits = [
       "  Result := RegQueryStringValue(HKCR, 'nxm\\shell\\open\\command', '', Cmd) and (Cmd <> '') and (Pos('edgemodders.edgedeck', Cmd) = 0);",
       'end;',
       '',
+      '// No shell: Windows starts EDGEkit.exe with the link as one quoted argument (EDGEdeck 0.33.0).',
       'function NexusForwarder(): String;',
-      'var',
-      '  Exe: String;',
       'begin',
-      "  Exe := ExpandConstant('{app}\\{#ExeBasename}.exe');",
-      "  StringChangeEx(Exe, '''', '''''', True);",
-      "  Result := 'powershell.exe -NoProfile -WindowStyle Hidden -Command \"$u = ''edgekit://edgemodders.edgedeck/nxm?url='' + [uri]::EscapeDataString(''%1''); Start-Process -FilePath ''' + Exe + ''' -ArgumentList ''--open-url'',''--'',$u\"';",
+      "  Result := '\"' + ExpandConstant('{app}\\{#ExeBasename}.exe') + '\" --open-url -- \"edgekit://edgemodders.edgedeck/nxm?url=%1\"';",
+      'end;',
+      '',
+      '// The PowerShell forwarder EDGEkit 1.140.3 to 1.143.1 wrote, when it opens this EDGEkit: replaced on any install.',
+      'procedure ReplaceOldNexusForwarder();',
+      'var',
+      '  Cmd: String;',
+      'begin',
+      "  if RegQueryStringValue(HKCU, 'Software\\Classes\\nxm\\shell\\open\\command', '', Cmd)",
+      "    and (Pos('powershell.exe', Lowercase(Cmd)) > 0) and (Pos('edgemodders.edgedeck', Cmd) > 0)",
+      "    and (Pos(Lowercase(ExpandConstant('{app}\\{#ExeBasename}.exe')), Lowercase(Cmd)) > 0) then begin",
+      "    RegWriteStringValue(HKCU, 'Software\\Classes\\nxm\\shell\\open\\command', '', NexusForwarder());",
+      "    Log('Replaced the old PowerShell forwarder for Nexus Mods download links: ' + NexusForwarder());",
+      '  end;',
       'end;',
       '',
       'procedure CurPageChanged(CurPageID: Integer);',
@@ -219,6 +232,7 @@ const edits = [
       '// A silent first install never takes the links from another program.',
       'procedure SetNexusLinks();',
       'begin',
+      '  ReplaceOldNexusForwarder();',
       '  if not WizardIsTaskSelected(\'nexuslinks\') or (WizardSilent() and NexusLinksTaken()) then exit;',
       "  RegWriteStringValue(HKCU, 'Software\\Classes\\nxm', '', 'URL:Nexus Mods link');",
       "  RegWriteStringValue(HKCU, 'Software\\Classes\\nxm', 'URL Protocol', '');",

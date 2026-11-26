@@ -2,6 +2,19 @@
 
 EDGEkit's releases: the editor itself. The EDGE extensions have their own changelogs and update themselves; the extension pack's is `pack/CHANGELOG.md`. `tools/release.mjs` takes each release's notes from its section here, `## <version>`. From 1.143.1 each section also has a short summary for the Nexus page in a `<!-- nexus` comment, which GitHub hides (`tools/nexus-notes.mjs`; EDGErepo's README, "Nexus changelogs").
 
+## Unreleased
+
+<!-- nexus
+Fixed: Security: a crafted Nexus link could run commands on your PC through the link handler EDGEkit's installer set
+Changed: EDGEdeck 0.34.2 built in, with the same fix (was 0.32.0)
+-->
+
+A preview, for Windows x64.
+
+**Security fix: Nexus Mods download links.** Since 1.140.3, the installer's box "Send Nexus Mods download links to EDGEdeck" registered a small PowerShell forwarder for `nxm://` links, the same one EDGEdeck registered. A crafted Nexus link opened from a web page could break out of it and run its own commands on your PC (found and fixed in EDGEdeck 0.33.0). Windows now starts EDGEkit directly with the link as one quoted argument, with no PowerShell. Installing or updating EDGEkit, Restart to Update included, replaces the old forwarder when it points at this EDGEkit. EDGEdeck 0.33.0 and later replace it too, the first time they start. If Vortex or another program holds Nexus links, nothing changes.
+
+**Built-in extensions.** EDGEdeck 0.34.2 (was 0.32.0): the security fix above, a Deploy and an update check on each mod's row, and packing a REDcode project again no longer changes the game folder before Deploy. Its changelog has the details. The others as in 1.143.1.
+
 ## 1.143.1
 
 <!-- nexus

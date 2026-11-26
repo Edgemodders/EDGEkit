@@ -69,7 +69,7 @@ Git submodules would also pin exact commits, but every update takes commits in t
 |---|---|---|
 | REDcode for Cyberpunk 2077 (`edgemodders.redcode-cyberpunk`, renamed from `edgemodders.redcode` in 0.8.0: the Marketplace already had a "redcode") | 0.10.13, Windows x64 | Built in. Local: REDcode, `npm run redcode:package` |
 | REDnode HUD theme (`edgemodders.rednode-hud-theme`) | 0.3.1 | Built in, the default theme. Local: REDcode, `npm run theme:package` |
-| EDGEdeck (`edgemodders.edgedeck`) | 0.32.0, Windows x64 | Built in. The mod manager. Renamed from REDdeck (`edgemodders.reddeck`) on 2026-10-17, with no old names kept. Local: EDGEdeck, `npm run package` |
+| EDGEdeck (`edgemodders.edgedeck`) | 0.34.2, Windows x64 (2026-11-26) | Built in. The mod manager. Renamed from REDdeck (`edgemodders.reddeck`) on 2026-10-17, with no old names kept. 0.33.0 or later is required (EDGEdeck's security fix of 2026-11-21: its PowerShell forwarder for `nxm://` links could be broken out of; the link is now one argument to the editor's exe), and the installer's Nexus links box writes the same command as its `forwarderCommand` (`patch-upstream.mjs`). Local: EDGEdeck, `npm run package` |
 | EDGEmat (`edgemodders.edgemat`) | 0.3.3, Windows x64 | Built in. The material editor, with its MCP server inside the VSIX from 0.3.1. Local: EDGEmat, `npm run edgemat:package` |
 | EDGEwave (`edgemodders.edgewave`) | 0.2.0 | Built in. The sound studio. Needs REDcode (`extensionDependencies`). Local: EDGEwave, `npm run package` (the VSIX lands in the repo's root) |
 | REDsave (`edgemodders.redsave`) | 0.1.1 | Built in from 1.140.4 (the user, 2026-11-04). The save game manager, universal (no platform build). Local: REDsave, `npm run package` (the VSIX lands in the repo's root) |

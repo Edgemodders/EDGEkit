@@ -30,7 +30,7 @@
       "vsix": "dist/edgedeck-win32-x64-*.vsix",
       "status": "exists",
       "builtIn": true,
-      "version": "0.32.0"
+      "version": "0.34.2"
     },
     {
       "id": "edgemodders.redagent",
