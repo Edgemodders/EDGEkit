@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://edgemodders.github.io/EDGEkit/"><img src="docs/assets/brand/badges/docs.svg" alt="docs: read the docs"></a>
-  <img src="docs/assets/brand/badges/status.svg" alt="status: 1.143.1 preview">
+  <img src="docs/assets/brand/badges/status.svg" alt="status: 1.143.2 preview">
   <img src="docs/assets/brand/badges/base.svg" alt="built on: Code - OSS">
   <img src="docs/assets/brand/badges/registry.svg" alt="extensions: Open VSX">
   <a href="LICENSE"><img src="docs/assets/brand/badges/license.svg" alt="license: MIT"></a>
@@ -15,7 +15,7 @@ The Edgemodders editor: a build of Code - OSS, the open-source core of VS Code, 
 **[Download EDGEkit](https://github.com/Edgemodders/EDGEkit/releases/latest)** &middot; **[Read the docs](https://edgemodders.github.io/EDGEkit/)** &middot; [Changelog](CHANGELOG.md) &middot; [Design](docs/design.md) &middot; [Dev setup](docs/dev-setup.md)
 
 > [!NOTE]
-> **Status: 1.143.1 preview, released on 2026-11-19.** EDGEkit 1.143.1 is out for Windows x64: `EDGEkitSetup-1.143.1.exe` on the [releases page](https://github.com/Edgemodders/EDGEkit/releases/latest). It moves to Code - OSS 1.143.1, adds EDGEfab 0.1.0, the asset maker, to the built-in extensions, brings REDcode, EDGEdeck and EDGEmat up to their latest releases, and shows notifications in front of the first start's onboarding. Its installer can send Nexus Mods download links (Mod manager download) to EDGEdeck. Once Claude Code is installed, EDGEkit offers to set up EDGEchat, the EDGE plugin for Claude Code (since 1.140.2). The installer is not signed yet, so Windows SmartScreen may warn before it runs. EDGEkit installs beside VS Code without touching it, and updates itself (**Restart to Update** in the gear menu). What changed: [Changelog](CHANGELOG.md).
+> **Status: 1.143.2 preview, released on 2026-11-26.** EDGEkit 1.143.2 is out for Windows x64: `EDGEkitSetup-1.143.2.exe` on the [releases page](https://github.com/Edgemodders/EDGEkit/releases/latest). It is a security fix: a crafted Nexus Mods link could run commands through the link handler that EDGEkit's installer set from 1.140.3 to 1.143.1; the installer now starts EDGEkit directly, and every install or update replaces the old handler. EDGEdeck 0.34.2, with the same fix, is built in. 1.143.1 moved to Code - OSS 1.143.1 and added EDGEfab, the asset maker. The installer can send Nexus Mods download links (Mod manager download) to EDGEdeck. Once Claude Code is installed, EDGEkit offers to set up EDGEchat, the EDGE plugin for Claude Code (since 1.140.2). The installer is not signed yet, so Windows SmartScreen may warn before it runs. EDGEkit installs beside VS Code without touching it, and updates itself (**Restart to Update** in the gear menu). What changed: [Changelog](CHANGELOG.md).
 >
 > **In VS Code or VSCodium instead?** The **EDGEkit extension pack** installs the EDGE extensions there: [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=edgemodders.edgekit) or [Open VSX](https://open-vsx.org/extension/edgemodders/edgekit).
 >

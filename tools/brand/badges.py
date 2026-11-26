@@ -13,7 +13,7 @@ DIM = "#8a93a8"
 COLORS = {"yellow": "#fcee0a", "cyan": "#19f3ff", "green": "#5dffa1"}
 
 BADGES = [
-    ('status', 'status', '1.143.1 preview', 'yellow'),
+    ('status', 'status', '1.143.2 preview', 'yellow'),
     ('base', 'built on', 'Code - OSS', 'cyan'),
     ('registry', 'extensions', 'Open VSX', 'cyan'),
     ('license', 'license', 'MIT', 'green'),

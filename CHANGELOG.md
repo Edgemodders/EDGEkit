@@ -2,7 +2,7 @@
 
 EDGEkit's releases: the editor itself. The EDGE extensions have their own changelogs and update themselves; the extension pack's is `pack/CHANGELOG.md`. `tools/release.mjs` takes each release's notes from its section here, `## <version>`. From 1.143.1 each section also has a short summary for the Nexus page in a `<!-- nexus` comment, which GitHub hides (`tools/nexus-notes.mjs`; EDGErepo's README, "Nexus changelogs").
 
-## Unreleased
+## 1.143.2
 
 <!-- nexus
 Fixed: Security: a crafted Nexus link could run commands on your PC through the link handler EDGEkit's installer set
