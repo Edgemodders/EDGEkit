@@ -45,7 +45,8 @@ if (current && !newer(version, current)) problems.push(`The manifest already nam
 const taken = JSON.parse(run('gh', ['release', 'list', '--repo', REPO, '--limit', '200', '--json', 'tagName'])).map((r) => r.tagName);
 if (taken.includes(tag)) problems.push(`The release ${tag} exists already.`);
 const changelog = readFileSync(join(root, 'CHANGELOG.md'), 'utf8').replace(/\r\n/g, '\n');
-const section = changelog.split(/^## /m).find((s) => s.startsWith(`${version}\n`));
+// The heading is "## <version>" or "## <version> (<YYYY-MM-DD>)" (the changelog convention, EDGEkit #4).
+const section = changelog.split(/^## /m).find((s) => s.startsWith(`${version}\n`) || s.startsWith(`${version} (`));
 if (!section) problems.push(`CHANGELOG.md has no "## ${version}" section.`);
 
 const report = () => console.error(`Not ready to release ${tag}:\n${problems.map((p) => `- ${p}`).join('\n')}`);
@@ -88,7 +89,8 @@ const out = join(root, 'build', 'release');
 mkdirSync(out, { recursive: true });
 const sha256 = createHash('sha256').update(readFileSync(exe)).digest('hex');
 const { tag: upstream } = json(root, 'upstream.json');
-const notes = `${(section ?? `${version}\n\n(notes to write)`).slice(version.length).trim()}
+const body = section ?? `${version}\n\n(notes to write)`;
+const notes = `${body.slice(body.indexOf('\n')).trim()}
 
 | | |
 |---|---|

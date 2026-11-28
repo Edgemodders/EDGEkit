@@ -2,7 +2,11 @@
 
 EDGEkit's releases: the editor itself. The EDGE extensions have their own changelogs and update themselves; the extension pack's is `pack/CHANGELOG.md`. `tools/release.mjs` takes each release's notes from its section here, `## <version>`. From 1.143.1 each section also has a short summary for the Nexus page in a `<!-- nexus` comment, which GitHub hides (`tools/nexus-notes.mjs`; EDGErepo's README, "Nexus changelogs").
 
-## 1.143.2
+How it is kept (the Edgemodders changelog convention, EDGEkit #4): a section per release, newest first, headed `## <version> (<YYYY-MM-DD>)`, with `## Unreleased` on top. Each change goes under **Unreleased** in the commit that makes it, one bullet a change under the bold groups **New**, **Changed**, **Fixed** and **Other**, written for modders. Before a release, **Unreleased** is renamed to the version and date and a new empty one starts above it. Sections up to 1.143.2 are written as paragraphs, before the groups.
+
+## Unreleased
+
+## 1.143.2 (2026-11-26)
 
 <!-- nexus
 Fixed: Security: a crafted Nexus link could run commands on your PC through the link handler EDGEkit's installer set
@@ -15,7 +19,7 @@ A preview, for Windows x64.
 
 **Built-in extensions.** EDGEdeck 0.34.2 (was 0.32.0): the security fix above, a Deploy and an update check on each mod's row, and packing a REDcode project again no longer changes the game folder before Deploy. Its changelog has the details. The others as in 1.143.1.
 
-## 1.143.1
+## 1.143.1 (2026-11-19)
 
 <!-- nexus
 New: EDGEfab 0.1.0 built in, the asset maker: a textured 3D model to a prop for the game
@@ -37,7 +41,7 @@ A preview, for Windows x64.
 
 **Onboarding.** Notifications show in front of the first start's onboarding, no longer hidden behind it. That covers the GitHub sign-in's one-time code, with the GitHub link and Cancel (EDGEkit signs in with a code that you paste on GitHub; the Copy & Continue to Browser button puts it on the clipboard), and the built-in extensions' first questions, such as REDcode's offer to install REDbridge and then to use the game folder it found.
 
-## 1.140.6
+## 1.140.6 (2026-11-12)
 
 A preview, for Windows x64.
 
@@ -47,7 +51,7 @@ A preview, for Windows x64.
 
 **Welcome page.** The step about the EDGE tools names EDGEhack.
 
-## 1.140.5
+## 1.140.5 (2026-11-04)
 
 A preview, for Windows x64.
 
@@ -57,7 +61,7 @@ A preview, for Windows x64.
 
 The other built-in extensions are as in 1.140.4.
 
-## 1.140.4
+## 1.140.4 (2026-11-04)
 
 A preview, for Windows x64.
 
@@ -67,7 +71,7 @@ A preview, for Windows x64.
 
 **Welcome page.** The step about the EDGE tools names REDsave.
 
-## 1.140.3
+## 1.140.3 (2026-11-01)
 
 A preview, for Windows x64.
 
@@ -79,7 +83,7 @@ A preview, for Windows x64.
 
 **Welcome page.** A new step, **Get mods from Nexus Mods**, does the same at any time, for instance after Vortex took the links back.
 
-## 1.140.2
+## 1.140.2 (2026-10-26)
 
 A preview, for Windows x64.
 
@@ -93,7 +97,7 @@ A preview, for Windows x64.
 
 **Installer.** The checkboxes on the Select Additional Tasks page are no longer cut off at the left at some display scales.
 
-## 1.140.1
+## 1.140.1 (2026-10-22)
 
 The first release of EDGEkit, the Edgemodders editor for Cyberpunk 2077 mods. A preview, for Windows x64.
 

@@ -9,7 +9,7 @@
 // Needs:, at most 120 characters, no markdown. It is written by hand under the version's heading in
 // an HTML comment, which GitHub and the docs site hide, as REDnode does:
 //
-//   ## 1.143.1
+//   ## 1.143.1 (2026-11-19)
 //
 //   <!-- nexus
 //   New: EDGEfab 0.1.0 built in, the asset maker
@@ -25,7 +25,8 @@ import { fileURLToPath } from 'node:url';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const { version } = JSON.parse(readFileSync(join(root, 'version.json'), 'utf8'));
 const lines = readFileSync(join(root, 'CHANGELOG.md'), 'utf8').replace(/\r\n/g, '\n').split('\n');
-const start = lines.indexOf(`## ${version}`);
+// The heading is "## <version>" or "## <version> (<YYYY-MM-DD>)" (the changelog convention, EDGEkit #4).
+const start = lines.findIndex((line) => line === `## ${version}` || line.startsWith(`## ${version} (`));
 if (start < 0) {
   console.error(`CHANGELOG.md has no "## ${version}" section`);
   process.exit(1);
